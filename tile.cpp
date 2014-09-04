@@ -1,3 +1,4 @@
+#include <iostream>
 #include <cmath>
 
 #include "tile.h"
@@ -80,6 +81,8 @@ void Tile::attackedBy(Unit* unit)
 		} else {
 			this->player->removeUnit(u);
 			this->units.erase(it);
+			cout << "Player " << u->getPlayer() << " 's unit ";
+			cout << u << " just died" << endl;
 			delete u;
 		}
 	}
@@ -92,6 +95,8 @@ void Tile::attackedBy(Unit* unit)
 	if (unit->getLife() <= 0) {
 		unit->getPlayer()->removeUnit(unit);
 		unit->getTile()->removeUnit(unit);
+		cout << "Player " << unit->getPlayer() << " 's unit ";
+		cout << unit << " just died" << endl;
 		delete unit;
 	}
 }

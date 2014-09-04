@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "player.h"
 
 using namespace std;
@@ -60,6 +62,8 @@ void Player::createUnit(Tile* tile)
 	Unit* unit = new Unit(this, tile);
 	this->addUnit(unit);
 	tile->addUnit(unit);
+	cout << "Player " << this << " created a unit " << unit << " on tile ";
+	cout << tile << tile->getPosition() << endl;
 }
 
 } // namespace gs

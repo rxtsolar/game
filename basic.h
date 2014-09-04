@@ -1,6 +1,8 @@
 #ifndef _BASIC_H_
 #define _BASIC_H_
 
+#include <ostream>
+
 namespace gs {
 
 struct Position {
@@ -8,7 +10,11 @@ struct Position {
 	int y;
 	Position(void) : x(0), y(0) { }
 	Position(int a, int b) : x(a), y(b) { }
-	bool operator==(const Position& p) { return x == p.x && y == p.y; }
+	friend std::ostream& operator<<(std::ostream& stream, const Position& p)
+	{
+		stream << "(" << p.x << ", " << p.y << ")";
+		return stream;
+	}
 };
 
 struct Range {

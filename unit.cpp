@@ -1,4 +1,8 @@
+#include <iostream>
+
 #include "unit.h"
+
+using namespace std;
 
 namespace gs {
 
@@ -71,40 +75,68 @@ bool Unit::isAttacked(void)
 
 bool Unit::canMoveTo(Tile* tile)
 {
-	if (this->moved)
+	if (this->moved) {
+		cerr << "Player " << this->player << " 's unit " << this;
+		cerr << " has already moved" << endl;
 		return false;
+	}
 
-	if (this->tile->getDistance(tile) > 1)
+	if (this->tile->getDistance(tile) > 1) {
+		cerr << "Player " << this->player << " 's unit " << this;
+		cerr << " could not move from " << this->tile->getPosition();
+		cerr << " to " << tile->getPosition() << endl;
 		return false;
+	}
 
-	if (tile->getPlayer() == 0)
+	if (tile->getPlayer() == 0) {
 		return true;
-	else if (tile->getPlayer() == this->tile->getPlayer())
+	} else if (tile->getPlayer() == this->tile->getPlayer()) {
 		return true;
-	else
+	} else {
+		cerr << "Player " << this->player << " 's unit " << this;
+		cerr << " could not move to" << tile->getPosition();
+		cerr << " because player " << tile->getPlayer();
+		cerr << " is there" << endl;
 		return false;
+	}
 }
 
 bool Unit::canAttack(Tile* tile)
 {
-	if (this->attacked)
+	if (this->attacked) {
+		cerr << "Player " << this->player << " 's unit " << this;
+		cerr << " has already attacked" << endl;
 		return false;
+	}
 
-	if (this->tile->getDistance(tile) > 1)
+	if (this->tile->getDistance(tile) > 1) {
+		cerr << "Player " << this->player << " 's unit " << this;
+		cerr << " could not attack " << tile->getPosition();
+		cerr << " from " << this->tile->getPosition() << endl;
 		return false;
+	}
 
-	if (tile->getPlayer() == 0)
+	if (tile->getPlayer() == 0) {
+		cerr << "Player " << this->player << " 's unit " << this;
+		cerr << " could not attack " << tile->getPosition();
+		cerr << " because no one is there" << endl;
 		return false;
-	else if (tile->getPlayer() == this->tile->getPlayer())
+	} else if (tile->getPlayer() == this->tile->getPlayer()) {
+		cerr << "Player " << this->player << " 's unit " << this;
+		cerr << " could not attack " << tile->getPosition();
+		cerr << " because friend units are there" << endl;
 		return false;
-	else
+	} else {
 		return true;
+	}
 }
 
 void Unit::refresh(void)
 {
 	this->moved = false;
 	this->attacked = false;
+	cout << "Player " << this->player << " 's unit " << this;
+	cout << " refreshed" << endl;
 }
 
 void Unit::moveTo(Tile* tile)
@@ -114,6 +146,9 @@ void Unit::moveTo(Tile* tile)
 
 	this->tile->removeUnit(this);
 	tile->addUnit(this);
+	cout << "Player " << this->player << " 's unit " << this;
+	cout << " moved from " << this->tile << " to " << tile;
+	cout << endl;
 	this->tile = tile;
 
 	this->moved = true;
@@ -124,6 +159,10 @@ void Unit::attack(Tile* tile)
 	if (!canAttack(tile))
 		return;
 
+	cout << "Player " << this->player << " 's unit " << this;
+	cout << " attacking from " << this->tile << " to " << tile;
+	cout << endl;
+
 	tile->attackedBy(this);
 
 	this->attacked = true;
@@ -131,6 +170,8 @@ void Unit::attack(Tile* tile)
 
 void Unit::attack(Unit* unit)
 {
+	cout << "Player " << this->player << " 's unit " << this;
+	cout << " attacking unit " << unit << endl;
 	unit->setLife(unit->getLife() - this->damage);
 }
 
