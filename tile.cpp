@@ -80,7 +80,7 @@ void Tile::attackedBy(Unit* unit)
 			it++;
 		} else {
 			this->player->removeUnit(u);
-			this->units.erase(it);
+			it = this->units.erase(it);
 			cout << "Player " << u->getPlayer() << " 's unit ";
 			cout << u << " just died" << endl;
 			delete u;
