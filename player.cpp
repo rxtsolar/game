@@ -66,4 +66,11 @@ void Player::createUnit(Tile* tile)
 	cout << tile << tile->getPosition() << endl;
 }
 
+void Player::refreshUnits(void)
+{
+	unordered_set<Unit*>::iterator it;
+	for (it = this->units.begin(); it != this->units.end(); it++)
+		(*it)->refresh();
+}
+
 } // namespace gs

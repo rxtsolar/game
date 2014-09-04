@@ -26,6 +26,7 @@ public:
 	virtual bool canCreateUnit(Tile*);
 
 	virtual void createUnit(Tile*);
+	virtual void refreshUnits(void);
 
 private:
 	std::unordered_set<Unit*> units;
