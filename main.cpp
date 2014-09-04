@@ -11,6 +11,7 @@ void dump(Game* game)
 	Player* p2 = *(++game->getPlayers().begin());
 	Board* board = game->getBoard();
 
+	cout << endl;
 	cout << "player 1: ";
 	unordered_set<Unit*> units1 = p1->getUnits();
 	for (unordered_set<Unit*>::iterator it = units1.begin();
@@ -58,8 +59,20 @@ int main(void)
 
 	p1->createUnit(board->getTile(Position(0, 0)));
 	p1->createUnit(board->getTile(Position(0, 0)));
+	p1->refreshUnits();
+
 	p2->createUnit(board->getTile(Position(0, 1)));
+	p2->createUnit(board->getTile(Position(1, 0)));
+	p2->refreshUnits();
+
+	(*p1->getUnits().begin())->attack(board->getTile(Position(0, 1)));
+	p1->createUnit(board->getTile(Position(0, 0)));
+	p1->refreshUnits();
+
+	(*p2->getUnits().begin())->attack(board->getTile(Position(0, 0)));
+	p2->refreshUnits();
 
 	dump(game);
+	delete game;
 	return 0;
 }
