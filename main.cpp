@@ -40,11 +40,9 @@ void dump(Game* game)
 			else
 				cout << "no player. ";
 			cout << endl;
-			list<Unit*> units = tile->getUnits();
-			for (list<Unit*>::iterator it2 = units.begin();
-				it2 != units.end(); it2++) {
-				cout << (void*)*it2 << ' ';
-			}
+			vector<Unit*> units = tile->getUnits();
+			for (int j = 0; j < units.size(); j++)
+				cout << units[j] << ' ';
 			cout << endl;
 		}
 	}

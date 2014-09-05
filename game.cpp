@@ -8,7 +8,7 @@ Game::Game(void)
 {
 	for (int i = 0; i < NUM_OF_PLAYERS; i++)
 		this->players.push_back(new Player());
-	this->board = new Board(Size(BOARD_WIDTH, BOARD_HEIGHT));
+	this->board = new Board(Size(BOARD_WIDTH, BOARD_HEIGHT), TILE_LIMIT);
 }
 
 Game::~Game(void)

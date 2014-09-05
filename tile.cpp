@@ -7,15 +7,23 @@ using namespace std;
 
 namespace gs {
 
-Tile::Tile(int x, int y)
+Tile::Tile(int x, int y, int limit)
 {
+	this->size = 0;
 	this->position.x = x;
 	this->position.y = y;
+	this->units = vector<Unit*>(limit);
+	this->player = 0;
 }
 
 Tile::~Tile(void)
 {
 
+}
+
+int Tile::getSize(void)
+{
+	return this->size;
 }
 
 Position Tile::getPosition(void)
@@ -32,9 +40,19 @@ int Tile::getDistance(Tile* tile)
 	return distance;
 }
 
-list<Unit*> Tile::getUnits(void)
+vector<Unit*> Tile::getUnits(void)
 {
 	return this->units;
+}
+
+Unit* Tile::getUnit(int i)
+{
+	if (i < 0 || i >= size) {
+		cerr << "getUnit failed: index " << i;
+		cerr << " out of boundary" << endl;
+		return 0;
+	}
+	return this->units[i];
 }
 
 Player* Tile::getPlayer(void)
@@ -49,14 +67,34 @@ void Tile::setPosition(const Position& position)
 
 void Tile::addUnit(Unit* unit)
 {
-	this->units.push_back(unit);
+	if (this->size >= this->units.size()) {
+		cerr << "addUnit failed: tile " << this << " is full.";
+		cerr << " size: " << this->size;
+		cerr << " limit: " << this->units.size() << endl;
+		return;
+	}
 	this->player = unit->getPlayer();
+	this->units[this->size] = unit;
+	this->size++;
 }
 
 void Tile::removeUnit(Unit* unit)
 {
-	this->units.remove(unit);
-	if (this->units.empty()) {
+	int i = 0;
+	for (int j = 0; j < this->units.size(); j++) {
+		if (this->units[j] != unit) {
+			this->units[i] = this->units[j];
+			i++;
+		} else {
+			this->size--;
+		}
+	}
+	while (i < this->units.size()) {
+		this->units[i] = 0;
+		i++;
+	}
+
+	if (this->size == 0) {
 		this->player->removeTile(this);
 		this->player = 0;
 	}
@@ -69,25 +107,38 @@ void Tile::setPlayer(Player* player)
 
 void Tile::attackedBy(Unit* unit)
 {
-	list<Unit*>::iterator it = this->units.begin();
-
-	while (it != this->units.end()) {
-		Unit* u = *it;
+	int oldSize = this->size;
+	int i = 0;
+	while (i < this->size) {
+		Unit* u = this->units[i];
 		unit->attack(u);
 		if (u->canAttack(unit->getTile()))
 			u->attack(unit);
-		if (u->getLife() > 0) {
-			it++;
-		} else {
+		if (u->getLife() <= 0) {
 			this->player->removeUnit(u);
-			it = this->units.erase(it);
 			cout << "Player " << u->getPlayer() << " 's unit ";
 			cout << u << " just died" << endl;
 			delete u;
+			this->units[i] = 0;
 		}
+		i++;
 	}
 
-	if (this->units.empty()) {
+	i = 0;
+	for (int j = 0; j < oldSize; j++) {
+		if (this->units[j] != 0) {
+			this->units[i] = this->units[j];
+			i++;
+		} else {
+			this->size--;
+		}
+	}
+	while (i < this->units.size()) {
+		this->units[i] = 0;
+		i++;
+	}
+
+	if (this->size == 0) {
 		this->player->removeTile(this);
 		this->player = 0;
 	}

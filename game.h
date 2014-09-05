@@ -12,6 +12,7 @@ namespace gs {
 const int NUM_OF_PLAYERS = 2;
 const int BOARD_WIDTH = 5;
 const int BOARD_HEIGHT = 5;
+const int TILE_LIMIT = 5;
 
 class Game {
 public:

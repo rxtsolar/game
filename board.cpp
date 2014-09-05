@@ -4,14 +4,14 @@ using namespace std;
 
 namespace gs {
 
-Board::Board(const Size& size)
+Board::Board(const Size& size, int num)
 {
 	this->size = size;
 	this->tiles = vector<vector<Tile*> >(size.width,
 					     vector<Tile*>(size.height));
 	for (int i = 0; i < size.width; i++)
 		for (int j = 0; j < size.height; j++)
-			this->tiles[i][j] = new Tile(i, j);
+			this->tiles[i][j] = new Tile(i, j, num);
 }
 
 Board::~Board(void)

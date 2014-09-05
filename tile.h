@@ -1,7 +1,7 @@
 #ifndef _TILE_H_
 #define _TILE_H_
 
-#include <list>
+#include <vector>
 
 #include "basic.h"
 #include "player.h"
@@ -14,12 +14,14 @@ class Unit;
 
 class Tile {
 public:
-	Tile(int x, int y);
+	Tile(int x, int y, int limit);
 	virtual ~Tile(void);
 
+	virtual int getSize(void);
 	virtual Position getPosition(void);
 	virtual int getDistance(Tile*);
-	virtual std::list<Unit*> getUnits(void);
+	virtual std::vector<Unit*> getUnits(void);
+	virtual Unit* getUnit(int);
 	virtual Player* getPlayer(void);
 
 	virtual void setPosition(const Position&);
@@ -30,8 +32,9 @@ public:
 	virtual void attackedBy(Unit*);
 
 private:
+	int size;
 	Position position;
-	std::list<Unit*> units;
+	std::vector<Unit*> units;
 	Player* player;
 };
 

@@ -10,7 +10,7 @@ namespace gs {
 
 class Board {
 public:
-	Board(const Size&);
+	Board(const Size&, int);
 	virtual ~Board(void);
 
 	virtual Size getSize(void);
