@@ -26,7 +26,8 @@ public:
 	virtual bool canCreateUnit(Tile*);
 	virtual bool canSelectUnit(Tile*, unsigned int i);
 
-	virtual void createUnit(Tile*);
+	virtual void createHero(Tile*);
+	virtual void createPawn(Tile*);
 	virtual Unit* selectUnit(Tile*, unsigned int);
 	virtual void attack(Unit*, Tile*);
 	virtual void refreshUnits(void);

@@ -64,14 +64,25 @@ bool Player::canSelectUnit(Tile* tile, unsigned int i)
 	return true;
 }
 
-void Player::createUnit(Tile* tile)
+void Player::createHero(Tile* tile)
 {
 	if (!canCreateUnit(tile))
 		return;
-	Unit* unit = new Unit(this, tile);
+	Unit* unit = new Hero(this, tile);
 	this->addUnit(unit);
 	tile->addUnit(unit);
-	cout << "Player " << this << " created a unit " << unit << " on tile ";
+	cout << "Player " << this << " created a hero " << unit << " on tile ";
+	cout << tile << tile->getPosition() << endl;
+}
+
+void Player::createPawn(Tile* tile)
+{
+	if (!canCreateUnit(tile))
+		return;
+	Unit* unit = new Pawn(this, tile);
+	this->addUnit(unit);
+	tile->addUnit(unit);
+	cout << "Player " << this << " created a pawn " << unit << " on tile ";
 	cout << tile << tile->getPosition() << endl;
 }
 

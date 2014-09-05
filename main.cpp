@@ -58,14 +58,14 @@ int main(void)
 	Unit* u;
 
 	t = board->getTile(Position(0, 0));
-	p1->createUnit(t);
-	p1->createUnit(t);
+	p1->createHero(t);
+	p1->createPawn(t);
 	p1->refreshUnits();
 
 	t = board->getTile(Position(0, 1));
-	p2->createUnit(t);
+	p2->createHero(t);
 	t = board->getTile(Position(1, 0));
-	p2->createUnit(t);
+	p2->createPawn(t);
 	p2->refreshUnits();
 
 	t = board->getTile(Position(0, 0));
@@ -73,7 +73,7 @@ int main(void)
 	t = board->getTile(Position(0, 1));
 	p1->attack(u, t);
 	t = board->getTile(Position(0, 0));
-	p1->createUnit(t);
+	p1->createPawn(t);
 	p1->refreshUnits();
 
 	t = board->getTile(Position(1, 0));

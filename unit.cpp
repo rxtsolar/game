@@ -11,9 +11,6 @@ Unit::Unit(Player* player, Tile* tile)
 	this->moved = true;
 	this->attacked = true;
 
-	this->life = 1;
-	this->damage = 1;
-
 	this->player = player;
 	this->tile = tile;
 }
@@ -31,6 +28,16 @@ int Unit::getLife(void)
 int Unit::getDamage(void)
 {
 	return this->damage;
+}
+
+int Unit::getMoveRange(void)
+{
+	return this->moveRange;
+}
+
+int Unit::getAttackRange(void)
+{
+	return this->attackRange;
 }
 
 Player* Unit::getPlayer(void)
@@ -51,6 +58,16 @@ void Unit::setLife(int life)
 void Unit::setDamage(int damage)
 {
 	this->damage = damage;
+}
+
+void Unit::setMoveRange(int moveRange)
+{
+	this->moveRange = moveRange;
+}
+
+void Unit::setAttackRange(int attackRange)
+{
+	this->attackRange = attackRange;
 }
 
 void Unit::setPlayer(Player* player)
@@ -173,6 +190,34 @@ void Unit::attack(Unit* unit)
 	cout << "Player " << this->player << " 's unit " << this;
 	cout << " attacking unit " << unit << endl;
 	unit->setLife(unit->getLife() - this->damage);
+}
+
+
+Hero::Hero(Player* player, Tile* tile) : Unit(player, tile)
+{
+	setLife(5);
+	setDamage(2);
+	setMoveRange(2);
+	setAttackRange(2);
+}
+
+Hero::~Hero(void)
+{
+
+}
+
+
+Pawn::Pawn(Player* player, Tile* tile) : Unit(player, tile)
+{
+	setLife(2);
+	setDamage(1);
+	setMoveRange(1);
+	setAttackRange(1);
+}
+
+Pawn::~Pawn(void)
+{
+
 }
 
 } // namespace gs
