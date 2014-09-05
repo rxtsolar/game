@@ -14,8 +14,9 @@ Game::Game(void)
 Game::~Game(void)
 {
 	list<Player*>::iterator it;
-	for (it = players.begin(); it != players.end(); it++)
+	for (it = this->players.begin(); it != this->players.end(); it++)
 		delete *it;
+	delete this->board;
 }
 
 int Game::getRound(void)
