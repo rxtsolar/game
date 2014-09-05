@@ -24,8 +24,11 @@ public:
 	virtual std::unordered_set<Tile*> getTiles(void);
 
 	virtual bool canCreateUnit(Tile*);
+	virtual bool canSelectUnit(Tile*, unsigned int i);
 
 	virtual void createUnit(Tile*);
+	virtual Unit* selectUnit(Tile*, unsigned int);
+	virtual void attack(Unit*, Tile*);
 	virtual void refreshUnits(void);
 
 private:

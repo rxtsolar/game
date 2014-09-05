@@ -55,6 +55,15 @@ bool Player::canCreateUnit(Tile* tile)
 	return false;
 }
 
+bool Player::canSelectUnit(Tile* tile, unsigned int i)
+{
+	if (tile->getPlayer() != this)
+		return false;
+	if (i >= tile->getSize())
+		return false;
+	return true;
+}
+
 void Player::createUnit(Tile* tile)
 {
 	if (!canCreateUnit(tile))
@@ -64,6 +73,33 @@ void Player::createUnit(Tile* tile)
 	tile->addUnit(unit);
 	cout << "Player " << this << " created a unit " << unit << " on tile ";
 	cout << tile << tile->getPosition() << endl;
+}
+
+Unit* Player::selectUnit(Tile* tile, unsigned int i)
+{
+	Unit* unit;
+	if (!canSelectUnit(tile, i))
+		return 0;
+	unit = tile->getUnits()[i];
+	cout << "Player " << this << " selected a unit " << unit << endl;;
+	return unit;
+}
+
+void Player::attack(Unit* unit, Tile* tile)
+{
+	if (unit->getPlayer() != this)
+		return;
+	cout << "Player " << this << " attacking tile " << tile;
+	cout << " with unit " << unit << endl;
+	unit->attack(tile);
+
+        if (unit->getLife() <= 0) {
+                this->removeUnit(unit);
+                unit->getTile()->removeUnit(unit);
+                cout << "Player " << this << " 's unit ";
+                cout << unit << " just died" << endl;
+                delete unit;
+        }
 }
 
 void Player::refreshUnits(void)

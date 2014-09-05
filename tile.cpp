@@ -142,14 +142,6 @@ void Tile::attackedBy(Unit* unit)
 		this->player->removeTile(this);
 		this->player = 0;
 	}
-
-	if (unit->getLife() <= 0) {
-		unit->getPlayer()->removeUnit(unit);
-		unit->getTile()->removeUnit(unit);
-		cout << "Player " << unit->getPlayer() << " 's unit ";
-		cout << unit << " just died" << endl;
-		delete unit;
-	}
 }
 
 } // namespace gs

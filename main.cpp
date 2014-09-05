@@ -54,20 +54,32 @@ int main(void)
 	Player* p1 = *game->getPlayers().begin();
 	Player* p2 = *(++game->getPlayers().begin());
 	Board* board = game->getBoard();
+	Tile* t;
+	Unit* u;
 
-	p1->createUnit(board->getTile(Position(0, 0)));
-	p1->createUnit(board->getTile(Position(0, 0)));
+	t = board->getTile(Position(0, 0));
+	p1->createUnit(t);
+	p1->createUnit(t);
 	p1->refreshUnits();
 
-	p2->createUnit(board->getTile(Position(0, 1)));
-	p2->createUnit(board->getTile(Position(1, 0)));
+	t = board->getTile(Position(0, 1));
+	p2->createUnit(t);
+	t = board->getTile(Position(1, 0));
+	p2->createUnit(t);
 	p2->refreshUnits();
 
-	(*p1->getUnits().begin())->attack(board->getTile(Position(0, 1)));
-	p1->createUnit(board->getTile(Position(0, 0)));
+	t = board->getTile(Position(0, 0));
+	u = p1->selectUnit(t, 1);
+	t = board->getTile(Position(0, 1));
+	p1->attack(u, t);
+	t = board->getTile(Position(0, 0));
+	p1->createUnit(t);
 	p1->refreshUnits();
 
-	(*p2->getUnits().begin())->attack(board->getTile(Position(0, 0)));
+	t = board->getTile(Position(1, 0));
+	u = p2->selectUnit(t, 0);
+	t = board->getTile(Position(0, 0));
+	p2->attack(u, t);
 	p2->refreshUnits();
 
 	dump(game);
