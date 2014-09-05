@@ -24,13 +24,6 @@ struct Range {
 	Range(int s, int e) : start(s), end(e) { }
 };
 
-struct Size {
-	int width;
-	int height;
-	Size(void) : width(0), height(0) { }
-	Size(int w, int h) : width(w), height(h) { }
-};
-
 } // namespace gs
 
 #endif

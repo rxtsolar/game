@@ -26,11 +26,11 @@ void dump(Game* game)
 		cout << (void*)*it << ' ';
 	cout << endl;
 
-	cout << "board width: " << board->getSize().width << endl;
-	cout << "board height: " << board->getSize().height << endl;
+	cout << "board width: " << board->getWidth() << endl;
+	cout << "board height: " << board->getHeight() << endl;
 
-	for (int i = 0; i < board->getSize().width; i++) {
-		for (int j = 0; j < board->getSize().height; j++) {
+	for (int i = 0; i < board->getWidth(); i++) {
+		for (int j = 0; j < board->getHeight(); j++) {
 			Tile* tile = board->getTile(Position(i, j));
 			cout << "tile " << tile << " (" << i << ", " << j << "): ";
 			if (tile->getPlayer() == p1)
