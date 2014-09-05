@@ -10,15 +10,15 @@ namespace gs {
 
 class Board {
 public:
-	Board(int width, int height, int limit);
+	Board(unsigned int width, unsigned int height, unsigned int limit);
 	virtual ~Board(void);
 
 	virtual int getWidth(void);
 	virtual int getHeight(void);
 	virtual Tile* getTile(const Position&);
 private:
-	int width;
-	int height;
+	unsigned int width;
+	unsigned int height;
 	std::vector<std::vector<Tile*> > tiles;
 };
 

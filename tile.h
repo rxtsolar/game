@@ -14,14 +14,14 @@ class Unit;
 
 class Tile {
 public:
-	Tile(int x, int y, int limit);
+	Tile(unsigned int x, unsigned int y, unsigned int limit);
 	virtual ~Tile(void);
 
-	virtual int getSize(void);
+	virtual unsigned int getSize(void);
 	virtual Position getPosition(void);
 	virtual int getDistance(Tile*);
 	virtual std::vector<Unit*> getUnits(void);
-	virtual Unit* getUnit(int);
+	virtual Unit* getUnit(unsigned int);
 	virtual Player* getPlayer(void);
 
 	virtual void setPosition(const Position&);
@@ -32,7 +32,7 @@ public:
 	virtual void attackedBy(Unit*);
 
 private:
-	int size;
+	unsigned int size;
 	Position position;
 	std::vector<Unit*> units;
 	Player* player;

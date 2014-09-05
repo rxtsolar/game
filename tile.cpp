@@ -7,7 +7,7 @@ using namespace std;
 
 namespace gs {
 
-Tile::Tile(int x, int y, int limit)
+Tile::Tile(unsigned int x, unsigned int y, unsigned int limit)
 {
 	this->size = 0;
 	this->position.x = x;
@@ -21,7 +21,7 @@ Tile::~Tile(void)
 
 }
 
-int Tile::getSize(void)
+unsigned int Tile::getSize(void)
 {
 	return this->size;
 }
@@ -45,9 +45,9 @@ vector<Unit*> Tile::getUnits(void)
 	return this->units;
 }
 
-Unit* Tile::getUnit(int i)
+Unit* Tile::getUnit(unsigned int i)
 {
-	if (i < 0 || i >= size) {
+	if (i >= this->size) {
 		cerr << "getUnit failed: index " << i;
 		cerr << " out of boundary" << endl;
 		return 0;
@@ -80,8 +80,8 @@ void Tile::addUnit(Unit* unit)
 
 void Tile::removeUnit(Unit* unit)
 {
-	int i = 0;
-	for (int j = 0; j < this->units.size(); j++) {
+	unsigned int i = 0;
+	for (unsigned int j = 0; j < this->units.size(); j++) {
 		if (this->units[j] != unit) {
 			this->units[i] = this->units[j];
 			i++;
@@ -107,8 +107,8 @@ void Tile::setPlayer(Player* player)
 
 void Tile::attackedBy(Unit* unit)
 {
-	int oldSize = this->size;
-	int i = 0;
+	unsigned int oldSize = this->size;
+	unsigned int i = 0;
 	while (i < this->size) {
 		Unit* u = this->units[i];
 		unit->attack(u);
@@ -125,7 +125,7 @@ void Tile::attackedBy(Unit* unit)
 	}
 
 	i = 0;
-	for (int j = 0; j < oldSize; j++) {
+	for (unsigned int j = 0; j < oldSize; j++) {
 		if (this->units[j] != 0) {
 			this->units[i] = this->units[j];
 			i++;

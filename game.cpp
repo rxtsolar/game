@@ -6,7 +6,7 @@ namespace gs {
 
 Game::Game(void)
 {
-	for (int i = 0; i < NUM_OF_PLAYERS; i++)
+	for (unsigned int i = 0; i < NUM_OF_PLAYERS; i++)
 		this->players.push_back(new Player());
 	this->board = new Board(BOARD_WIDTH, BOARD_HEIGHT, TILE_LIMIT);
 }

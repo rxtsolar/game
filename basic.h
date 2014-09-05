@@ -6,8 +6,8 @@
 namespace gs {
 
 struct Position {
-	int x;
-	int y;
+	unsigned int x;
+	unsigned int y;
 	Position(void) : x(0), y(0) { }
 	Position(int a, int b) : x(a), y(b) { }
 	friend std::ostream& operator<<(std::ostream& stream, const Position& p)

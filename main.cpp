@@ -41,7 +41,7 @@ void dump(Game* game)
 				cout << "no player. ";
 			cout << endl;
 			vector<Unit*> units = tile->getUnits();
-			for (int j = 0; j < units.size(); j++)
+			for (unsigned int j = 0; j < units.size(); j++)
 				cout << units[j] << ' ';
 			cout << endl;
 		}
