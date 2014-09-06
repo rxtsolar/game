@@ -8,6 +8,8 @@
 
 namespace gs {
 
+class Tile;
+
 class Board {
 public:
 	Board(unsigned int width, unsigned int height, unsigned int limit);

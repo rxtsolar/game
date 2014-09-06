@@ -6,9 +6,9 @@ using namespace std;
 
 namespace gs {
 
-Player::Player(void)
+Player::Player(Game* game)
 {
-
+	this->game = game;
 }
 
 Player::~Player(void)
@@ -38,6 +38,11 @@ void Player::removeTile(Tile* tile)
 	this->tiles.erase(tile);
 }
 
+Game* Player::getGame(void)
+{
+	return this->game;
+}
+
 unordered_set<Unit*> Player::getUnits(void)
 {
 	return this->units;
@@ -50,6 +55,8 @@ unordered_set<Tile*> Player::getTiles(void)
 
 bool Player::canCreateUnit(Tile* tile)
 {
+	if (this->game->getTurn() != this)
+		return false;
 	if (tile->getPlayer() == 0 || tile->getPlayer() == this)
 		return true;
 	return false;
@@ -57,6 +64,8 @@ bool Player::canCreateUnit(Tile* tile)
 
 bool Player::canSelectUnit(Tile* tile, unsigned int i)
 {
+	if (this->game->getTurn() != this)
+		return false;
 	if (tile->getPlayer() != this)
 		return false;
 	if (i >= tile->getSize())
@@ -98,6 +107,8 @@ Unit* Player::selectUnit(Tile* tile, unsigned int i)
 
 void Player::attack(Unit* unit, Tile* tile)
 {
+	if (this->game->getTurn() != this)
+		return;
 	if (unit->getPlayer() != this)
 		return;
 	cout << "Player " << this << " attacking tile " << tile;
@@ -113,11 +124,12 @@ void Player::attack(Unit* unit, Tile* tile)
         }
 }
 
-void Player::refreshUnits(void)
+void Player::endTurn(void)
 {
 	unordered_set<Unit*>::iterator it;
 	for (it = this->units.begin(); it != this->units.end(); it++)
 		(*it)->refresh();
+	game->nextPlayer(this);
 }
 
 } // namespace gs

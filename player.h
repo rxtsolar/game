@@ -3,16 +3,18 @@
 
 #include <unordered_set>
 
+#include "game.h"
 #include "unit.h"
 
 namespace gs {
 
+class Game;
 class Unit;
 class Tile;
 
 class Player {
 public:
-	Player(void);
+	Player(Game* game);
 	virtual ~Player(void);
 
 	virtual void addUnit(Unit*);
@@ -20,6 +22,7 @@ public:
 	virtual void addTile(Tile*);
 	virtual void removeTile(Tile*);
 
+	virtual Game* getGame(void);
 	virtual std::unordered_set<Unit*> getUnits(void);
 	virtual std::unordered_set<Tile*> getTiles(void);
 
@@ -30,9 +33,10 @@ public:
 	virtual void createPawn(Tile*);
 	virtual Unit* selectUnit(Tile*, unsigned int);
 	virtual void attack(Unit*, Tile*);
-	virtual void refreshUnits(void);
+	virtual void endTurn(void);
 
 private:
+	Game* game;
 	std::unordered_set<Unit*> units;
 	std::unordered_set<Tile*> tiles;
 };

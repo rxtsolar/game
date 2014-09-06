@@ -1,18 +1,17 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
-#include <list>
-
 #include "board.h"
 #include "player.h"
 #include "unit.h"
 
 namespace gs {
 
-const unsigned int NUM_OF_PLAYERS = 2;
 const unsigned int BOARD_WIDTH = 5;
 const unsigned int BOARD_HEIGHT = 5;
 const unsigned int TILE_LIMIT = 5;
+
+class Board;
 
 class Game {
 public:
@@ -21,20 +20,23 @@ public:
 
 	virtual int getRound(void);
 	virtual Player* getTurn(void);
-	virtual std::list<Player*> getPlayers(void);
+	virtual Player* getPlayer1(void);
+	virtual Player* getPlayer2(void);
 	virtual Board* getBoard(void);
 
 	virtual void setRound(int);
 	virtual void setTurn(Player*);
-	virtual void addPlayer(Player*);
-	virtual void removePlayer(Player*);
+	virtual void setPlayer1(Player*);
+	virtual void setPlayer2(Player*);
 	virtual void setBoard(Board*);
+
+	virtual void nextPlayer(Player*);
 
 private:
 	int round;
 	Player* turn;
-
-	std::list<Player*> players;
+	Player* player1;
+	Player* player2;
 	Board* board;
 };
 

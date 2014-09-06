@@ -6,16 +6,17 @@ namespace gs {
 
 Game::Game(void)
 {
-	for (unsigned int i = 0; i < NUM_OF_PLAYERS; i++)
-		this->players.push_back(new Player());
+	this->player1 = new Player(this);
+	this->player2 = new Player(this);
 	this->board = new Board(BOARD_WIDTH, BOARD_HEIGHT, TILE_LIMIT);
+	this->round = 0;
+	this->turn = player1;
 }
 
 Game::~Game(void)
 {
-	list<Player*>::iterator it;
-	for (it = this->players.begin(); it != this->players.end(); it++)
-		delete *it;
+	delete this->player1;
+	delete this->player2;
 	delete this->board;
 }
 
@@ -29,9 +30,14 @@ Player* Game::getTurn(void)
 	return this->turn;
 }
 
-list<Player*> Game::getPlayers(void)
+Player* Game::getPlayer1(void)
 {
-	return this->players;
+	return this->player1;
+}
+
+Player* Game::getPlayer2(void)
+{
+	return this->player2;
 }
 
 Board* Game::getBoard(void)
@@ -49,19 +55,27 @@ void Game::setTurn(Player* player)
 	this->turn = player;
 }
 
-void Game::addPlayer(Player* player)
+void Game::setPlayer1(Player* player)
 {
-	this->players.push_back(player);
+	this->player1 = player;
 }
 
-void Game::removePlayer(Player* player)
+void Game::setPlayer2(Player* player)
 {
-	this->players.remove(player);
+	this->player2 = player;
 }
 
 void Game::setBoard(Board* board)
 {
 	this->board = board;
+}
+
+void Game::nextPlayer(Player* player)
+{
+	if (player == this->player1)
+		turn = player2;
+	else
+		turn = player1;
 }
 
 } // namespace gs

@@ -7,8 +7,8 @@ using namespace gs;
 
 void dump(Game* game)
 {
-	Player* p1 = *game->getPlayers().begin();
-	Player* p2 = *(++game->getPlayers().begin());
+	Player* p1 = game->getPlayer1();
+	Player* p2 = game->getPlayer2();
 	Board* board = game->getBoard();
 
 	cout << endl;
@@ -51,8 +51,8 @@ void dump(Game* game)
 int main(void)
 {
 	Game* game = new Game();
-	Player* p1 = *game->getPlayers().begin();
-	Player* p2 = *(++game->getPlayers().begin());
+	Player* p1 = game->getPlayer1();
+	Player* p2 = game->getPlayer2();
 	Board* board = game->getBoard();
 	Tile* t;
 	Unit* u;
@@ -60,13 +60,13 @@ int main(void)
 	t = board->getTile(Position(0, 0));
 	p1->createHero(t);
 	p1->createPawn(t);
-	p1->refreshUnits();
+	p1->endTurn();
 
 	t = board->getTile(Position(0, 1));
 	p2->createHero(t);
 	t = board->getTile(Position(1, 0));
 	p2->createPawn(t);
-	p2->refreshUnits();
+	p2->endTurn();
 
 	t = board->getTile(Position(0, 0));
 	u = p1->selectUnit(t, 1);
@@ -74,13 +74,13 @@ int main(void)
 	p1->attack(u, t);
 	t = board->getTile(Position(0, 0));
 	p1->createPawn(t);
-	p1->refreshUnits();
+	p1->endTurn();
 
 	t = board->getTile(Position(1, 0));
 	u = p2->selectUnit(t, 0);
 	t = board->getTile(Position(0, 0));
 	p2->attack(u, t);
-	p2->refreshUnits();
+	p2->endTurn();
 
 	dump(game);
 	delete game;
