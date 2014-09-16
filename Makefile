@@ -4,12 +4,14 @@ LIBS		= -lSDL
 
 headers		= basic.h	\
 			  board.h	\
+			  engine.h	\
 			  game.h	\
 			  player.h	\
 			  tile.h	\
 			  unit.h
 
 objects		= board.o	\
+			  engine.o	\
 			  game.o	\
 			  player.o	\
 			  tile.o	\
