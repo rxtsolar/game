@@ -1,6 +1,6 @@
 CC			= g++
 CFLAGS		= -g -Wall -std=c++0x
-LIBS		=
+LIBS		= -lSDL
 
 headers		= basic.h	\
 			  board.h	\
