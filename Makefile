@@ -1,2 +1,31 @@
-all:
-	g++ -std=c++0x -g -Wall -o program board.cpp game.cpp main.cpp player.cpp tile.cpp unit.cpp
+CC			= g++
+CFLAGS		= -g -Wall -std=c++0x
+LIBS		=
+
+headers		= basic.h	\
+			  board.h	\
+			  game.h	\
+			  player.h	\
+			  tile.h	\
+			  unit.h
+
+objects		= board.o	\
+			  game.o	\
+			  player.o	\
+			  tile.o	\
+			  unit.o	\
+			  main.o
+
+%.o : %.cpp
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+all: $(objects)
+	$(CC) $(CFLAGS) -o program $(objects) $(LIBS)
+
+$(objects) : $(headers)
+
+clean:
+	rm *.o program
+
+.PHONY:
+	clean
