@@ -12,6 +12,7 @@ class Tile;
 class Unit {
 protected:
 	Unit(Player*, Tile*);
+
 public:
 	virtual ~Unit(void);
 

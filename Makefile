@@ -2,7 +2,8 @@ CC			= g++
 CFLAGS		= -g -Wall -std=c++0x
 LIBS		= -lSDL
 
-headers		= basic.h	\
+headers		= activity.h\
+			  basic.h	\
 			  board.h	\
 			  engine.h	\
 			  game.h	\
@@ -10,7 +11,8 @@ headers		= basic.h	\
 			  tile.h	\
 			  unit.h
 
-objects		= board.o	\
+objects		= activity.o\
+			  board.o	\
 			  engine.o	\
 			  game.o	\
 			  player.o	\

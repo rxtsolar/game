@@ -8,59 +8,50 @@ namespace gs {
 
 Engine::Engine(void)
 {
-	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		exit(1);
 
-	running = false;
-	width = DEF_WIDTH;
-	height = DEF_HEIGHT;
-	bpp = DEF_BPP;
-	fps = DEF_FPS;
-
-	background = 0;
-	background = SDL_SetVideoMode(width, height, bpp, SDL_SWSURFACE);
-	if (!background)
+	this->screen = 0;
+	this->screen = SDL_SetVideoMode(DEF_WIDTH, DEF_HEIGHT,
+									DEF_BPP, SDL_SWSURFACE);
+	if (!this->screen)
 		exit(1);
+
+	this->menu = new Menu(this, screen);
+	this->battle = new Battle(this, screen);
 }
 
 Engine::~Engine(void)
 {
-	if (background)
-		SDL_FreeSurface(background);
-	background = 0;
+	if (this->screen)
+		SDL_FreeSurface(this->screen);
+	this->screen = 0;
+
+	delete this->menu;
+	delete this->battle;
+}
+
+Activity* Engine::getMenu(void)
+{
+	return this->menu;
+}
+
+Activity* Engine::getBattle(void)
+{
+	return this->battle;
+}
+
+void Engine::setCurrent(Activity* activity)
+{
+	this->current = activity;
 }
 
 void Engine::start(void)
 {
-	running = true;
-	while (running) {
-		handle();
-		render();
-		delay();
+	this->current = this->menu;
+	while (current) {
+		this->current->start();
 	}
-}
-
-void Engine::handle(void)
-{
-	while (SDL_PollEvent(&event)) {
-		if (event.type == SDL_QUIT)
-			running = false;
-	}
-}
-
-void Engine::update(void)
-{
-
-}
-
-void Engine::render(void)
-{
-	SDL_Flip(background);
-}
-
-void Engine::delay(void)
-{
-	SDL_Delay(1000 / fps);
 }
 
 } // namespace gs
