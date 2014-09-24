@@ -5,6 +5,7 @@ LIBS		= -lSDL
 headers		= activity.h\
 			  basic.h	\
 			  board.h	\
+			  button.h	\
 			  engine.h	\
 			  game.h	\
 			  player.h	\
@@ -13,6 +14,7 @@ headers		= activity.h\
 
 objects		= activity.o\
 			  board.o	\
+			  button.o	\
 			  engine.o	\
 			  game.o	\
 			  player.o	\
