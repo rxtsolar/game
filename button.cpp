@@ -4,8 +4,9 @@ using namespace std;
 
 namespace gs {
 
-Button::Button(int x, int y, int w, int h)
+Button::Button(Activity* activity, int x, int y, int w, int h)
 {
+	this->activity = activity;
 	this->box.x = x;
 	this->box.y = y;
 	this->box.w = w;
@@ -15,6 +16,11 @@ Button::Button(int x, int y, int w, int h)
 Button::~Button(void)
 {
 
+}
+
+Activity* Button::getActivity(void)
+{
+	return this->activity;
 }
 
 void Button::handle(SDL_Event* event)

@@ -4,12 +4,14 @@
 #include <SDL/SDL.h>
 
 #include "engine.h"
+#include "button.h"
 
 namespace gs {
 
 const int DEF_FPS = 25;
 
 class Engine;
+class Button;
 
 class Activity {
 public:
@@ -22,10 +24,10 @@ public:
 	virtual void start(void);
 	virtual void stop(void);
 
-	virtual void handle(void) = 0;
-	virtual void update(void) = 0;
-	virtual void render(void) = 0;
-	virtual void delay(void) = 0;
+	virtual void handle(void);
+	virtual void update(void);
+	virtual void render(void);
+	virtual void delay(void);
 
 private:
 	bool running;

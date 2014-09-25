@@ -39,50 +39,22 @@ void Activity::stop(void)
 	this->running = false;
 }
 
-
-Menu::Menu(Engine* engine, SDL_Surface* screen) : Activity(engine, screen)
+void Activity::handle(void)
 {
 
 }
 
-Menu::~Menu(void)
+void Activity::update(void)
 {
 
 }
 
-void Menu::handle(void)
-{
-	SDL_Event event;
-	while (SDL_PollEvent(&event)) {
-		if (event.type == SDL_QUIT)
-			stop();
-
-		if (event.type == SDL_MOUSEBUTTONDOWN) {
-			if (event.button.button == SDL_BUTTON_LEFT) {
-				getEngine()->setCurrent(getEngine()->getBattle());
-				stop();
-			}
-			if (event.button.button == SDL_BUTTON_RIGHT) {
-				getEngine()->setCurrent(0);
-				stop();
-			}
-		}
-	}
-}
-
-void Menu::update(void)
+void Activity::render(void)
 {
 
 }
 
-void Menu::render(void)
-{
-	SDL_Surface* screen = getScreen();
-	SDL_FillRect(screen, 0, SDL_MapRGB(screen->format, 0xff, 0xff, 0xff));
-	SDL_Flip(screen);
-}
-
-void Menu::delay(void)
+void Activity::delay(void)
 {
 	SDL_Delay(1000 / DEF_FPS);
 }
@@ -107,7 +79,7 @@ void Battle::handle(void)
 
 		if (event.type == SDL_MOUSEBUTTONDOWN) {
 			if (event.button.button == SDL_BUTTON_LEFT) {
-				getEngine()->setCurrent(getEngine()->getMenu());
+				getEngine()->setCurrent(getEngine()->getMainActivity());
 				stop();
 			}
 		}

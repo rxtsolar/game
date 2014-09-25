@@ -18,7 +18,7 @@ public:
 	Engine(void);
 	virtual ~Engine(void);
 
-	virtual Activity* getMenu(void);
+	virtual Activity* getMainActivity(void);
 	virtual Activity* getBattle(void);
 
 	virtual void setCurrent(Activity* activity);
@@ -27,7 +27,7 @@ public:
 
 private:
 	SDL_Surface* screen;
-	Activity* menu;
+	Activity* mainActivity;
 	Activity* battle;
 	Activity* current;
 };

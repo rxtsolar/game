@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "engine.h"
+#include "activity-main.h"
 
 using namespace std;
 
@@ -17,7 +18,7 @@ Engine::Engine(void)
 	if (!this->screen)
 		exit(1);
 
-	this->menu = new Menu(this, screen);
+	this->mainActivity = new MainActivity(this, screen);
 	this->battle = new Battle(this, screen);
 }
 
@@ -27,13 +28,13 @@ Engine::~Engine(void)
 		SDL_FreeSurface(this->screen);
 	this->screen = 0;
 
-	delete this->menu;
+	delete this->mainActivity;
 	delete this->battle;
 }
 
-Activity* Engine::getMenu(void)
+Activity* Engine::getMainActivity(void)
 {
-	return this->menu;
+	return this->mainActivity;
 }
 
 Activity* Engine::getBattle(void)
@@ -48,7 +49,7 @@ void Engine::setCurrent(Activity* activity)
 
 void Engine::start(void)
 {
-	this->current = this->menu;
+	this->current = this->mainActivity;
 	while (current) {
 		this->current->start();
 	}
