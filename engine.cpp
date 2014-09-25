@@ -2,6 +2,7 @@
 
 #include "engine.h"
 #include "activity-main.h"
+#include "activity-battle.h"
 
 using namespace std;
 
@@ -19,7 +20,7 @@ Engine::Engine(void)
 		exit(1);
 
 	this->mainActivity = new MainActivity(this, screen);
-	this->battle = new Battle(this, screen);
+	this->battleActivity = new BattleActivity(this, screen);
 }
 
 Engine::~Engine(void)
@@ -29,7 +30,7 @@ Engine::~Engine(void)
 	this->screen = 0;
 
 	delete this->mainActivity;
-	delete this->battle;
+	delete this->battleActivity;
 }
 
 Activity* Engine::getMainActivity(void)
@@ -37,9 +38,9 @@ Activity* Engine::getMainActivity(void)
 	return this->mainActivity;
 }
 
-Activity* Engine::getBattle(void)
+Activity* Engine::getBattleActivity(void)
 {
-	return this->battle;
+	return this->battleActivity;
 }
 
 void Engine::setCurrent(Activity* activity)

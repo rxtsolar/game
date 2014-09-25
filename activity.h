@@ -35,28 +35,6 @@ private:
 	SDL_Surface* screen;
 };
 
-class Menu : public Activity {
-public:
-	Menu(Engine* engine, SDL_Surface* screen);
-	virtual ~Menu(void);
-
-	virtual void handle(void);
-	virtual void update(void);
-	virtual void render(void);
-	virtual void delay(void);
-};
-
-class Battle : public Activity {
-public:
-	Battle(Engine* engine, SDL_Surface* screen);
-	virtual ~Battle(void);
-
-	virtual void handle(void);
-	virtual void update(void);
-	virtual void render(void);
-	virtual void delay(void);
-};
-
 } // namespace gs
 
 #endif

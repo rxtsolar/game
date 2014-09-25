@@ -10,7 +10,9 @@ headers		= activity.h\
 			  game.h	\
 			  player.h	\
 			  tile.h	\
-			  unit.h
+			  unit.h	\
+			  activity-main.h	\
+			  activity-battle.h
 
 objects		= activity.o\
 			  board.o	\

@@ -1,5 +1,6 @@
 #include "activity.h"
 #include "button.h"
+#include "engine.h"
 
 namespace gs {
 
@@ -20,7 +21,7 @@ public:
 	{
 		Activity* activity = getActivity();
 		Engine* engine = activity->getEngine();
-		engine->setCurrent(engine->getBattle());
+		engine->setCurrent(engine->getBattleActivity());
 		activity->stop();
 	}
 
