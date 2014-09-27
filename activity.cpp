@@ -27,11 +27,13 @@ SDL_Surface* Activity::getScreen(void)
 void Activity::start(void)
 {
 	this->running = true;
+	init();
 	while (this->running) {
 		handle();
 		render();
 		delay();
 	}
+	quit();
 }
 
 void Activity::stop(void)
@@ -50,6 +52,16 @@ void Activity::update(void)
 }
 
 void Activity::render(void)
+{
+
+}
+
+void Activity::init(void)
+{
+
+}
+
+void Activity::quit(void)
 {
 
 }

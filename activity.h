@@ -26,6 +26,8 @@ public:
 	virtual void handle(void);
 	virtual void update(void);
 	virtual void render(void);
+	virtual void init(void);
+	virtual void quit(void);
 	virtual void delay(void);
 
 private:

@@ -126,6 +126,8 @@ public:
 		for (unsigned int i = 0; i < BOARD_WIDTH; i++)
 			for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
 				delete this->tileButtons[i][j];
+		if (this->game)
+			delete this->game;
 	}
 
 	virtual void handle(void)
@@ -153,6 +155,17 @@ public:
 		SDL_Flip(screen);
 	}
 
+	virtual void init(void)
+	{
+		this->game = new Game();
+	}
+
+	virtual void quit(void)
+	{
+		delete this->game;
+		this->game = 0;
+	}
+
 	virtual void setStatus(Status status)
 	{
 		this->cardButton->setStatus(status);
@@ -168,6 +181,7 @@ private:
 	Button* concedeButton;
 	Button* unitButton;
 	vector<vector<Button*> > tileButtons;
+	Game* game;
 };
 
 } // namespace gs
