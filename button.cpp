@@ -4,6 +4,12 @@ using namespace std;
 
 namespace gs {
 
+Button::Button(Activity* activity)
+{
+	this->activity = activity;
+	this->box = new SDL_Rect();
+}
+
 Button::Button(Activity* activity, int x, int y, int w, int h)
 {
 	this->activity = activity;
@@ -32,6 +38,14 @@ Activity* Button::getActivity(void)
 Status Button::getStatus(void)
 {
 	return this->status;
+}
+
+void Button::setBox(int x, int y, int w, int h)
+{
+	this->box->x = x;
+	this->box->y = y;
+	this->box->w = w;
+	this->box->h = h;
 }
 
 void Button::setStatus(Status status)

@@ -12,6 +12,7 @@ class Activity;
 
 class Button {
 public:
+	Button(Activity* activity);
 	Button(Activity* activity, int x, int y, int w, int h);
 	virtual ~Button(void);
 
@@ -19,6 +20,7 @@ public:
 	virtual Activity* getActivity(void);
 	virtual Status getStatus(void);
 
+	virtual void setBox(int x, int y, int w, int h);
 	virtual void setStatus(Status status);
 
 	virtual void handle(SDL_Event* event);
