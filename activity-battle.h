@@ -81,12 +81,26 @@ private:
 	const int column;
 };
 
+class UnitButton : public Button {
+public:
+	UnitButton(Activity* activity) : Button(activity)
+	{
+
+	}
+
+	virtual ~UnitButton(void)
+	{
+
+	}
+};
+
 class BattleActivity : public Activity {
 public:
 	BattleActivity(Engine* engine, SDL_Surface* screen) : Activity(engine, screen)
 	{
 		this->cardButton = new CardButton(this);
 		this->concedeButton = new ConcedeButton(this);
+		this->unitButton = new UnitButton(this);
 		this->tileButtons.resize(BOARD_WIDTH, vector<Button*>(BOARD_HEIGHT));
 		for (unsigned int i = 0; i < BOARD_WIDTH; i++)
 			for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
@@ -97,6 +111,7 @@ public:
 	{
 		delete this->cardButton;
 		delete this->concedeButton;
+		delete this->unitButton;
 		for (unsigned int i = 0; i < BOARD_WIDTH; i++)
 			for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
 				delete this->tileButtons[i][j];
@@ -128,12 +143,14 @@ public:
 		for (unsigned int i = 0; i < BOARD_WIDTH; i++)
 			for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
 				this->tileButtons[i][j]->render(screen);
+		this->unitButton->render(screen);
 
 		SDL_Flip(screen);
 	}
 private:
 	Button* cardButton;
 	Button* concedeButton;
+	Button* unitButton;
 	vector<vector<Button*> > tileButtons;
 	Status status;
 };
