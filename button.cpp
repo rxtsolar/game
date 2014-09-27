@@ -29,6 +29,16 @@ Activity* Button::getActivity(void)
 	return this->activity;
 }
 
+Status Button::getStatus(void)
+{
+	return this->status;
+}
+
+void Button::setStatus(Status status)
+{
+	this->status = status;
+}
+
 void Button::handle(SDL_Event* event)
 {
 	int x;

@@ -24,6 +24,10 @@ struct Range {
 	Range(int s, int e) : start(s), end(e) { }
 };
 
+enum Status {
+	S_DEFAULT,
+};
+
 } // namespace gs
 
 #endif

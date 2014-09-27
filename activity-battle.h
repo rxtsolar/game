@@ -1,6 +1,7 @@
 #include <vector>
 
 #include "activity.h"
+#include "basic.h"
 #include "engine.h"
 #include "game.h"
 
@@ -134,6 +135,7 @@ private:
 	Button* cardButton;
 	Button* concedeButton;
 	vector<vector<Button*> > tileButtons;
+	Status status;
 };
 
 } // namespace gs

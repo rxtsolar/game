@@ -4,6 +4,7 @@
 #include <SDL/SDL.h>
 
 #include "activity.h"
+#include "basic.h"
 
 namespace gs {
 
@@ -16,6 +17,9 @@ public:
 
 	virtual SDL_Rect* getBox(void);
 	virtual Activity* getActivity(void);
+	virtual Status getStatus(void);
+
+	virtual void setStatus(Status status);
 
 	virtual void handle(SDL_Event* event);
 	virtual void render(SDL_Surface* screen);
@@ -27,6 +31,7 @@ public:
 private:
 	SDL_Rect* box;
 	Activity* activity;
+	Status status;
 };
 
 } // namespace gs
