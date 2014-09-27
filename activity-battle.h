@@ -44,10 +44,18 @@ public:
 
 	virtual void leftClick(void)
 	{
-		Activity* activity = getActivity();
-		Engine* engine = activity->getEngine();
-		engine->setCurrent(engine->getMainActivity());
-		activity->stop();
+		switch (getStatus()) {
+		case S_DEFAULT:
+		{
+			Activity* activity = getActivity();
+			Engine* engine = activity->getEngine();
+			engine->setCurrent(engine->getMainActivity());
+			activity->stop();
+			break;
+		}
+		default:
+			break;
+		}
 	}
 
 private:
@@ -107,7 +115,8 @@ public:
 
 class BattleActivity : public Activity {
 public:
-	BattleActivity(Engine* engine, SDL_Surface* screen) : Activity(engine, screen)
+	BattleActivity(Engine* engine, SDL_Surface* screen) :
+		Activity(engine, screen)
 	{
 		this->cardButton = new CardButton(this);
 		this->concedeButton = new ConcedeButton(this);
