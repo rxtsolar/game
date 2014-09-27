@@ -21,6 +21,7 @@ public:
 	{
 
 	}
+
 private:
 	static const int x = DEF_HEIGHT;
 	static const int y = DEF_HEIGHT / 12;
@@ -40,6 +41,15 @@ public:
 	{
 
 	}
+
+	virtual void leftClick(void)
+	{
+		Activity* activity = getActivity();
+		Engine* engine = activity->getEngine();
+		engine->setCurrent(engine->getMainActivity());
+		activity->stop();
+	}
+
 private:
 	static const int x = DEF_HEIGHT;
 	static const int y = DEF_HEIGHT * 5 / 6;
@@ -72,6 +82,7 @@ public:
 			color = SDL_MapRGB(screen->format, 0x9f, 0x9f, 0x9f);
 		SDL_FillRect(screen, this->getBox(), color);
 	}
+
 private:
 	static const int x = DEF_HEIGHT / 12;
 	static const int y = DEF_HEIGHT / 12;
@@ -123,13 +134,7 @@ public:
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT)
 				stop();
-
-			if (event.type == SDL_MOUSEBUTTONDOWN) {
-				if (event.button.button == SDL_BUTTON_LEFT) {
-					getEngine()->setCurrent(getEngine()->getMainActivity());
-					stop();
-				}
-			}
+			this->concedeButton->handle(&event);
 		}
 	}
 
@@ -147,6 +152,7 @@ public:
 
 		SDL_Flip(screen);
 	}
+
 private:
 	Button* cardButton;
 	Button* concedeButton;
