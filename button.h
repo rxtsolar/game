@@ -14,6 +14,7 @@ public:
 	Button(Activity* activity, int x, int y, int w, int h);
 	virtual ~Button(void);
 
+	virtual SDL_Rect* getBox(void);
 	virtual Activity* getActivity(void);
 
 	virtual void handle(SDL_Event* event);
@@ -24,7 +25,7 @@ public:
 	virtual void leftClick(void);
 	virtual void rightClick(void);
 private:
-	SDL_Rect box;
+	SDL_Rect* box;
 	Activity* activity;
 };
 

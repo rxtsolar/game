@@ -7,15 +7,21 @@ namespace gs {
 Button::Button(Activity* activity, int x, int y, int w, int h)
 {
 	this->activity = activity;
-	this->box.x = x;
-	this->box.y = y;
-	this->box.w = w;
-	this->box.h = h;
+	this->box = new SDL_Rect();
+	this->box->x = x;
+	this->box->y = y;
+	this->box->w = w;
+	this->box->h = h;
 }
 
 Button::~Button(void)
 {
+	delete this->box;
+}
 
+SDL_Rect* Button::getBox(void)
+{
+	return this->box;
 }
 
 Activity* Button::getActivity(void)
@@ -32,8 +38,8 @@ void Button::handle(SDL_Event* event)
 		x = event->motion.x;
 		y = event->motion.y;
 
-		if (x > this->box.x && x < this->box.x + this->box.w &&
-				y > this->box.y && y < this->box.y + this->box.h)
+		if (x > this->box->x && x < this->box->x + this->box->w &&
+				y > this->box->y && y < this->box->y + this->box->h)
 			inside();
 		else
 			outside();
@@ -42,8 +48,8 @@ void Button::handle(SDL_Event* event)
 		x = event->button.x;
 		y = event->button.y;
 
-		if (x > this->box.x && x < this->box.x + this->box.w &&
-				y > this->box.y && y < this->box.y + this->box.h) {
+		if (x > this->box->x && x < this->box->x + this->box->w &&
+				y > this->box->y && y < this->box->y + this->box->h) {
 			if (event->button.button == SDL_BUTTON_LEFT)
 				leftClick();
 			else if (event->button.button == SDL_BUTTON_RIGHT)
@@ -54,7 +60,7 @@ void Button::handle(SDL_Event* event)
 
 void Button::render(SDL_Surface* screen)
 {
-	SDL_FillRect(screen, &this->box,
+	SDL_FillRect(screen, this->box,
 			SDL_MapRGB(screen->format, 0xaf, 0xaf, 0xaf));
 }
 
