@@ -153,12 +153,21 @@ public:
 		SDL_Flip(screen);
 	}
 
+	virtual void setStatus(Status status)
+	{
+		this->cardButton->setStatus(status);
+		this->concedeButton->setStatus(status);
+		this->unitButton->setStatus(status);
+		for (unsigned int i = 0; i < BOARD_WIDTH; i++)
+			for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
+				this->tileButtons[i][j]->setStatus(status);
+	}
+
 private:
 	Button* cardButton;
 	Button* concedeButton;
 	Button* unitButton;
 	vector<vector<Button*> > tileButtons;
-	Status status;
 };
 
 } // namespace gs
