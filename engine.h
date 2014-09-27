@@ -4,12 +4,9 @@
 #include <SDL/SDL.h>
 
 #include "activity.h"
+#include "const.h"
 
 namespace gs {
-
-const int DEF_WIDTH = 1280;
-const int DEF_HEIGHT = 720;
-const int DEF_BPP = 32;
 
 class Activity;
 

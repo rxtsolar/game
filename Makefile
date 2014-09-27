@@ -6,6 +6,7 @@ headers		= activity.h\
 			  basic.h	\
 			  board.h	\
 			  button.h	\
+			  const.h	\
 			  engine.h	\
 			  game.h	\
 			  player.h	\

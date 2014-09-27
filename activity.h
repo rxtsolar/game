@@ -3,12 +3,11 @@
 
 #include <SDL/SDL.h>
 
-#include "engine.h"
 #include "button.h"
+#include "const.h"
+#include "engine.h"
 
 namespace gs {
-
-const int DEF_FPS = 25;
 
 class Engine;
 class Button;

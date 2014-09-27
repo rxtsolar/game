@@ -2,14 +2,11 @@
 #define _GAME_H_
 
 #include "board.h"
+#include "const.h"
 #include "player.h"
 #include "unit.h"
 
 namespace gs {
-
-const unsigned int BOARD_WIDTH = 5;
-const unsigned int BOARD_HEIGHT = 5;
-const unsigned int TILE_LIMIT = 5;
 
 class Board;
 
