@@ -5,6 +5,7 @@
 
 #include "activity.h"
 #include "const.h"
+#include "game.h"
 
 namespace gs {
 
@@ -17,8 +18,12 @@ public:
 
 	virtual Activity* getMainActivity(void);
 	virtual Activity* getBattleActivity(void);
+	virtual Game* getGame(void);
 
 	virtual void setCurrent(Activity* activity);
+
+	virtual void startGame(void);
+	virtual void endGame(void);
 
 	virtual void start(void);
 
@@ -27,6 +32,7 @@ private:
 	Activity* mainActivity;
 	Activity* battleActivity;
 	Activity* current;
+	Game* game;
 };
 
 } // namespace gs

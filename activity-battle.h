@@ -3,7 +3,6 @@
 #include "activity.h"
 #include "basic.h"
 #include "engine.h"
-#include "game.h"
 
 using namespace std;
 
@@ -27,6 +26,40 @@ private:
 	static const int y = DEF_HEIGHT / 12;
 	static const int w = DEF_WIDTH - DEF_HEIGHT * 13 / 12;
 	static const int h = DEF_HEIGHT * 2 / 3;
+};
+
+class EndTurnButton : public Button {
+public:
+	EndTurnButton(Activity* activity) :
+		Button(activity, this->x, this->y, this->w, this->h)
+	{
+
+	}
+
+	virtual ~EndTurnButton(void)
+	{
+
+	}
+
+	virtual void leftClick(void)
+	{
+		switch (getStatus()) {
+		case S_DEFAULT:
+		{
+			Game* game = getActivity()->getEngine()->getGame();
+			game->getTurn()->endTurn();
+			break;
+		}
+		default:
+			break;
+		}
+	}
+
+private:
+	static const int x = DEF_HEIGHT;
+	static const int y = DEF_HEIGHT * 5 / 6;
+	static const int w = DEF_WIDTH / 2 - DEF_HEIGHT * 7 / 12;
+	static const int h = DEF_HEIGHT / 12;
 };
 
 class ConcedeButton : public Button {
@@ -59,9 +92,9 @@ public:
 	}
 
 private:
-	static const int x = DEF_HEIGHT;
+	static const int x = DEF_WIDTH / 2 + DEF_HEIGHT / 2;
 	static const int y = DEF_HEIGHT * 5 / 6;
-	static const int w = DEF_WIDTH - DEF_HEIGHT * 13 / 12;
+	static const int w = DEF_WIDTH / 2 - DEF_HEIGHT * 7 / 12;
 	static const int h = DEF_HEIGHT / 12;
 };
 
@@ -119,6 +152,7 @@ public:
 		Activity(engine, screen)
 	{
 		this->cardButton = new CardButton(this);
+		this->endTurnButton = new EndTurnButton(this);
 		this->concedeButton = new ConcedeButton(this);
 		this->unitButton = new UnitButton(this);
 		this->tileButtons.resize(BOARD_WIDTH, vector<Button*>(BOARD_HEIGHT));
@@ -130,13 +164,12 @@ public:
 	virtual ~BattleActivity(void)
 	{
 		delete this->cardButton;
+		delete this->endTurnButton;
 		delete this->concedeButton;
 		delete this->unitButton;
 		for (unsigned int i = 0; i < BOARD_WIDTH; i++)
 			for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
 				delete this->tileButtons[i][j];
-		if (this->game)
-			delete this->game;
 	}
 
 	virtual void handle(void)
@@ -145,6 +178,7 @@ public:
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT)
 				stop();
+			this->endTurnButton->handle(&event);
 			this->concedeButton->handle(&event);
 		}
 	}
@@ -152,9 +186,15 @@ public:
 	virtual void render(void)
 	{
 		SDL_Surface* screen = getScreen();
-		SDL_FillRect(screen, 0, SDL_MapRGB(screen->format, 0xff, 0x00, 0x00));
+		Game* game = getEngine()->getGame();
+
+		if (game->getTurn() == game->getPlayer1())
+			SDL_FillRect(screen, 0, SDL_MapRGB(screen->format, 0xff, 0x00, 0x00));
+		else
+			SDL_FillRect(screen, 0, SDL_MapRGB(screen->format, 0x00, 0x00, 0xff));
 
 		this->cardButton->render(screen);
+		this->endTurnButton->render(screen);
 		this->concedeButton->render(screen);
 		for (unsigned int i = 0; i < BOARD_WIDTH; i++)
 			for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
@@ -166,18 +206,18 @@ public:
 
 	virtual void init(void)
 	{
-		this->game = new Game();
+		getEngine()->startGame();
 	}
 
 	virtual void quit(void)
 	{
-		delete this->game;
-		this->game = 0;
+		getEngine()->endGame();
 	}
 
 	virtual void setStatus(Status status)
 	{
 		this->cardButton->setStatus(status);
+		this->endTurnButton->setStatus(status);
 		this->concedeButton->setStatus(status);
 		this->unitButton->setStatus(status);
 		for (unsigned int i = 0; i < BOARD_WIDTH; i++)
@@ -187,10 +227,10 @@ public:
 
 private:
 	Button* cardButton;
+	Button* endTurnButton;
 	Button* concedeButton;
 	Button* unitButton;
 	vector<vector<Button*> > tileButtons;
-	Game* game;
 };
 
 } // namespace gs
