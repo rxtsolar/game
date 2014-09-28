@@ -116,8 +116,15 @@ public:
 
 	virtual void render(SDL_Surface* screen)
 	{
+		Game* game = getActivity()->getEngine()->getGame();
+		Tile* tile = game->getBoard()->getTile(Position(this->row, this->column));
 		Uint32 color;
-		if ((this->row + this->column) & 1)
+
+		if (tile->getPlayer() == game->getPlayer1())
+			color = SDL_MapRGB(screen->format, 0xff, 0x6f, 0x6f);
+		else if (tile->getPlayer() == game->getPlayer2())
+			color = SDL_MapRGB(screen->format, 0x6f, 0x6f, 0xff);
+		else if ((this->row + this->column) & 1)
 			color = SDL_MapRGB(screen->format, 0xbf, 0xbf, 0xbf);
 		else
 			color = SDL_MapRGB(screen->format, 0x9f, 0x9f, 0x9f);

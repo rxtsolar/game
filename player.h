@@ -11,6 +11,7 @@ namespace gs {
 class Game;
 class Unit;
 class Tile;
+class Hero;
 
 class Player {
 public:
@@ -25,6 +26,7 @@ public:
 	virtual Game* getGame(void);
 	virtual std::unordered_set<Unit*> getUnits(void);
 	virtual std::unordered_set<Tile*> getTiles(void);
+	virtual Hero* getHero(void);
 
 	virtual bool canCreateUnit(Tile*);
 	virtual bool canSelectUnit(Tile*, unsigned int i);
@@ -39,6 +41,7 @@ private:
 	Game* game;
 	std::unordered_set<Unit*> units;
 	std::unordered_set<Tile*> tiles;
+	Hero* hero;
 };
 
 } // namespace gs

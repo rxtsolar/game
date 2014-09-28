@@ -9,8 +9,10 @@ Game::Game(void)
 	this->player1 = new Player(this);
 	this->player2 = new Player(this);
 	this->board = new Board(BOARD_WIDTH, BOARD_HEIGHT, TILE_LIMIT);
+	this->player1->createHero(this->board->getTile(Position(0, 2)));
+	this->player2->createHero(this->board->getTile(Position(4, 2)));
 	this->round = 0;
-	this->turn = player1;
+	this->turn = this->player1;
 }
 
 Game::~Game(void)

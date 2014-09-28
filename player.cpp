@@ -53,6 +53,11 @@ unordered_set<Tile*> Player::getTiles(void)
 	return this->tiles;
 }
 
+Hero* Player::getHero(void)
+{
+	return this->hero;
+}
+
 bool Player::canCreateUnit(Tile* tile)
 {
 	if (this->game->getTurn() != this)
@@ -75,8 +80,6 @@ bool Player::canSelectUnit(Tile* tile, unsigned int i)
 
 void Player::createHero(Tile* tile)
 {
-	if (!canCreateUnit(tile))
-		return;
 	Unit* unit = new Hero(this, tile);
 	this->addUnit(unit);
 	tile->addUnit(unit);
