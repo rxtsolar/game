@@ -110,4 +110,35 @@ void Button::rightClick(void)
 
 }
 
+
+TextButton::TextButton(Activity* activity, const char* text,
+					   int x, int y, int w, int h) :
+	Button(activity, x, y, w, h)
+{
+	this->text = text;
+	this->font = TTF_OpenFont(font_path, h * font_rate);
+}
+
+TextButton::~TextButton(void)
+{
+	if (this->font)
+		TTF_CloseFont(this->font);
+}
+
+void TextButton::render(SDL_Surface* screen)
+{
+	SDL_Color color = { 0x0f, 0x0f, 0x0f };
+	SDL_Rect offset;
+	SDL_Rect* box = getBox();
+	SDL_Surface* message = TTF_RenderText_Blended(this->font, text, color);
+
+	SDL_FillRect(screen, this->getBox(),
+			SDL_MapRGB(screen->format, 0xaf, 0xaf, 0xaf));
+	offset.x = box->x + (box->w - message->w) / 2;
+	offset.y = box->y + (box->h - message->h) / 2;
+	SDL_BlitSurface(message, 0, screen, &offset);
+
+	SDL_FreeSurface(message);
+}
+
 } // namespace gs

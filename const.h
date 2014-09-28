@@ -12,6 +12,9 @@ const unsigned int BOARD_WIDTH = 5;
 const unsigned int BOARD_HEIGHT = 5;
 const unsigned int TILE_LIMIT = 5;
 
+constexpr const char* font_path = "resources/black_jack.ttf";
+const float font_rate = 0.656;
+
 } // namespace gs
 
 #endif

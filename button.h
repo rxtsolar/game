@@ -2,6 +2,7 @@
 #define _BUTTON_H_
 
 #include <SDL/SDL.h>
+#include <SDL/SDL_ttf.h>
 
 #include "activity.h"
 #include "basic.h"
@@ -34,6 +35,17 @@ private:
 	SDL_Rect* box;
 	Activity* activity;
 	Status status;
+};
+
+class TextButton : public Button {
+public:
+	TextButton(Activity* activity, const char* text, int x, int y, int w, int h);
+	virtual ~TextButton(void);
+
+	virtual void render(SDL_Surface* screen);
+private:
+	TTF_Font* font;
+	const char* text;
 };
 
 } // namespace gs

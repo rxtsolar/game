@@ -1,3 +1,6 @@
+#ifndef _A_BATTLE_H_
+#define _A_BATTLE_H_
+
 #include <vector>
 #include <iostream>
 
@@ -293,3 +296,5 @@ private:
 };
 
 } // namespace gs
+
+#endif
