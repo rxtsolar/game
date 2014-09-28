@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include <SDL/SDL_ttf.h>
+
 #include "engine.h"
 #include "activity-main.h"
 #include "activity-battle.h"
@@ -11,6 +13,9 @@ namespace gs {
 Engine::Engine(void)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+		exit(1);
+
+	if (TTF_Init() < 0)
 		exit(1);
 
 	this->screen = 0;
@@ -35,6 +40,9 @@ Engine::~Engine(void)
 	delete this->battleActivity;
 	if (this->game)
 		delete this->game;
+
+	TTF_Quit();
+	SDL_Quit();
 }
 
 Activity* Engine::getMainActivity(void)

@@ -1,6 +1,6 @@
 CC			= g++
 CFLAGS		= -g -Wall -std=c++0x
-LIBS		= -lSDL
+LIBS		= -lSDL -lSDL_ttf
 
 headers		= activity.h\
 			  basic.h	\
