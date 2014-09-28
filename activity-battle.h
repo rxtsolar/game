@@ -12,10 +12,10 @@ using namespace std;
 
 namespace gs {
 
-class CardButton : public Button {
+class CardButton : public TextButton {
 public:
 	CardButton(Activity* activity) :
-		Button(activity, this->x, this->y, this->w, this->h)
+		TextButton(activity, "A", this->x, this->y, this->w, this->h)
 	{
 
 	}
@@ -41,15 +41,17 @@ public:
 	{
 		Uint32 color;
 
+		TextButton::render(screen);
 		switch (getStatus()) {
 		case S_CARD:
-			color = SDL_MapRGB(screen->format, 0x6f, 0xff, 0xff);
-			break;
-		default:
-			color = SDL_MapRGB(screen->format, 0xaf, 0xaf, 0xaf);
+		{
+			color = SDL_MapRGBA(screen->format, 0x6f, 0xff, 0xff, 0xaf);
+			SDL_FillRect(screen, this->getBox(), color);
 			break;
 		}
-		SDL_FillRect(screen, this->getBox(), color);
+		default:
+			break;
+		}
 	}
 
 private:
@@ -59,10 +61,10 @@ private:
 	static const int h = DEF_HEIGHT * 2 / 3;
 };
 
-class EndTurnButton : public Button {
+class EndTurnButton : public TextButton {
 public:
 	EndTurnButton(Activity* activity) :
-		Button(activity, this->x, this->y, this->w, this->h)
+		TextButton(activity, "End Turn", this->x, this->y, this->w, this->h)
 	{
 
 	}
@@ -93,10 +95,10 @@ private:
 	static const int h = DEF_HEIGHT / 12;
 };
 
-class ConcedeButton : public Button {
+class ConcedeButton : public TextButton {
 public:
 	ConcedeButton(Activity* activity) :
-		Button(activity, this->x, this->y, this->w, this->h)
+		TextButton(activity, "Concede", this->x, this->y, this->w, this->h)
 	{
 
 	}
