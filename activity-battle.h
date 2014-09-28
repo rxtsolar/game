@@ -139,12 +139,13 @@ public:
 				this->w, this->h),
 		row(row), column(column)
 	{
-
+		this->font = TTF_OpenFont(font_path, this->h * font_rate);
 	}
 
 	virtual ~TileButton(void)
 	{
-
+		if (this->font)
+			TTF_CloseFont(this->font);
 	}
 
 	virtual void leftClick(void)
@@ -169,7 +170,14 @@ public:
 	{
 		Game* game = getActivity()->getEngine()->getGame();
 		Tile* tile = game->getBoard()->getTile(Position(this->row, this->column));
+		string n = to_string(tile->getSize());
+		SDL_Color fontColor = { 0x0f, 0x0f, 0x0f };
+		SDL_Surface* message = TTF_RenderText_Blended(this->font, n.c_str(), fontColor);
 		Uint32 color;
+		SDL_Rect offset = {
+			(Sint16)(this->x + column * this->w),
+			(Sint16)(this->y + row * this->h),
+		};
 
 		if (tile->getPlayer() == game->getPlayer1())
 			color = SDL_MapRGB(screen->format, 0xff, 0x6f, 0x6f);
@@ -180,6 +188,9 @@ public:
 		else
 			color = SDL_MapRGB(screen->format, 0x9f, 0x9f, 0x9f);
 		SDL_FillRect(screen, this->getBox(), color);
+		SDL_BlitSurface(message, 0, screen, &offset);
+
+		SDL_FreeSurface(message);
 	}
 
 private:
@@ -189,6 +200,7 @@ private:
 	static const int h = DEF_HEIGHT / 6;
 	const int row;
 	const int column;
+	TTF_Font* font;
 };
 
 class UnitButton : public Button {
