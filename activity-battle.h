@@ -1,4 +1,5 @@
 #include <vector>
+#include <iostream>
 
 #include "activity.h"
 #include "basic.h"
@@ -19,6 +20,33 @@ public:
 	virtual ~CardButton(void)
 	{
 
+	}
+
+	virtual void leftClick(void)
+	{
+		cerr << getStatus() << endl;
+		switch (getStatus()) {
+		case S_DEFAULT:
+			getActivity()->setStatus(S_CARD);
+			break;
+		default:
+			break;
+		}
+	}
+
+	virtual void render(SDL_Surface* screen)
+	{
+		Uint32 color;
+
+		switch (getStatus()) {
+		case S_CARD:
+			color = SDL_MapRGB(screen->format, 0x6f, 0xff, 0xff);
+			break;
+		default:
+			color = SDL_MapRGB(screen->format, 0xaf, 0xaf, 0xaf);
+			break;
+		}
+		SDL_FillRect(screen, this->getBox(), color);
 	}
 
 private:
@@ -114,6 +142,24 @@ public:
 
 	}
 
+	virtual void leftClick(void)
+	{
+		switch (getStatus()) {
+		case S_DEFAULT:
+			break;
+		case S_CARD:
+		{
+			Game* game = getActivity()->getEngine()->getGame();
+			Tile* tile = game->getBoard()->getTile(Position(this->row, this->column));
+			game->getTurn()->createPawn(tile);
+			getActivity()->setStatus(S_DEFAULT);
+			break;
+		}
+		default:
+			break;
+		}
+	}
+
 	virtual void render(SDL_Surface* screen)
 	{
 		Game* game = getActivity()->getEngine()->getGame();
@@ -185,8 +231,14 @@ public:
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT)
 				stop();
+
+			this->cardButton->handle(&event);
 			this->endTurnButton->handle(&event);
 			this->concedeButton->handle(&event);
+			for (unsigned int i = 0; i < BOARD_WIDTH; i++)
+				for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
+					this->tileButtons[i][j]->handle(&event);
+			this->unitButton->handle(&event);
 		}
 	}
 
