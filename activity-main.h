@@ -15,24 +15,10 @@ namespace gs {
 
 class StartButton : public TextButton {
 public:
-	StartButton(Activity* activity) :
-		TextButton(activity, "START", this->x, this->y, this->w, this->h)
-	{
+	StartButton(Activity* activity);
+	virtual ~StartButton(void);
 
-	}
-
-	virtual ~StartButton(void)
-	{
-
-	}
-
-	virtual void leftClick(void)
-	{
-		Activity* activity = getActivity();
-		Engine* engine = activity->getEngine();
-		engine->setCurrent(engine->getBattleActivity());
-		activity->stop();
-	}
+	virtual void leftClick(void);
 
 private:
 	static const int x = DEF_WIDTH / 8;
@@ -43,24 +29,10 @@ private:
 
 class ExitButton : public TextButton {
 public:
-	ExitButton(Activity* activity) :
-		TextButton(activity, "EXIT", this->x, this->y, this->w, this->h)
-	{
+	ExitButton(Activity* activity);
+	virtual ~ExitButton(void);
 
-	}
-
-	virtual ~ExitButton(void)
-	{
-
-	}
-
-	virtual void leftClick(void)
-	{
-		Activity* activity = getActivity();
-		Engine* engine = activity->getEngine();
-		engine->setCurrent(0);
-		activity->stop();
-	}
+	virtual void leftClick(void);
 
 private:
 	static const int x = DEF_WIDTH / 8;
@@ -71,41 +43,12 @@ private:
 
 class MainActivity : public Activity {
 public:
-	MainActivity(Engine* engine, SDL_Surface* screen) : Activity(engine, screen)
-	{
-		this->startButton = new StartButton(this);
-		this->exitButton = new ExitButton(this);
+	MainActivity(Engine* engine, SDL_Surface* screen);
+	virtual ~MainActivity(void);
 
-	}
+	virtual void handle(void);
+	virtual void render(void);
 
-	virtual ~MainActivity(void)
-	{
-		delete this->startButton;
-		delete this->exitButton;
-
-	}
-
-	virtual void handle(void)
-	{
-		SDL_Event event;
-		while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT)
-				stop();
-			this->startButton->handle(&event);
-			this->exitButton->handle(&event);
-		}
-	}
-
-	virtual void render(void)
-	{
-		SDL_Surface* screen = getScreen();
-		SDL_FillRect(screen, 0, SDL_MapRGB(screen->format, 0xff, 0xff, 0xff));
-
-		this->startButton->render(screen);
-		this->exitButton->render(screen);
-
-		SDL_Flip(screen);
-	}
 private:
 	Button* startButton;
 	Button* exitButton;

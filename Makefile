@@ -23,7 +23,9 @@ objects		= activity.o\
 			  player.o	\
 			  tile.o	\
 			  unit.o	\
-			  main.o
+			  main.o	\
+			  activity-main.o	\
+			  activity-battle.o
 
 %.o : %.cpp
 	$(CC) $(CFLAGS) -c -o $@ $<
