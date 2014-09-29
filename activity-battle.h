@@ -256,6 +256,10 @@ public:
 				for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
 					this->tileButtons[i][j]->handle(&event);
 			this->unitButton->handle(&event);
+
+			if (event.type == SDL_MOUSEBUTTONDOWN)
+				if (event.button.button == SDL_BUTTON_RIGHT)
+					setStatus(S_DEFAULT);
 		}
 	}
 
