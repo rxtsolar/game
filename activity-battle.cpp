@@ -38,7 +38,7 @@ void CardButton::render(SDL_Surface* screen)
 	switch (getStatus()) {
 	case S_CARD:
 	{
-		color = SDL_MapRGBA(screen->format, 0x6f, 0xff, 0xff, 0xaf);
+		color = SDL_MapRGB(screen->format, 0x6f, 0xff, 0xff);
 		SDL_FillRect(screen, this->getBox(), color);
 		break;
 	}
@@ -121,7 +121,15 @@ void TileButton::leftClick(void)
 {
 	switch (getStatus()) {
 	case S_DEFAULT:
+	{
+		Game* game = getActivity()->getEngine()->getGame();
+		Tile* tile = game->getBoard()->getTile(Position(this->row, this->column));
+		if (tile->getPlayer() == game->getTurn()) {
+			game->selectTile(tile);
+			getActivity()->setStatus(S_TILE);
+		}
 		break;
+	}
 	case S_CARD:
 	{
 		Game* game = getActivity()->getEngine()->getGame();
@@ -139,27 +147,45 @@ void TileButton::render(SDL_Surface* screen)
 {
 	Game* game = getActivity()->getEngine()->getGame();
 	Tile* tile = game->getBoard()->getTile(Position(this->row, this->column));
-	string n = to_string(tile->getSize());
-	SDL_Color fontColor = { 0x0f, 0x0f, 0x0f };
-	SDL_Surface* message = TTF_RenderText_Blended(this->font, n.c_str(), fontColor);
-	Uint32 color;
-	SDL_Rect offset = {
-		(Sint16)(this->x + column * this->w),
-		(Sint16)(this->y + row * this->h),
-	};
 
-	if (tile->getPlayer() == game->getPlayer1())
-		color = SDL_MapRGB(screen->format, 0xff, 0x6f, 0x6f);
-	else if (tile->getPlayer() == game->getPlayer2())
-		color = SDL_MapRGB(screen->format, 0x6f, 0x6f, 0xff);
-	else if ((this->row + this->column) & 1)
-		color = SDL_MapRGB(screen->format, 0xbf, 0xbf, 0xbf);
-	else
-		color = SDL_MapRGB(screen->format, 0x9f, 0x9f, 0x9f);
-	SDL_FillRect(screen, this->getBox(), color);
-	SDL_BlitSurface(message, 0, screen, &offset);
+	switch (getStatus()) {
+	case S_TILE:
+	{
+		if (game->getSelectedTile() == tile) {
+			Uint32 color = SDL_MapRGB(screen->format, 0x6f, 0xff, 0xff);
+			SDL_FillRect(screen, this->getBox(), color);
+			break;
+		}
+	}
+	case S_CARD:
+	case S_DEFAULT:
+	{
+		string n = to_string(tile->getSize());
+		SDL_Color fontColor = { 0x0f, 0x0f, 0x0f };
+		SDL_Surface* message = TTF_RenderText_Blended(this->font, n.c_str(), fontColor);
+		Uint32 color;
+		SDL_Rect offset = {
+			(Sint16)(this->x + column * this->w),
+			(Sint16)(this->y + row * this->h),
+		};
 
-	SDL_FreeSurface(message);
+		if (tile->getPlayer() == game->getPlayer1())
+			color = SDL_MapRGB(screen->format, 0xff, 0x6f, 0x6f);
+		else if (tile->getPlayer() == game->getPlayer2())
+			color = SDL_MapRGB(screen->format, 0x6f, 0x6f, 0xff);
+		else if ((this->row + this->column) & 1)
+			color = SDL_MapRGB(screen->format, 0xbf, 0xbf, 0xbf);
+		else
+			color = SDL_MapRGB(screen->format, 0x9f, 0x9f, 0x9f);
+		SDL_FillRect(screen, this->getBox(), color);
+		SDL_BlitSurface(message, 0, screen, &offset);
+
+		SDL_FreeSurface(message);
+		break;
+	}
+	default:
+		break;
+	}
 }
 
 

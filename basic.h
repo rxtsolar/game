@@ -27,6 +27,7 @@ struct Range {
 enum Status {
 	S_DEFAULT,
 	S_CARD,
+	S_TILE,
 };
 
 } // namespace gs

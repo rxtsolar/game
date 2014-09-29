@@ -27,6 +27,16 @@ int Game::getRound(void)
 	return this->round;
 }
 
+Tile* Game::getSelectedTile(void)
+{
+	return this->tile;
+}
+
+Unit* Game::getSelectedUnit(void)
+{
+	return this->unit;
+}
+
 Player* Game::getTurn(void)
 {
 	return this->turn;
@@ -50,6 +60,16 @@ Board* Game::getBoard(void)
 void Game::setRound(int round)
 {
 	this->round = round;
+}
+
+void Game::selectTile(Tile* tile)
+{
+	this->tile = tile;
+}
+
+void Game::selectUnit(Unit* unit)
+{
+	this->unit = unit;
 }
 
 void Game::setTurn(Player* player)
