@@ -77,8 +77,20 @@ private:
 
 class UnitButton : public Button {
 public:
-	UnitButton(Activity* activity);
+	UnitButton(Activity* activity, unsigned int index);
 	virtual ~UnitButton(void);
+
+	virtual void leftClick(void);
+
+	virtual void render(SDL_Surface* screen);
+
+private:
+	static const int x = DEF_WIDTH / 8;
+	static const int y = DEF_HEIGHT / 3;
+	static const int w = DEF_WIDTH * 3 / 20 - 10;
+	static const int h = DEF_HEIGHT / 3;
+	const unsigned int index;
+	TTF_Font* font;
 };
 
 class BattleActivity : public Activity {
@@ -97,7 +109,7 @@ private:
 	Button* cardButton;
 	Button* endTurnButton;
 	Button* concedeButton;
-	Button* unitButton;
+	vector<Button*> unitButtons;
 	vector<vector<Button*> > tileButtons;
 };
 

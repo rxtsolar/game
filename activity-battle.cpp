@@ -149,7 +149,7 @@ void TileButton::render(SDL_Surface* screen)
 	Tile* tile = game->getBoard()->getTile(Position(this->row, this->column));
 
 	switch (getStatus()) {
-	case S_TILE:
+	case S_UNIT:
 	{
 		if (game->getSelectedTile() == tile) {
 			Uint32 color = SDL_MapRGB(screen->format, 0x6f, 0xff, 0xff);
@@ -157,6 +157,7 @@ void TileButton::render(SDL_Surface* screen)
 			break;
 		}
 	}
+	case S_TILE:
 	case S_CARD:
 	case S_DEFAULT:
 	{
@@ -189,7 +190,10 @@ void TileButton::render(SDL_Surface* screen)
 }
 
 
-UnitButton::UnitButton(Activity* activity) : Button(activity)
+UnitButton::UnitButton(Activity* activity, unsigned int index) :
+	Button(activity, this->x + index * (this->w + 10),
+			this->y, this->w, this->h),
+	index(index)
 {
 
 }
@@ -199,13 +203,54 @@ UnitButton::~UnitButton(void)
 
 }
 
+void UnitButton::leftClick(void)
+{
+	switch (getStatus()) {
+	case S_TILE:
+	{
+		Game* game = getActivity()->getEngine()->getGame();
+		Tile* tile = game->getSelectedTile();
+
+		if (this->index < tile->getSize()) {
+			game->selectUnit(tile->getUnit(this->index));
+			getActivity()->setStatus(S_UNIT);
+		}
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+void UnitButton::render(SDL_Surface* screen)
+{
+	switch (getStatus()) {
+	case S_TILE:
+	{
+		Game* game = getActivity()->getEngine()->getGame();
+		Tile* tile = game->getSelectedTile();
+
+		if (this->index < tile->getSize()) {
+			Uint32 color = SDL_MapRGB(screen->format, 0x3f, 0x3f, 0x3f);
+			SDL_FillRect(screen, this->getBox(), color);
+		}
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+
 BattleActivity::BattleActivity(Engine* engine, SDL_Surface* screen) :
 	Activity(engine, screen)
 {
 	this->cardButton = new CardButton(this);
 	this->endTurnButton = new EndTurnButton(this);
 	this->concedeButton = new ConcedeButton(this);
-	this->unitButton = new UnitButton(this);
+	this->unitButtons.resize(TILE_LIMIT);
+	for (unsigned int i = 0; i < TILE_LIMIT; i++)
+		this->unitButtons[i] = new UnitButton(this, i);
 	this->tileButtons.resize(BOARD_WIDTH, vector<Button*>(BOARD_HEIGHT));
 	for (unsigned int i = 0; i < BOARD_WIDTH; i++)
 		for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
@@ -217,7 +262,8 @@ BattleActivity::~BattleActivity(void)
 	delete this->cardButton;
 	delete this->endTurnButton;
 	delete this->concedeButton;
-	delete this->unitButton;
+	for (unsigned int i = 0; i < TILE_LIMIT; i++)
+		delete this->unitButtons[i];
 	for (unsigned int i = 0; i < BOARD_WIDTH; i++)
 		for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
 			delete this->tileButtons[i][j];
@@ -236,7 +282,8 @@ void BattleActivity::handle(void)
 		for (unsigned int i = 0; i < BOARD_WIDTH; i++)
 			for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
 				this->tileButtons[i][j]->handle(&event);
-		this->unitButton->handle(&event);
+		for (unsigned int i = 0; i < TILE_LIMIT; i++)
+			this->unitButtons[i]->handle(&event);
 
 		if (event.type == SDL_MOUSEBUTTONDOWN)
 			if (event.button.button == SDL_BUTTON_RIGHT)
@@ -260,7 +307,8 @@ void BattleActivity::render(void)
 	for (unsigned int i = 0; i < BOARD_WIDTH; i++)
 		for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
 			this->tileButtons[i][j]->render(screen);
-	this->unitButton->render(screen);
+	for (unsigned int i = 0; i < TILE_LIMIT; i++)
+		this->unitButtons[i]->render(screen);
 
 	SDL_Flip(screen);
 }
@@ -280,7 +328,8 @@ void BattleActivity::setStatus(Status status)
 	this->cardButton->setStatus(status);
 	this->endTurnButton->setStatus(status);
 	this->concedeButton->setStatus(status);
-	this->unitButton->setStatus(status);
+	for (unsigned int i = 0; i < TILE_LIMIT; i++)
+		this->unitButtons[i]->setStatus(status);
 	for (unsigned int i = 0; i < BOARD_WIDTH; i++)
 		for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
 			this->tileButtons[i][j]->setStatus(status);
