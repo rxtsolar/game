@@ -24,13 +24,13 @@ public:
 	virtual void setBox(int x, int y, int w, int h);
 	virtual void setStatus(Status status);
 
-	virtual void handle(SDL_Event* event);
+	virtual bool handle(SDL_Event* event);
 	virtual void render(SDL_Surface* screen);
 
-	virtual void inside(void);
-	virtual void outside(void);
-	virtual void leftClick(void);
-	virtual void rightClick(void);
+	virtual bool inside(void);
+	virtual bool outside(void);
+	virtual bool leftClick(void);
+	virtual bool rightClick(void);
 private:
 	SDL_Rect* box;
 	Activity* activity;

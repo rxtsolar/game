@@ -17,7 +17,7 @@ public:
 	CardButton(Activity* activity);
 	virtual ~CardButton(void);
 
-	virtual void leftClick(void);
+	virtual bool leftClick(void);
 
 	virtual void render(SDL_Surface* screen);
 
@@ -33,7 +33,7 @@ public:
 	EndTurnButton(Activity* activity);
 	virtual ~EndTurnButton(void);
 
-	virtual void leftClick(void);
+	virtual bool leftClick(void);
 
 private:
 	static const int x = DEF_HEIGHT;
@@ -47,7 +47,7 @@ public:
 	ConcedeButton(Activity* activity);
 	virtual ~ConcedeButton(void);
 
-	virtual void leftClick(void);
+	virtual bool leftClick(void);
 
 private:
 	static const int x = DEF_WIDTH / 2 + DEF_HEIGHT / 2;
@@ -61,7 +61,7 @@ public:
 	TileButton(Activity* activity, int row, int column);
 	virtual ~TileButton(void);
 
-	virtual void leftClick(void);
+	virtual bool leftClick(void);
 
 	virtual void render(SDL_Surface* screen);
 
@@ -80,7 +80,7 @@ public:
 	UnitButton(Activity* activity, unsigned int index);
 	virtual ~UnitButton(void);
 
-	virtual void leftClick(void);
+	virtual bool leftClick(void);
 
 	virtual void render(SDL_Surface* screen);
 

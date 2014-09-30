@@ -19,12 +19,13 @@ StartButton::~StartButton(void)
 
 }
 
-void StartButton::leftClick(void)
+bool StartButton::leftClick(void)
 {
 	Activity* activity = getActivity();
 	Engine* engine = activity->getEngine();
 	engine->setCurrent(engine->getBattleActivity());
 	activity->stop();
+	return true;
 }
 
 
@@ -39,12 +40,13 @@ ExitButton::~ExitButton(void)
 
 }
 
-void ExitButton::leftClick(void)
+bool ExitButton::leftClick(void)
 {
 	Activity* activity = getActivity();
 	Engine* engine = activity->getEngine();
 	engine->setCurrent(0);
 	activity->stop();
+	return true;
 }
 
 
@@ -68,8 +70,10 @@ void MainActivity::handle(void)
 	while (SDL_PollEvent(&event)) {
 		if (event.type == SDL_QUIT)
 			stop();
-		this->startButton->handle(&event);
-		this->exitButton->handle(&event);
+		if (this->startButton->handle(&event))
+			continue;
+		if (this->exitButton->handle(&event))
+			continue;
 	}
 }
 

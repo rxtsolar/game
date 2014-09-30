@@ -55,7 +55,7 @@ void Button::setStatus(Status status)
 	this->status = status;
 }
 
-void Button::handle(SDL_Event* event)
+bool Button::handle(SDL_Event* event)
 {
 	int x;
 	int y;
@@ -66,9 +66,9 @@ void Button::handle(SDL_Event* event)
 
 		if (x > this->box->x && x < this->box->x + this->box->w &&
 				y > this->box->y && y < this->box->y + this->box->h)
-			inside();
+			return inside();
 		else
-			outside();
+			return outside();
 	}
 	if (event->type == SDL_MOUSEBUTTONDOWN) {
 		x = event->button.x;
@@ -77,11 +77,12 @@ void Button::handle(SDL_Event* event)
 		if (x > this->box->x && x < this->box->x + this->box->w &&
 				y > this->box->y && y < this->box->y + this->box->h) {
 			if (event->button.button == SDL_BUTTON_LEFT)
-				leftClick();
+				return leftClick();
 			else if (event->button.button == SDL_BUTTON_RIGHT)
-				rightClick();
+				return rightClick();
 		}
 	}
+	return false;
 }
 
 void Button::render(SDL_Surface* screen)
@@ -90,24 +91,24 @@ void Button::render(SDL_Surface* screen)
 			SDL_MapRGB(screen->format, 0xaf, 0xaf, 0xaf));
 }
 
-void Button::inside(void)
+bool Button::inside(void)
 {
-
+	return false;
 }
 
-void Button::outside(void)
+bool Button::outside(void)
 {
-
+	return false;
 }
 
-void Button::leftClick(void)
+bool Button::leftClick(void)
 {
-
+	return false;
 }
 
-void Button::rightClick(void)
+bool Button::rightClick(void)
 {
-
+	return false;
 }
 
 

@@ -18,16 +18,20 @@ CardButton::~CardButton(void)
 
 }
 
-void CardButton::leftClick(void)
+bool CardButton::leftClick(void)
 {
-	cerr << getStatus() << endl;
+	bool handled = false;
+
 	switch (getStatus()) {
 	case S_DEFAULT:
 		getActivity()->setStatus(S_CARD);
+		handled = true;
 		break;
 	default:
 		break;
 	}
+
+	return handled;
 }
 
 void CardButton::render(SDL_Surface* screen)
@@ -59,18 +63,23 @@ EndTurnButton::~EndTurnButton(void)
 
 }
 
-void EndTurnButton::leftClick(void)
+bool EndTurnButton::leftClick(void)
 {
+	bool handled = false;
+
 	switch (getStatus()) {
 	case S_DEFAULT:
 	{
 		Game* game = getActivity()->getEngine()->getGame();
 		game->getTurn()->endTurn();
+		handled = true;
 		break;
 	}
 	default:
 		break;
 	}
+
+	return handled;
 }
 
 
@@ -85,8 +94,10 @@ ConcedeButton::~ConcedeButton(void)
 
 }
 
-void ConcedeButton::leftClick(void)
+bool ConcedeButton::leftClick(void)
 {
+	bool handled = false;
+
 	switch (getStatus()) {
 	case S_DEFAULT:
 	{
@@ -94,11 +105,14 @@ void ConcedeButton::leftClick(void)
 		Engine* engine = activity->getEngine();
 		engine->setCurrent(engine->getMainActivity());
 		activity->stop();
+		handled = true;
 		break;
 	}
 	default:
 		break;
 	}
+
+	return handled;
 }
 
 
@@ -117,8 +131,10 @@ TileButton::~TileButton(void)
 		TTF_CloseFont(this->font);
 }
 
-void TileButton::leftClick(void)
+bool TileButton::leftClick(void)
 {
+	bool handled = false;
+
 	switch (getStatus()) {
 	case S_DEFAULT:
 	{
@@ -127,6 +143,7 @@ void TileButton::leftClick(void)
 		if (tile->getPlayer() == game->getTurn()) {
 			game->selectTile(tile);
 			getActivity()->setStatus(S_TILE);
+			handled = true;
 		}
 		break;
 	}
@@ -136,11 +153,14 @@ void TileButton::leftClick(void)
 		Tile* tile = game->getBoard()->getTile(Position(this->row, this->column));
 		game->getTurn()->createPawn(tile);
 		getActivity()->setStatus(S_DEFAULT);
+		handled = true;
 		break;
 	}
 	default:
 		break;
 	}
+
+	return handled;
 }
 
 void TileButton::render(SDL_Surface* screen)
@@ -204,8 +224,10 @@ UnitButton::~UnitButton(void)
 		TTF_CloseFont(this->font);
 }
 
-void UnitButton::leftClick(void)
+bool UnitButton::leftClick(void)
 {
+	bool handled = false;
+
 	switch (getStatus()) {
 	case S_TILE:
 	{
@@ -215,12 +237,15 @@ void UnitButton::leftClick(void)
 		if (this->index < tile->getSize()) {
 			game->selectUnit(tile->getUnit(this->index));
 			getActivity()->setStatus(S_UNIT);
+			handled = true;
 		}
 		break;
 	}
 	default:
 		break;
 	}
+
+	return handled;
 }
 
 void UnitButton::render(SDL_Surface* screen)
@@ -295,14 +320,19 @@ void BattleActivity::handle(void)
 		if (event.type == SDL_QUIT)
 			stop();
 
-		this->cardButton->handle(&event);
-		this->endTurnButton->handle(&event);
-		this->concedeButton->handle(&event);
+		if (this->cardButton->handle(&event))
+			continue;
+		if (this->endTurnButton->handle(&event))
+			continue;
+		if (this->concedeButton->handle(&event))
+			continue;
 		for (unsigned int i = 0; i < BOARD_WIDTH; i++)
 			for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
-				this->tileButtons[i][j]->handle(&event);
+				if (this->tileButtons[i][j]->handle(&event))
+					continue;
 		for (unsigned int i = 0; i < TILE_LIMIT; i++)
-			this->unitButtons[i]->handle(&event);
+			if (this->unitButtons[i]->handle(&event))
+				continue;
 
 		if (event.type == SDL_MOUSEBUTTONDOWN) {
 			if (event.button.button == SDL_BUTTON_RIGHT) {

@@ -18,7 +18,7 @@ public:
 	StartButton(Activity* activity);
 	virtual ~StartButton(void);
 
-	virtual void leftClick(void);
+	virtual bool leftClick(void);
 
 private:
 	static const int x = DEF_WIDTH / 8;
@@ -32,7 +32,7 @@ public:
 	ExitButton(Activity* activity);
 	virtual ~ExitButton(void);
 
-	virtual void leftClick(void);
+	virtual bool leftClick(void);
 
 private:
 	static const int x = DEF_WIDTH / 8;
