@@ -285,9 +285,14 @@ void BattleActivity::handle(void)
 		for (unsigned int i = 0; i < TILE_LIMIT; i++)
 			this->unitButtons[i]->handle(&event);
 
-		if (event.type == SDL_MOUSEBUTTONDOWN)
-			if (event.button.button == SDL_BUTTON_RIGHT)
+		if (event.type == SDL_MOUSEBUTTONDOWN) {
+			if (event.button.button == SDL_BUTTON_RIGHT) {
+				Game* game = getEngine()->getGame();
+				game->selectTile(0);
+				game->selectUnit(0);
 				setStatus(S_DEFAULT);
+			}
+		}
 	}
 }
 
