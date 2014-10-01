@@ -243,9 +243,13 @@ bool UnitButton::leftClick(void)
 		Tile* tile = game->getSelectedTile();
 
 		if (this->index < tile->getSize()) {
-			game->selectUnit(tile->getUnit(this->index));
-			getActivity()->setStatus(S_UNIT);
-			handled = true;
+			Unit* unit = tile->getUnit(this->index);
+
+			if (!unit->isAttacked() && unit->getDamage() > 0) {
+				game->selectUnit(unit);
+				getActivity()->setStatus(S_UNIT);
+				handled = true;
+			}
 		}
 		break;
 	}
