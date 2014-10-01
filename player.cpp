@@ -118,13 +118,13 @@ void Player::attack(Unit* unit, Tile* tile)
 	cout << " with unit " << unit << endl;
 	unit->attack(tile);
 
-        if (unit->getLife() <= 0) {
-                this->removeUnit(unit);
-                unit->getTile()->removeUnit(unit);
-                cout << "Player " << this << " 's unit ";
-                cout << unit << " just died" << endl;
-                delete unit;
-        }
+	if (unit->getLife() <= 0) {
+		this->removeUnit(unit);
+		unit->getTile()->removeUnit(unit);
+		cout << "Player " << this << " 's unit ";
+		cout << unit << " just died" << endl;
+		delete unit;
+	}
 }
 
 void Player::endTurn(void)
