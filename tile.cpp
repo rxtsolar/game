@@ -1,11 +1,15 @@
 #include <iostream>
-#include <cmath>
 
 #include "tile.h"
 
 using namespace std;
 
 namespace gs {
+
+static inline int diff(unsigned int a, unsigned int b)
+{
+	return a > b ? a - b : b - a;
+}
 
 Tile::Tile(unsigned int x, unsigned int y, unsigned int limit)
 {
@@ -35,8 +39,8 @@ int Tile::getDistance(Tile* tile)
 {
 	int distance = 0;
 
-	distance += abs(tile->position.x - this->position.x);
-	distance += abs(tile->position.y - this->position.y);
+	distance += diff(tile->position.x, this->position.x);
+	distance += diff(tile->position.y, this->position.y);
 	return distance;
 }
 
