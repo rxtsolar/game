@@ -98,7 +98,7 @@ bool Unit::canMoveTo(Tile* tile)
 		return false;
 	}
 
-	if (this->tile->getDistance(tile) > 1) {
+	if (this->tile->getDistance(tile) > this->moveRange) {
 		cerr << "Player " << this->player << " 's unit " << this;
 		cerr << " could not move from " << this->tile->getPosition();
 		cerr << " to " << tile->getPosition() << endl;
@@ -126,7 +126,7 @@ bool Unit::canAttack(Tile* tile)
 		return false;
 	}
 
-	if (this->tile->getDistance(tile) > 1) {
+	if (this->tile->getDistance(tile) > this->attackRange) {
 		cerr << "Player " << this->player << " 's unit " << this;
 		cerr << " could not attack " << tile->getPosition();
 		cerr << " from " << this->tile->getPosition() << endl;
