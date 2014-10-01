@@ -127,6 +127,17 @@ void Player::attack(Unit* unit, Tile* tile)
 	}
 }
 
+void Player::moveTo(Unit* unit, Tile* tile)
+{
+	if (this->game->getTurn() != this)
+		return;
+	if (unit->getPlayer() != this)
+		return;
+	cout << "Player " << this << " moving to tile " << tile;
+	cout << " with unit " << unit << endl;
+	unit->moveTo(tile);
+}
+
 void Player::endTurn(void)
 {
 	unordered_set<Unit*>::iterator it;

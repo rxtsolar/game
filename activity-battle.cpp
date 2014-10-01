@@ -161,6 +161,10 @@ bool TileButton::leftClick(void)
 			game->getTurn()->attack(unit, tile);
 			getActivity()->setStatus(S_DEFAULT);
 			handled = true;
+		} else if (unit->canMoveTo(tile)) {
+			game->getTurn()->moveTo(unit, tile);
+			getActivity()->setStatus(S_DEFAULT);
+			handled = true;
 		}
 		break;
 	}

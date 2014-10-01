@@ -35,6 +35,7 @@ public:
 	virtual void createPawn(Tile*);
 	virtual Unit* selectUnit(Tile*, unsigned int);
 	virtual void attack(Unit*, Tile*);
+	virtual void moveTo(Unit*, Tile*);
 	virtual void endTurn(void);
 
 private:
