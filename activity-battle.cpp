@@ -325,6 +325,8 @@ void BattleActivity::handle(void)
 {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
+		bool handled = false;
+
 		if (event.type == SDL_QUIT)
 			stop();
 
@@ -337,10 +339,14 @@ void BattleActivity::handle(void)
 		for (unsigned int i = 0; i < BOARD_WIDTH; i++)
 			for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
 				if (this->tileButtons[i][j]->handle(&event))
-					continue;
+					handled = true;
+		if (handled)
+			continue;
 		for (unsigned int i = 0; i < TILE_LIMIT; i++)
 			if (this->unitButtons[i]->handle(&event))
-				continue;
+				handled = true;
+		if (handled)
+			continue;
 
 		if (event.type == SDL_MOUSEBUTTONDOWN) {
 			if (event.button.button == SDL_BUTTON_RIGHT) {
