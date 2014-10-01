@@ -134,12 +134,12 @@ TileButton::~TileButton(void)
 bool TileButton::leftClick(void)
 {
 	bool handled = false;
+	Game* game = getActivity()->getEngine()->getGame();
+	Tile* tile = game->getBoard()->getTile(Position(this->row, this->column));
 
 	switch (getStatus()) {
 	case S_DEFAULT:
 	{
-		Game* game = getActivity()->getEngine()->getGame();
-		Tile* tile = game->getBoard()->getTile(Position(this->row, this->column));
 		if (tile->getPlayer() == game->getTurn()) {
 			game->selectTile(tile);
 			getActivity()->setStatus(S_TILE);
@@ -149,11 +149,19 @@ bool TileButton::leftClick(void)
 	}
 	case S_CARD:
 	{
-		Game* game = getActivity()->getEngine()->getGame();
-		Tile* tile = game->getBoard()->getTile(Position(this->row, this->column));
 		game->getTurn()->createPawn(tile);
 		getActivity()->setStatus(S_DEFAULT);
 		handled = true;
+		break;
+	}
+	case S_UNIT:
+	{
+		Unit* unit = game->getSelectedUnit();
+		if (unit->canAttack(tile)) {
+			unit->attack(tile);
+			getActivity()->setStatus(S_DEFAULT);
+			handled = true;
+		}
 		break;
 	}
 	default:
