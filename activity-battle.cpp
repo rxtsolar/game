@@ -158,7 +158,7 @@ bool TileButton::leftClick(void)
 	{
 		Unit* unit = game->getSelectedUnit();
 		if (unit->canAttack(tile)) {
-			unit->attack(tile);
+			game->getTurn()->attack(unit, tile);
 			getActivity()->setStatus(S_DEFAULT);
 			handled = true;
 		}
