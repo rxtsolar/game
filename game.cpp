@@ -95,9 +95,19 @@ void Game::setBoard(Board* board)
 void Game::nextPlayer(Player* player)
 {
 	if (player == this->player1)
-		turn = player2;
-	else
-		turn = player1;
+		this->turn = this->player2;
+	else if (player == this->player2)
+		this->turn = this->player1;
+}
+
+void Game::end(void)
+{
+	this->turn = 0;
+}
+
+bool Game::isFinished(void)
+{
+	return !this->turn;
 }
 
 } // namespace gs

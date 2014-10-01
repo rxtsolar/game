@@ -37,6 +37,7 @@ public:
 	virtual void attack(Unit*, Tile*);
 	virtual void moveTo(Unit*, Tile*);
 	virtual void endTurn(void);
+	virtual void lose(void);
 
 private:
 	Game* game;

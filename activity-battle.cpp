@@ -338,6 +338,16 @@ void BattleActivity::handle(void)
 		if (event.type == SDL_QUIT)
 			stop();
 
+		if (event.type == SDL_MOUSEBUTTONDOWN) {
+			if (event.button.button == SDL_BUTTON_LEFT) {
+				if (getEngine()->getGame()->isFinished()) {
+					getEngine()->setCurrent(getEngine()->getMainActivity());
+					stop();
+					break;
+				}
+			}
+		}
+
 		if (this->cardButton->handle(&event))
 			continue;
 		if (this->endTurnButton->handle(&event))

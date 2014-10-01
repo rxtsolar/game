@@ -118,6 +118,8 @@ void Tile::attackedBy(Unit* unit)
 			this->player->removeUnit(u);
 			cout << "Player " << u->getPlayer() << " 's unit ";
 			cout << u << " just died" << endl;
+			if (u == u->getPlayer()->getHero())
+				u->getPlayer()->lose();
 			delete u;
 			this->units[i] = 0;
 		}

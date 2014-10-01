@@ -80,10 +80,10 @@ bool Player::canSelectUnit(Tile* tile, unsigned int i)
 
 void Player::createHero(Tile* tile)
 {
-	Unit* unit = new Hero(this, tile);
-	this->addUnit(unit);
-	tile->addUnit(unit);
-	cout << "Player " << this << " created a hero " << unit << " on tile ";
+	this->hero = new Hero(this, tile);
+	this->addUnit(this->hero);
+	tile->addUnit(this->hero);
+	cout << "Player " << this << " created a hero " << this->hero << " on tile ";
 	cout << tile << tile->getPosition() << endl;
 }
 
@@ -123,6 +123,9 @@ void Player::attack(Unit* unit, Tile* tile)
 		unit->getTile()->removeUnit(unit);
 		cout << "Player " << this << " 's unit ";
 		cout << unit << " just died" << endl;
+		cerr << unit << ' ' << hero << endl;
+		if (unit == hero)
+			lose();
 		delete unit;
 	}
 }
@@ -144,6 +147,12 @@ void Player::endTurn(void)
 	for (it = this->units.begin(); it != this->units.end(); it++)
 		(*it)->refresh();
 	game->nextPlayer(this);
+}
+
+void Player::lose(void)
+{
+	cout << "Player " << this << " has lost the game!" << endl;
+	this->game->end();
 }
 
 } // namespace gs

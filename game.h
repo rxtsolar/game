@@ -32,6 +32,8 @@ public:
 	virtual void setBoard(Board*);
 
 	virtual void nextPlayer(Player*);
+	virtual void end(void);
+	virtual bool isFinished(void);
 
 private:
 	int round;
