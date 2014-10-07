@@ -27,15 +27,21 @@ public:
 	virtual std::unordered_set<Unit*> getUnits(void);
 	virtual std::unordered_set<Tile*> getTiles(void);
 	virtual Hero* getHero(void);
+	virtual Unit* getSelectedUnit(void);
+	virtual Tile* getSelectedTile(void);
 
 	virtual bool canCreateUnit(Tile*);
-	virtual bool canSelectUnit(Tile*, unsigned int i);
+	virtual bool canSelectUnit(Unit*);
+	virtual bool canSelectTile(Tile*);
+	virtual bool canAttack(Tile*);
+	virtual bool canMoveTo(Tile*);
 
-	virtual void createHero(Tile*);
-	virtual void createPawn(Tile*);
-	virtual Unit* selectUnit(Tile*, unsigned int);
-	virtual void attack(Unit*, Tile*);
-	virtual void moveTo(Unit*, Tile*);
+	virtual bool createHero(Tile*);
+	virtual bool createPawn(Tile*);
+	virtual bool selectUnit(Unit*);
+	virtual bool selectTile(Tile*);
+	virtual bool attack(Tile*);
+	virtual bool moveTo(Tile*);
 	virtual void endTurn(void);
 	virtual void lose(void);
 
@@ -44,6 +50,8 @@ private:
 	std::unordered_set<Unit*> units;
 	std::unordered_set<Tile*> tiles;
 	Hero* hero;
+	Unit* selectedUnit;
+	Tile* selectedTile;
 };
 
 } // namespace gs

@@ -16,16 +16,12 @@ public:
 	virtual ~Game(void);
 
 	virtual int getRound(void);
-	virtual Tile* getSelectedTile(void);
-	virtual Unit* getSelectedUnit(void);
 	virtual Player* getTurn(void);
 	virtual Player* getPlayer1(void);
 	virtual Player* getPlayer2(void);
 	virtual Board* getBoard(void);
 
 	virtual void setRound(int);
-	virtual void selectTile(Tile* tile);
-	virtual void selectUnit(Unit* unit);
 	virtual void setTurn(Player*);
 	virtual void setPlayer1(Player*);
 	virtual void setPlayer2(Player*);
@@ -37,8 +33,6 @@ public:
 
 private:
 	int round;
-	Tile* tile;
-	Unit* unit;
 	Player* turn;
 	Player* player1;
 	Player* player2;

@@ -58,87 +58,141 @@ Hero* Player::getHero(void)
 	return this->hero;
 }
 
+Unit* Player::getSelectedUnit(void)
+{
+	return this->selectedUnit;
+}
+
+Tile* Player::getSelectedTile(void)
+{
+	return this->selectedTile;
+}
+
 bool Player::canCreateUnit(Tile* tile)
 {
 	if (this->game->getTurn() != this)
 		return false;
-	if (tile->getPlayer() == 0 || tile->getPlayer() == this)
-		return true;
-	return false;
-}
-
-bool Player::canSelectUnit(Tile* tile, unsigned int i)
-{
-	if (this->game->getTurn() != this)
+	if (tile->getPlayer() != 0 && tile->getPlayer() != this)
 		return false;
-	if (tile->getPlayer() != this)
-		return false;
-	if (i >= tile->getSize())
+	if (tile->getSize() >= tile->getUnits().size())
 		return false;
 	return true;
 }
 
-void Player::createHero(Tile* tile)
+bool Player::canSelectUnit(Unit* unit)
+{
+	if (this->game->getTurn() != this)
+		return false;
+	if (!unit)
+		return true;
+	if (unit->getPlayer() != this)
+		return false;
+	if (unit->isMoved() && unit->isAttacked())
+		return false;
+	return true;
+}
+
+bool Player::canSelectTile(Tile* tile)
+{
+	if (this->game->getTurn() != this)
+		return false;
+	if (!tile)
+		return true;
+	if (tile->getPlayer() != this)
+		return false;
+	return true;
+}
+
+bool Player::canAttack(Tile* tile)
+{
+	if (!this->selectedUnit)
+		return false;
+	return this->selectedUnit->canAttack(tile);
+}
+
+bool Player::canMoveTo(Tile* tile)
+{
+	if (!this->selectedUnit)
+		return false;
+	return this->selectedUnit->canMoveTo(tile);
+}
+
+bool Player::createHero(Tile* tile)
 {
 	this->hero = new Hero(this, tile);
 	this->addUnit(this->hero);
 	tile->addUnit(this->hero);
 	cout << "Player " << this << " created a hero " << this->hero << " on tile ";
 	cout << tile << tile->getPosition() << endl;
+	return true;
 }
 
-void Player::createPawn(Tile* tile)
+bool Player::createPawn(Tile* tile)
 {
 	if (!canCreateUnit(tile))
-		return;
+		return false;
 	Unit* unit = new Pawn(this, tile);
 	this->addUnit(unit);
 	tile->addUnit(unit);
 	cout << "Player " << this << " created a pawn " << unit << " on tile ";
 	cout << tile << tile->getPosition() << endl;
+	return true;
 }
 
-Unit* Player::selectUnit(Tile* tile, unsigned int i)
+bool Player::selectUnit(Unit* unit)
 {
-	Unit* unit;
-	if (!canSelectUnit(tile, i))
-		return 0;
-	unit = tile->getUnits()[i];
-	cout << "Player " << this << " selected a unit " << unit << endl;;
-	return unit;
+	if (!canSelectUnit(unit))
+		return false;
+	this->selectedUnit = unit;
+	cout << "Player " << this << " selected a unit " << unit << endl;
+	return true;
 }
 
-void Player::attack(Unit* unit, Tile* tile)
+bool Player::selectTile(Tile* tile)
+{
+	if (!canSelectTile(tile))
+		return false;
+	this->selectedTile = tile;
+	cout << "Player " << this << " selected a tile " << tile << endl;
+	return true;
+}
+
+bool Player::attack(Tile* tile)
 {
 	if (this->game->getTurn() != this)
-		return;
-	if (unit->getPlayer() != this)
-		return;
+		return false;
+	if (!this->selectedUnit)
+		return false;
+	if (!this->selectedUnit->canAttack(tile))
+		return false;
 	cout << "Player " << this << " attacking tile " << tile;
-	cout << " with unit " << unit << endl;
-	unit->attack(tile);
-
-	if (unit->getLife() <= 0) {
-		this->removeUnit(unit);
-		unit->getTile()->removeUnit(unit);
+	cout << " with unit " << this->selectedUnit << endl;
+	this->selectedUnit->attack(tile);
+	if (this->selectedUnit->getLife() <= 0) {
+		this->removeUnit(this->selectedUnit);
+		this->selectedUnit->getTile()->removeUnit(this->selectedUnit);
 		cout << "Player " << this << " 's unit ";
-		cout << unit << " just died" << endl;
-		cerr << unit << ' ' << hero << endl;
-		if (unit == hero)
+		cout << this->selectedUnit << " just died" << endl;
+		cerr << this->selectedUnit << ' ' << hero << endl;
+		if (this->selectedUnit == this->hero)
 			lose();
-		delete unit;
+		delete this->selectedUnit;
 	}
+	return true;
 }
 
-void Player::moveTo(Unit* unit, Tile* tile)
+bool Player::moveTo(Tile* tile)
 {
 	if (this->game->getTurn() != this)
-		return;
-	if (unit->getPlayer() != this)
-		return;
+		return false;
+	if (!this->selectedUnit)
+		return false;
+	if (!this->selectedUnit->canMoveTo(tile))
+		return false;
 	cout << "Player " << this << " moving to tile " << tile;
-	cout << " with unit " << unit << endl;
-	unit->moveTo(tile);
+	cout << " with unit " << this->selectedUnit << endl;
+	this->selectedUnit->moveTo(tile);
+	return true;
 }
 
 void Player::endTurn(void)

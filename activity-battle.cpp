@@ -140,8 +140,7 @@ bool TileButton::leftClick(void)
 	switch (getStatus()) {
 	case S_DEFAULT:
 	{
-		if (tile->getPlayer() == game->getTurn()) {
-			game->selectTile(tile);
+		if (game->getTurn()->selectTile(tile)) {
 			getActivity()->setStatus(S_TILE);
 			handled = true;
 		}
@@ -149,20 +148,20 @@ bool TileButton::leftClick(void)
 	}
 	case S_CARD:
 	{
-		game->getTurn()->createPawn(tile);
-		getActivity()->setStatus(S_DEFAULT);
-		handled = true;
+		if (game->getTurn()->createPawn(tile)) {
+			getActivity()->setStatus(S_DEFAULT);
+			handled = true;
+		}
 		break;
 	}
 	case S_UNIT:
 	{
-		Unit* unit = game->getSelectedUnit();
-		if (unit->canAttack(tile)) {
-			game->getTurn()->attack(unit, tile);
+		if (game->getTurn()->canAttack(tile)) {
+			game->getTurn()->attack(tile);
 			getActivity()->setStatus(S_DEFAULT);
 			handled = true;
-		} else if (unit->canMoveTo(tile)) {
-			game->getTurn()->moveTo(unit, tile);
+		} else if (game->getTurn()->canMoveTo(tile)) {
+			game->getTurn()->moveTo(tile);
 			getActivity()->setStatus(S_DEFAULT);
 			handled = true;
 		}
@@ -194,11 +193,11 @@ void TileButton::render(SDL_Surface* screen)
 	case S_UNIT:
 	{
 		handled = true;
-		if (game->getSelectedTile() == tile)
+		if (game->getTurn()->getSelectedTile() == tile)
 			color = SDL_MapRGB(screen->format, 0x6f, 0xff, 0xff);
-		else if (game->getSelectedUnit()->canMoveTo(tile))
+		else if (game->getTurn()->getSelectedUnit()->canMoveTo(tile))
 			color = SDL_MapRGB(screen->format, 0xff, 0xff, 0x6f);
-		else if (game->getSelectedUnit()->canAttack(tile))
+		else if (game->getTurn()->getSelectedUnit()->canAttack(tile))
 			color = SDL_MapRGB(screen->format, 0xff, 0x6f, 0xff);
 		else
 			handled = false;
@@ -252,13 +251,13 @@ bool UnitButton::leftClick(void)
 	case S_TILE:
 	{
 		Game* game = getActivity()->getEngine()->getGame();
-		Tile* tile = game->getSelectedTile();
+		Tile* tile = game->getTurn()->getSelectedTile();
 
 		if (this->index < tile->getSize()) {
 			Unit* unit = tile->getUnit(this->index);
 
 			if (!unit->isAttacked() && unit->getDamage() > 0) {
-				game->selectUnit(unit);
+				game->getTurn()->selectUnit(unit);
 				getActivity()->setStatus(S_UNIT);
 				handled = true;
 			}
@@ -278,7 +277,7 @@ void UnitButton::render(SDL_Surface* screen)
 	case S_TILE:
 	{
 		Game* game = getActivity()->getEngine()->getGame();
-		Tile* tile = game->getSelectedTile();
+		Tile* tile = game->getTurn()->getSelectedTile();
 
 		if (this->index < tile->getSize()) {
 			Unit* unit = tile->getUnit(this->index);
@@ -377,8 +376,8 @@ void BattleActivity::handle(void)
 		if (event.type == SDL_MOUSEBUTTONDOWN) {
 			if (event.button.button == SDL_BUTTON_RIGHT) {
 				Game* game = getEngine()->getGame();
-				game->selectTile(0);
-				game->selectUnit(0);
+				game->getTurn()->selectTile(0);
+				game->getTurn()->selectUnit(0);
 				setStatus(S_DEFAULT);
 			}
 		}
