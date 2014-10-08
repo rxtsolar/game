@@ -21,11 +21,14 @@ CardButton::~CardButton(void)
 bool CardButton::leftClick(void)
 {
 	bool handled = false;
+	Game* game = getActivity()->getEngine()->getGame();
 
 	switch (getStatus()) {
 	case S_DEFAULT:
-		getActivity()->setStatus(S_CARD);
-		handled = true;
+		if (game->getTurn()->getResources() >= 1) {
+			getActivity()->setStatus(S_CARD);
+			handled = true;
+		}
 		break;
 	default:
 		break;

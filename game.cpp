@@ -13,6 +13,7 @@ Game::Game(void)
 	this->player2->createHero(this->board->getTile(Position(4, 2)));
 	this->round = 0;
 	this->turn = this->player1;
+	this->turn->startTurn();
 }
 
 Game::~Game(void)
@@ -78,6 +79,7 @@ void Game::nextPlayer(Player* player)
 		this->turn = this->player2;
 	else if (player == this->player2)
 		this->turn = this->player1;
+	this->turn->startTurn();
 }
 
 void Game::end(void)

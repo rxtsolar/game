@@ -9,6 +9,7 @@ namespace gs {
 Player::Player(Game* game)
 {
 	this->game = game;
+	this->maxResources = START_MAX_RESOURCES;
 }
 
 Player::~Player(void)
@@ -66,6 +67,16 @@ Unit* Player::getSelectedUnit(void)
 Tile* Player::getSelectedTile(void)
 {
 	return this->selectedTile;
+}
+
+int Player::getResources(void)
+{
+	return this->resources;
+}
+
+int Player::getMaxResources(void)
+{
+	return this->maxResources;
 }
 
 bool Player::canCreateUnit(Tile* tile)
@@ -134,6 +145,7 @@ bool Player::createPawn(Tile* tile)
 	Unit* unit = new Pawn(this, tile);
 	this->addUnit(unit);
 	tile->addUnit(unit);
+	decreaseResources(unit->getResources());
 	cout << "Player " << this << " created a pawn " << unit << " on tile ";
 	cout << tile << tile->getPosition() << endl;
 	return true;
@@ -193,6 +205,45 @@ bool Player::moveTo(Tile* tile)
 	cout << " with unit " << this->selectedUnit << endl;
 	this->selectedUnit->moveTo(tile);
 	return true;
+}
+
+void Player::increaseResources(int resources)
+{
+	this->resources += resources;
+	if (this->resources > MAX_RESOURCES)
+		this->resources = MAX_RESOURCES;
+}
+
+void Player::decreaseResources(int resources)
+{
+	this->resources -= resources;
+	if (this->resources < 0)
+		this->resources = 0;
+}
+
+void Player::increaseMaxResources(int resources)
+{
+	this->maxResources += resources;
+	if (this->maxResources > MAX_RESOURCES)
+		this->maxResources = MAX_RESOURCES;
+}
+
+void Player::decreaseMaxResources(int resources)
+{
+	this->maxResources -= resources;
+	if (this->maxResources < 0)
+		this->maxResources = 0;
+}
+
+void Player::fillResources(void)
+{
+	this->resources = this->maxResources;
+}
+
+void Player::startTurn(void)
+{
+	increaseMaxResources(EACH_TURN_RESOURCES);
+	fillResources();
 }
 
 void Player::endTurn(void)

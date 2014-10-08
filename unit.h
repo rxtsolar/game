@@ -20,6 +20,7 @@ public:
 	virtual int getDamage(void);
 	virtual int getMoveRange(void);
 	virtual int getAttackRange(void);
+	virtual int getResources(void);
 	virtual Player* getPlayer(void);
 	virtual Tile* getTile(void);
 
@@ -27,6 +28,7 @@ public:
 	virtual void setDamage(int);
 	virtual void setMoveRange(int);
 	virtual void setAttackRange(int);
+	virtual void setResources(int);
 	virtual void setPlayer(Player*);
 	virtual void setTile(Tile*);
 
@@ -48,6 +50,7 @@ private:
 	int damage;
 	int moveRange;
 	int attackRange;
+	int resources;
 
 	Player* player;
 	Tile* tile;

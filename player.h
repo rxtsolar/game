@@ -29,6 +29,8 @@ public:
 	virtual Hero* getHero(void);
 	virtual Unit* getSelectedUnit(void);
 	virtual Tile* getSelectedTile(void);
+	virtual int getResources(void);
+	virtual int getMaxResources(void);
 
 	virtual bool canCreateUnit(Tile*);
 	virtual bool canSelectUnit(Unit*);
@@ -42,6 +44,12 @@ public:
 	virtual bool selectTile(Tile*);
 	virtual bool attack(Tile*);
 	virtual bool moveTo(Tile*);
+	virtual void increaseResources(int);
+	virtual void decreaseResources(int);
+	virtual void increaseMaxResources(int);
+	virtual void decreaseMaxResources(int);
+	virtual void fillResources(void);
+	virtual void startTurn(void);
 	virtual void endTurn(void);
 	virtual void lose(void);
 
@@ -52,6 +60,8 @@ private:
 	Hero* hero;
 	Unit* selectedUnit;
 	Tile* selectedTile;
+	int resources;
+	int maxResources;
 };
 
 } // namespace gs

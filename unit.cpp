@@ -40,6 +40,11 @@ int Unit::getAttackRange(void)
 	return this->attackRange;
 }
 
+int Unit::getResources(void)
+{
+	return this->resources;
+}
+
 Player* Unit::getPlayer(void)
 {
 	return this->player;
@@ -68,6 +73,11 @@ void Unit::setMoveRange(int moveRange)
 void Unit::setAttackRange(int attackRange)
 {
 	this->attackRange = attackRange;
+}
+
+void Unit::setResources(int resources)
+{
+	this->resources = resources;
 }
 
 void Unit::setPlayer(Player* player)
@@ -199,6 +209,7 @@ Hero::Hero(Player* player, Tile* tile) : Unit(player, tile)
 	setDamage(2);
 	setMoveRange(2);
 	setAttackRange(2);
+	setResources(10);
 }
 
 Hero::~Hero(void)
@@ -213,6 +224,7 @@ Pawn::Pawn(Player* player, Tile* tile) : Unit(player, tile)
 	setDamage(1);
 	setMoveRange(1);
 	setAttackRange(1);
+	setResources(1);
 }
 
 Pawn::~Pawn(void)
