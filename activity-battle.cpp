@@ -10,12 +10,13 @@ namespace gs {
 CardButton::CardButton(Activity* activity) :
 	TextButton(activity, "A", this->x, this->y, this->w, this->h)
 {
-
+	this->card = new CardPawn();
 }
 
 CardButton::~CardButton(void)
 {
-
+	if (this->card)
+		delete this->card;
 }
 
 bool CardButton::leftClick(void)
@@ -25,7 +26,8 @@ bool CardButton::leftClick(void)
 
 	switch (getStatus()) {
 	case S_DEFAULT:
-		if (game->getTurn()->getResources() >= 1) {
+		if (game->getTurn()->getResources() >= card->getResources()) {
+			game->getTurn()->selectCard(card);
 			getActivity()->setStatus(S_CARD);
 			handled = true;
 		}
@@ -151,8 +153,9 @@ bool TileButton::leftClick(void)
 	}
 	case S_CARD:
 	{
-		if (game->getTurn()->createPawn(tile)) {
+		if (game->getTurn()->playCard(tile)) {
 			getActivity()->setStatus(S_DEFAULT);
+			game->getTurn()->selectCard(0);
 			handled = true;
 		}
 		break;

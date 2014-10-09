@@ -217,19 +217,4 @@ Hero::~Hero(void)
 
 }
 
-
-Pawn::Pawn(Player* player, Tile* tile) : Unit(player, tile)
-{
-	setLife(2);
-	setDamage(1);
-	setMoveRange(1);
-	setAttackRange(1);
-	setResources(1);
-}
-
-Pawn::~Pawn(void)
-{
-
-}
-
 } // namespace gs

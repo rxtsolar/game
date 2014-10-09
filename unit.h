@@ -63,12 +63,6 @@ public:
 	virtual ~Hero(void);
 };
 
-class Pawn : public Unit {
-public:
-	Pawn(Player*, Tile*);
-	virtual ~Pawn(void);
-};
-
 } // namespace gs
 
 #endif

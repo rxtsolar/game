@@ -79,17 +79,6 @@ int Player::getMaxResources(void)
 	return this->maxResources;
 }
 
-bool Player::canCreateUnit(Tile* tile)
-{
-	if (this->game->getTurn() != this)
-		return false;
-	if (tile->getPlayer() != 0 && tile->getPlayer() != this)
-		return false;
-	if (tile->getSize() >= tile->getUnits().size())
-		return false;
-	return true;
-}
-
 bool Player::canSelectUnit(Unit* unit)
 {
 	if (this->game->getTurn() != this)
@@ -112,6 +101,20 @@ bool Player::canSelectTile(Tile* tile)
 	if (tile->getPlayer() != this)
 		return false;
 	return true;
+}
+
+bool Player::canSelectCard(Card* card)
+{
+	if (this->game->getTurn() != this)
+		return false;
+	return true;
+}
+
+bool Player::canPlayCard(Tile* tile)
+{
+	if (!this->selectedCard)
+		return false;
+	return this->selectedCard->canPlay(this, tile);
 }
 
 bool Player::canAttack(Tile* tile)
@@ -138,19 +141,6 @@ bool Player::createHero(Tile* tile)
 	return true;
 }
 
-bool Player::createPawn(Tile* tile)
-{
-	if (!canCreateUnit(tile))
-		return false;
-	Unit* unit = new Pawn(this, tile);
-	this->addUnit(unit);
-	tile->addUnit(unit);
-	decreaseResources(unit->getResources());
-	cout << "Player " << this << " created a pawn " << unit << " on tile ";
-	cout << tile << tile->getPosition() << endl;
-	return true;
-}
-
 bool Player::selectUnit(Unit* unit)
 {
 	if (!canSelectUnit(unit))
@@ -167,6 +157,24 @@ bool Player::selectTile(Tile* tile)
 	this->selectedTile = tile;
 	cout << "Player " << this << " selected a tile " << tile << endl;
 	return true;
+}
+
+bool Player::selectCard(Card* card)
+{
+	if (!canSelectCard(card))
+		return false;
+	this->selectedCard = card;
+	cout << "Player " << this << " selected a card " << card << endl;
+	return true;
+}
+
+bool Player::playCard(Tile* tile)
+{
+	if (this->game->getTurn() != this)
+		return false;
+	if (!this->selectedCard)
+		return false;
+	return this->selectedCard->play(this, tile);
 }
 
 bool Player::attack(Tile* tile)

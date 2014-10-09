@@ -3,12 +3,14 @@
 
 #include <unordered_set>
 
+#include "card.h"
 #include "game.h"
 #include "unit.h"
 
 namespace gs {
 
 class Game;
+class Card;
 class Unit;
 class Tile;
 class Hero;
@@ -32,16 +34,18 @@ public:
 	virtual int getResources(void);
 	virtual int getMaxResources(void);
 
-	virtual bool canCreateUnit(Tile*);
 	virtual bool canSelectUnit(Unit*);
 	virtual bool canSelectTile(Tile*);
+	virtual bool canSelectCard(Card*);
+	virtual bool canPlayCard(Tile*);
 	virtual bool canAttack(Tile*);
 	virtual bool canMoveTo(Tile*);
 
 	virtual bool createHero(Tile*);
-	virtual bool createPawn(Tile*);
 	virtual bool selectUnit(Unit*);
 	virtual bool selectTile(Tile*);
+	virtual bool selectCard(Card*);
+	virtual bool playCard(Tile*);
 	virtual bool attack(Tile*);
 	virtual bool moveTo(Tile*);
 	virtual void increaseResources(int);
@@ -60,6 +64,7 @@ private:
 	Hero* hero;
 	Unit* selectedUnit;
 	Tile* selectedTile;
+	Card* selectedCard;
 	int resources;
 	int maxResources;
 };

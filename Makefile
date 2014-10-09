@@ -2,28 +2,32 @@ CC			= g++
 CFLAGS		= -g -Wall -std=c++0x
 LIBS		= -lSDL -lSDL_ttf
 
-headers		= activity.h\
-			  basic.h	\
-			  board.h	\
-			  button.h	\
-			  const.h	\
-			  engine.h	\
-			  game.h	\
-			  player.h	\
-			  tile.h	\
-			  unit.h	\
+headers		= activity.h		\
+			  basic.h			\
+			  board.h			\
+			  button.h			\
+			  card.h			\
+			  card-pawn.h		\
+			  const.h			\
+			  engine.h			\
+			  game.h			\
+			  player.h			\
+			  tile.h			\
+			  unit.h			\
 			  activity-main.h	\
 			  activity-battle.h
 
-objects		= activity.o\
-			  board.o	\
-			  button.o	\
-			  engine.o	\
-			  game.o	\
-			  player.o	\
-			  tile.o	\
-			  unit.o	\
-			  main.o	\
+objects		= activity.o		\
+			  board.o			\
+			  button.o			\
+			  card.o			\
+			  card-pawn.o		\
+			  engine.o			\
+			  game.o			\
+			  player.o			\
+			  tile.o			\
+			  unit.o			\
+			  main.o			\
 			  activity-main.o	\
 			  activity-battle.o
 

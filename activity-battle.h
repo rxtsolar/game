@@ -7,6 +7,7 @@
 #include "activity.h"
 #include "basic.h"
 #include "engine.h"
+#include "card-pawn.h"
 
 using namespace std;
 
@@ -26,6 +27,7 @@ private:
 	static const int y = DEF_HEIGHT / 12;
 	static const int w = DEF_WIDTH - DEF_HEIGHT * 13 / 12;
 	static const int h = DEF_HEIGHT * 2 / 3;
+	Card* card;
 };
 
 class EndTurnButton : public TextButton {
