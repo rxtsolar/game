@@ -52,8 +52,6 @@ vector<Unit*> Tile::getUnits(void)
 Unit* Tile::getUnit(unsigned int i)
 {
 	if (i >= this->size) {
-		cerr << "getUnit failed: index " << i;
-		cerr << " out of boundary" << endl;
 		return 0;
 	}
 	return this->units[i];
@@ -72,9 +70,6 @@ void Tile::setPosition(const Position& position)
 void Tile::addUnit(Unit* unit)
 {
 	if (this->size >= this->units.size()) {
-		cerr << "addUnit failed: tile " << this << " is full.";
-		cerr << " size: " << this->size;
-		cerr << " limit: " << this->units.size() << endl;
 		return;
 	}
 	this->player = unit->getPlayer();

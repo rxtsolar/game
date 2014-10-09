@@ -193,7 +193,6 @@ bool Player::attack(Tile* tile)
 		this->selectedUnit->getTile()->removeUnit(this->selectedUnit);
 		cout << "Player " << this << " 's unit ";
 		cout << this->selectedUnit << " just died" << endl;
-		cerr << this->selectedUnit << ' ' << hero << endl;
 		if (this->selectedUnit == this->hero)
 			lose();
 		delete this->selectedUnit;

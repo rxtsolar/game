@@ -103,15 +103,10 @@ bool Unit::isAttacked(void)
 bool Unit::canMoveTo(Tile* tile)
 {
 	if (this->moved) {
-		cerr << "Player " << this->player << " 's unit " << this;
-		cerr << " has already moved" << endl;
 		return false;
 	}
 
 	if (this->tile->getDistance(tile) > this->moveRange) {
-		cerr << "Player " << this->player << " 's unit " << this;
-		cerr << " could not move from " << this->tile->getPosition();
-		cerr << " to " << tile->getPosition() << endl;
 		return false;
 	}
 
@@ -120,10 +115,6 @@ bool Unit::canMoveTo(Tile* tile)
 	} else if (tile->getPlayer() == this->tile->getPlayer()) {
 		return true;
 	} else {
-		cerr << "Player " << this->player << " 's unit " << this;
-		cerr << " could not move to" << tile->getPosition();
-		cerr << " because player " << tile->getPlayer();
-		cerr << " is there" << endl;
 		return false;
 	}
 }
@@ -131,27 +122,16 @@ bool Unit::canMoveTo(Tile* tile)
 bool Unit::canAttack(Tile* tile)
 {
 	if (this->attacked) {
-		cerr << "Player " << this->player << " 's unit " << this;
-		cerr << " has already attacked" << endl;
 		return false;
 	}
 
 	if (this->tile->getDistance(tile) > this->attackRange) {
-		cerr << "Player " << this->player << " 's unit " << this;
-		cerr << " could not attack " << tile->getPosition();
-		cerr << " from " << this->tile->getPosition() << endl;
 		return false;
 	}
 
 	if (tile->getPlayer() == 0) {
-		cerr << "Player " << this->player << " 's unit " << this;
-		cerr << " could not attack " << tile->getPosition();
-		cerr << " because no one is there" << endl;
 		return false;
 	} else if (tile->getPlayer() == this->tile->getPlayer()) {
-		cerr << "Player " << this->player << " 's unit " << this;
-		cerr << " could not attack " << tile->getPosition();
-		cerr << " because friend units are there" << endl;
 		return false;
 	} else {
 		return true;
