@@ -26,8 +26,22 @@ private:
 	static const int x = DEF_HEIGHT;
 	static const int y = DEF_HEIGHT / 12;
 	static const int w = DEF_WIDTH - DEF_HEIGHT * 13 / 12;
-	static const int h = DEF_HEIGHT * 2 / 3;
+	static const int h = DEF_HEIGHT / 2;
 	Card* card;
+};
+
+class ResourceButton : public Button {
+public:
+	ResourceButton(Activity* activity);
+	virtual ~ResourceButton(void);
+
+	virtual void render(SDL_Surface* screen);
+private:
+	static const int x = DEF_HEIGHT;
+	static const int y = DEF_HEIGHT * 2 / 3;
+	static const int w = DEF_WIDTH - DEF_HEIGHT * 13 / 12;
+	static const int h = DEF_HEIGHT / 12;
+	TTF_Font* font;
 };
 
 class EndTurnButton : public TextButton {
@@ -111,6 +125,7 @@ private:
 	Button* cardButton;
 	Button* endTurnButton;
 	Button* concedeButton;
+	Button* resourceButton;
 	vector<Button*> unitButtons;
 	vector<vector<Button*> > tileButtons;
 };

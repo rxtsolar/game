@@ -131,10 +131,9 @@ void TextButton::render(SDL_Surface* screen)
 	SDL_Color color = { 0x0f, 0x0f, 0x0f };
 	SDL_Rect offset;
 	SDL_Rect* box = getBox();
-	SDL_Surface* message = TTF_RenderText_Blended(this->font, text, color);
+	SDL_Surface* message = TTF_RenderText_Blended(this->font, this->text, color);
 
-	SDL_FillRect(screen, this->getBox(),
-			SDL_MapRGB(screen->format, 0xaf, 0xaf, 0xaf));
+	SDL_FillRect(screen, box, SDL_MapRGB(screen->format, 0xaf, 0xaf, 0xaf));
 	offset.x = box->x + (box->w - message->w) / 2;
 	offset.y = box->y + (box->h - message->h) / 2;
 	SDL_BlitSurface(message, 0, screen, &offset);

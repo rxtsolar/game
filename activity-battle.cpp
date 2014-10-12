@@ -1,4 +1,5 @@
 #include <vector>
+#include <string>
 #include <iostream>
 
 #include "activity-battle.h"
@@ -54,6 +55,40 @@ void CardButton::render(SDL_Surface* screen)
 	default:
 		break;
 	}
+}
+
+
+ResourceButton::ResourceButton(Activity* activity) : 
+	Button(activity, this->x, this->y, this->w, this->h)
+{
+	this->font = TTF_OpenFont(font_path, this->h * font_rate);
+}
+
+ResourceButton::~ResourceButton(void)
+{
+	if (this->font)
+		TTF_CloseFont(this->font);
+}
+
+void ResourceButton::render(SDL_Surface* screen)
+{
+	SDL_Color color = { 0x0f, 0x0f, 0x0f };
+	SDL_Rect offset;
+	SDL_Rect* box = getBox();
+	SDL_Surface* message = 0;
+	Game* game = getActivity()->getEngine()->getGame();
+	string text = "Resources: ";
+	text += to_string(game->getTurn()->getResources());
+	text += string(1, '/');
+	text += to_string(game->getTurn()->getMaxResources());
+	message = TTF_RenderText_Blended(this->font, text.c_str(), color);
+
+	SDL_FillRect(screen, box, SDL_MapRGB(screen->format, 0xaf, 0xaf, 0xaf));
+	offset.x = box->x + (box->w - message->w) / 2;
+	offset.y = box->y + (box->h - message->h) / 2;
+	SDL_BlitSurface(message, 0, screen, &offset);
+
+	SDL_FreeSurface(message);
 }
 
 
@@ -321,6 +356,7 @@ BattleActivity::BattleActivity(Engine* engine, SDL_Surface* screen) :
 	this->cardButton = new CardButton(this);
 	this->endTurnButton = new EndTurnButton(this);
 	this->concedeButton = new ConcedeButton(this);
+	this->resourceButton = new ResourceButton(this);
 	this->unitButtons.resize(TILE_LIMIT);
 	for (unsigned int i = 0; i < TILE_LIMIT; i++)
 		this->unitButtons[i] = new UnitButton(this, i);
@@ -335,6 +371,7 @@ BattleActivity::~BattleActivity(void)
 	delete this->cardButton;
 	delete this->endTurnButton;
 	delete this->concedeButton;
+	delete this->resourceButton;
 	for (unsigned int i = 0; i < TILE_LIMIT; i++)
 		delete this->unitButtons[i];
 	for (unsigned int i = 0; i < BOARD_WIDTH; i++)
@@ -403,6 +440,7 @@ void BattleActivity::render(void)
 	this->cardButton->render(screen);
 	this->endTurnButton->render(screen);
 	this->concedeButton->render(screen);
+	this->resourceButton->render(screen);
 	for (unsigned int i = 0; i < BOARD_WIDTH; i++)
 		for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
 			this->tileButtons[i][j]->render(screen);
@@ -427,6 +465,7 @@ void BattleActivity::setStatus(Status status)
 	this->cardButton->setStatus(status);
 	this->endTurnButton->setStatus(status);
 	this->concedeButton->setStatus(status);
+	this->resourceButton->setStatus(status);
 	for (unsigned int i = 0; i < TILE_LIMIT; i++)
 		this->unitButtons[i]->setStatus(status);
 	for (unsigned int i = 0; i < BOARD_WIDTH; i++)
