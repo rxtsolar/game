@@ -482,7 +482,9 @@ void BattleActivity::render(void)
 	SDL_Surface* screen = getScreen();
 	Game* game = getEngine()->getGame();
 
-	if (game->getTurn() == game->getPlayer1())
+	if (!game->getTurn())
+		return;
+	else if (game->getTurn() == game->getPlayer1())
 		SDL_FillRect(screen, 0, SDL_MapRGB(screen->format, 0xff, 0x00, 0x00));
 	else
 		SDL_FillRect(screen, 0, SDL_MapRGB(screen->format, 0x00, 0x00, 0xff));
