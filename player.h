@@ -31,6 +31,7 @@ public:
 	virtual std::unordered_set<Unit*> getUnits(void);
 	virtual std::unordered_set<Tile*> getTiles(void);
 	virtual std::vector<Card*> getCards(void);
+	virtual Card* getCard(unsigned int);
 	virtual Hero* getHero(void);
 	virtual Unit* getSelectedUnit(void);
 	virtual Tile* getSelectedTile(void);

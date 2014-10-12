@@ -13,6 +13,7 @@ public:
 
 	virtual bool canPlay(Tile*);
 	virtual bool play(Tile*);
+	virtual std::string getDescription(void);
 };
 
 class UnitPawn : public Unit {

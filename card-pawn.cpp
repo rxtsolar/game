@@ -45,6 +45,12 @@ bool CardPawn::play(Tile* tile)
 	return true;
 }
 
+string CardPawn::getDescription(void)
+{
+	string description = "Pawn";
+	return description;
+}
+
 
 UnitPawn::UnitPawn(Player* player, Tile* tile) : Unit(player, tile)
 {

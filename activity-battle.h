@@ -13,9 +13,9 @@ using namespace std;
 
 namespace gs {
 
-class CardButton : public TextButton {
+class CardButton : public Button {
 public:
-	CardButton(Activity* activity);
+	CardButton(Activity* activity, unsigned int index);
 	virtual ~CardButton(void);
 
 	virtual bool leftClick(void);
@@ -25,8 +25,10 @@ public:
 private:
 	static const int x = DEF_HEIGHT;
 	static const int y = DEF_HEIGHT / 12;
-	static const int w = DEF_WIDTH - DEF_HEIGHT * 13 / 12;
-	static const int h = DEF_HEIGHT / 2;
+	static const int w = (DEF_WIDTH - DEF_HEIGHT * 13 / 12) / 5 - 10;
+	static const int h = DEF_HEIGHT / 4 - 10;
+	const unsigned int index;
+	TTF_Font* font;
 };
 
 class ResourceButton : public Button {
@@ -121,10 +123,10 @@ public:
 	virtual void setStatus(Status status);
 
 private:
-	Button* cardButton;
 	Button* endTurnButton;
 	Button* concedeButton;
 	Button* resourceButton;
+	vector<Button*> cardButtons;
 	vector<Button*> unitButtons;
 	vector<vector<Button*> > tileButtons;
 };

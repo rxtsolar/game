@@ -79,6 +79,14 @@ vector<Card*> Player::getCards(void)
 	return this->cards;
 }
 
+Card* Player::getCard(unsigned int index)
+{
+	if (index < this->cards.size())
+		return this->cards[index];
+	else
+		return 0;
+}
+
 Hero* Player::getHero(void)
 {
 	return this->hero;

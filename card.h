@@ -24,6 +24,7 @@ public:
 
 	virtual bool canPlay(Tile*) = 0;
 	virtual bool play(Tile*) = 0;
+	virtual std::string getDescription(void) = 0;
 private:
 	Player* player;
 	int defaultResources;

@@ -8,15 +8,18 @@ using namespace std;
 
 namespace gs {
 
-CardButton::CardButton(Activity* activity) :
-	TextButton(activity, "A", this->x, this->y, this->w, this->h)
+CardButton::CardButton(Activity* activity, unsigned int index) :
+	Button(activity, this->x + (index % 5) * (this->w + 10),
+			this->y + (index / 5) * (this->h + 10), this->w, this->h),
+	index(index)
 {
-
+	this->font = TTF_OpenFont(font_path, this->h / 6 * font_rate);
 }
 
 CardButton::~CardButton(void)
 {
-
+	if (this->font)
+		TTF_CloseFont(this->font);
 }
 
 bool CardButton::leftClick(void)
@@ -26,12 +29,17 @@ bool CardButton::leftClick(void)
 
 	switch (getStatus()) {
 	case S_DEFAULT:
-		if (game->getTurn()->getResources() >= game->getTurn()->getCards()[0]->getResources()) {
-			game->getTurn()->selectCard(game->getTurn()->getCards()[0]);
+	{
+		Card* card = game->getTurn()->getCard(this->index);
+		if (!card)
+			break;
+		if (game->getTurn()->getResources() >= card->getResources()) {
+			game->getTurn()->selectCard(card);
 			getActivity()->setStatus(S_CARD);
 			handled = true;
 		}
 		break;
+	}
 	default:
 		break;
 	}
@@ -41,18 +49,53 @@ bool CardButton::leftClick(void)
 
 void CardButton::render(SDL_Surface* screen)
 {
+	Game* game = getActivity()->getEngine()->getGame();
+	Card* card = game->getTurn()->getCard(this->index);
 	Uint32 color;
 
-	TextButton::render(screen);
 	switch (getStatus()) {
 	case S_CARD:
-	{
 		color = SDL_MapRGB(screen->format, 0x6f, 0xff, 0xff);
-		SDL_FillRect(screen, this->getBox(), color);
+		break;
+	default:
+		color = SDL_MapRGB(screen->format, 0xaf, 0xaf, 0xaf);
 		break;
 	}
-	default:
-		break;
+
+	if (card) {
+		string resource = to_string(((UnitCard*)card)->getResources());
+		string description = card->getDescription();
+		string damage = to_string(((UnitCard*)card)->getDamage());
+		string life = to_string(((UnitCard*)card)->getLife());
+		SDL_Color fontColor = { 0x0f, 0x0f, 0x0f };
+		SDL_Surface* r = TTF_RenderText_Blended(this->font,
+				resource.c_str(), fontColor);
+		SDL_Surface* desc = TTF_RenderText_Blended(this->font,
+				description.c_str(), fontColor);
+		SDL_Surface* d = TTF_RenderText_Blended(this->font,
+				damage.c_str(), fontColor);
+		SDL_Surface* l = TTF_RenderText_Blended(this->font,
+				life.c_str(), fontColor);
+		SDL_Rect offset;
+		SDL_Rect cardOffset;
+
+		SDL_FillRect(screen, this->getBox(), color);
+		cardOffset.x = (Sint16)(this->x + (index % 5) * (this->w + 10));
+		cardOffset.y = (Sint16)(this->y + (index / 5) * (this->h + 10));
+		SDL_BlitSurface(r, 0, screen, &cardOffset);
+		offset.x = cardOffset.x + (Sint16)(this->w - desc->w) / 2;
+		offset.y = cardOffset.y + (Sint16)(this->h - desc->h) / 2;
+		SDL_BlitSurface(desc, 0, screen, &offset);
+		offset.y = cardOffset.y + (Sint16)(this->h * 5 / 6);
+		offset.x = cardOffset.x;
+		SDL_BlitSurface(d, 0, screen, &offset);
+		offset.x = cardOffset.x + (Sint16)(this->w * 3 / 4);
+		SDL_BlitSurface(l, 0, screen, &offset);
+
+		SDL_FreeSurface(r);
+		SDL_FreeSurface(desc);
+		SDL_FreeSurface(d);
+		SDL_FreeSurface(l);
 	}
 }
 
@@ -352,11 +395,13 @@ void UnitButton::render(SDL_Surface* screen)
 BattleActivity::BattleActivity(Engine* engine, SDL_Surface* screen) :
 	Activity(engine, screen)
 {
-	this->cardButton = new CardButton(this);
 	this->endTurnButton = new EndTurnButton(this);
 	this->concedeButton = new ConcedeButton(this);
 	this->resourceButton = new ResourceButton(this);
+	this->cardButtons.resize(MAX_HAND_CARD);
 	this->unitButtons.resize(TILE_LIMIT);
+	for (unsigned int i = 0; i < MAX_HAND_CARD; i++)
+		this->cardButtons[i] = new CardButton(this, i);
 	for (unsigned int i = 0; i < TILE_LIMIT; i++)
 		this->unitButtons[i] = new UnitButton(this, i);
 	this->tileButtons.resize(BOARD_WIDTH, vector<Button*>(BOARD_HEIGHT));
@@ -367,10 +412,11 @@ BattleActivity::BattleActivity(Engine* engine, SDL_Surface* screen) :
 
 BattleActivity::~BattleActivity(void)
 {
-	delete this->cardButton;
 	delete this->endTurnButton;
 	delete this->concedeButton;
 	delete this->resourceButton;
+	for (unsigned int i = 0; i < MAX_HAND_CARD; i++)
+		delete this->cardButtons[i];
 	for (unsigned int i = 0; i < TILE_LIMIT; i++)
 		delete this->unitButtons[i];
 	for (unsigned int i = 0; i < BOARD_WIDTH; i++)
@@ -397,11 +443,14 @@ void BattleActivity::handle(void)
 			}
 		}
 
-		if (this->cardButton->handle(&event))
-			continue;
 		if (this->endTurnButton->handle(&event))
 			continue;
 		if (this->concedeButton->handle(&event))
+			continue;
+		for (unsigned int i = 0; i < MAX_HAND_CARD; i++)
+			if (this->cardButtons[i]->handle(&event))
+				handled = true;
+		if (handled)
 			continue;
 		for (unsigned int i = 0; i < BOARD_WIDTH; i++)
 			for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
@@ -436,10 +485,11 @@ void BattleActivity::render(void)
 	else
 		SDL_FillRect(screen, 0, SDL_MapRGB(screen->format, 0x00, 0x00, 0xff));
 
-	this->cardButton->render(screen);
 	this->endTurnButton->render(screen);
 	this->concedeButton->render(screen);
 	this->resourceButton->render(screen);
+	for (unsigned int i = 0; i < MAX_HAND_CARD; i++)
+		this->cardButtons[i]->render(screen);
 	for (unsigned int i = 0; i < BOARD_WIDTH; i++)
 		for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
 			this->tileButtons[i][j]->render(screen);
@@ -461,10 +511,11 @@ void BattleActivity::quit(void)
 
 void BattleActivity::setStatus(Status status)
 {
-	this->cardButton->setStatus(status);
 	this->endTurnButton->setStatus(status);
 	this->concedeButton->setStatus(status);
 	this->resourceButton->setStatus(status);
+	for (unsigned int i = 0; i < MAX_HAND_CARD; i++)
+		this->cardButtons[i]->setStatus(status);
 	for (unsigned int i = 0; i < TILE_LIMIT; i++)
 		this->unitButtons[i]->setStatus(status);
 	for (unsigned int i = 0; i < BOARD_WIDTH; i++)
