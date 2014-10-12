@@ -53,6 +53,7 @@ public:
 	virtual bool playCard(Tile*);
 	virtual bool attack(Tile*);
 	virtual bool moveTo(Tile*);
+	virtual bool drawCard(void);
 	virtual void increaseResources(int);
 	virtual void decreaseResources(int);
 	virtual void increaseMaxResources(int);

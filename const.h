@@ -15,6 +15,7 @@ const int MAX_RESOURCES = 10;
 const int START_MAX_RESOURCES = 0;
 const int EACH_TURN_RESOURCES = 1;
 const int MAX_HAND_CARD = 10;
+const int START_HAND_CARD = 3;
 
 constexpr const char* font_path = "resources/black_jack.ttf";
 const float font_rate = 0.656;

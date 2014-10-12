@@ -55,7 +55,10 @@ void CardButton::render(SDL_Surface* screen)
 
 	switch (getStatus()) {
 	case S_CARD:
-		color = SDL_MapRGB(screen->format, 0x6f, 0xff, 0xff);
+		if (game->getTurn()->getSelectedCard() == card)
+			color = SDL_MapRGB(screen->format, 0x6f, 0xff, 0xff);
+		else
+			color = SDL_MapRGB(screen->format, 0xaf, 0xaf, 0xaf);
 		break;
 	default:
 		color = SDL_MapRGB(screen->format, 0xaf, 0xaf, 0xaf);
@@ -232,7 +235,6 @@ bool TileButton::leftClick(void)
 	{
 		if (game->getTurn()->playCard(tile)) {
 			getActivity()->setStatus(S_DEFAULT);
-			game->getTurn()->selectCard(0);
 			handled = true;
 		}
 		break;

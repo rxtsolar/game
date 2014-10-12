@@ -11,6 +11,11 @@ Game::Game(void)
 	this->board = new Board(BOARD_WIDTH, BOARD_HEIGHT, TILE_LIMIT);
 	this->player1->createHero(this->board->getTile(Position(0, 2)));
 	this->player2->createHero(this->board->getTile(Position(4, 2)));
+	for (int i = 0; i < START_HAND_CARD; i++)
+		this->player1->drawCard();
+	for (int i = 0; i < START_HAND_CARD + 1; i++)
+		this->player2->drawCard();
+
 	this->round = 0;
 	this->turn = this->player1;
 	this->turn->startTurn();

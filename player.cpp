@@ -9,10 +9,8 @@ namespace gs {
 
 Player::Player(Game* game)
 {
-	Card* card = new CardPawn(this);
 	this->game = game;
 	this->maxResources = START_MAX_RESOURCES;
-	addCard(card);
 }
 
 Player::~Player(void)
@@ -216,7 +214,12 @@ bool Player::playCard(Tile* tile)
 		return false;
 	if (!this->selectedCard)
 		return false;
-	return this->selectedCard->play(tile);
+	if (!this->selectedCard->play(tile))
+		return false;
+	removeCard(this->selectedCard);
+	delete this->selectedCard;
+	this->selectedCard = 0;
+	return true;
 }
 
 bool Player::attack(Tile* tile)
@@ -256,6 +259,14 @@ bool Player::moveTo(Tile* tile)
 	return true;
 }
 
+bool Player::drawCard(void)
+{
+	if (this->cards.size() >= MAX_HAND_CARD)
+		return false;
+	addCard(new CardPawn(this));
+	return true;
+}
+
 void Player::increaseResources(int resources)
 {
 	this->resources += resources;
@@ -292,6 +303,7 @@ void Player::fillResources(void)
 void Player::startTurn(void)
 {
 	increaseMaxResources(EACH_TURN_RESOURCES);
+	drawCard();
 	fillResources();
 }
 
