@@ -40,7 +40,7 @@ all: $(objects)
 $(objects) : $(headers)
 
 clean:
-	rm *.o program
+	rm -f *.o program
 
 .PHONY:
 	clean
