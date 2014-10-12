@@ -27,7 +27,6 @@ private:
 	static const int y = DEF_HEIGHT / 12;
 	static const int w = DEF_WIDTH - DEF_HEIGHT * 13 / 12;
 	static const int h = DEF_HEIGHT / 2;
-	Card* card;
 };
 
 class ResourceButton : public Button {

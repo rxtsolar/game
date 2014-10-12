@@ -6,7 +6,7 @@ using namespace std;
 
 namespace gs {
 
-CardPawn::CardPawn(void)
+CardPawn::CardPawn(Player* player) : UnitCard(player)
 {
 	setDefaultResources(1);
 	setResources(1);
@@ -21,26 +21,26 @@ CardPawn::~CardPawn(void)
 
 }
 
-bool CardPawn::canPlay(Player* player, Tile* tile)
+bool CardPawn::canPlay(Tile* tile)
 {
-	if (player->getGame()->getTurn() != player)
+	if (getPlayer()->getGame()->getTurn() != getPlayer())
 		return false;
-	if (tile->getPlayer() != 0 && tile->getPlayer() != player)
+	if (tile->getPlayer() != 0 && tile->getPlayer() != getPlayer())
 		return false;
 	if (tile->getSize() >= tile->getUnits().size())
 		return false;
 	return true;
 }
 
-bool CardPawn::play(Player* player, Tile* tile)
+bool CardPawn::play(Tile* tile)
 {
-	if (!canPlay(player, tile))
+	if (!canPlay(tile))
 		return false;
-	Unit* unit = new UnitPawn(player, tile);
-	player->addUnit(unit);
+	Unit* unit = new UnitPawn(getPlayer(), tile);
+	getPlayer()->addUnit(unit);
 	tile->addUnit(unit);
-	player->decreaseResources(getResources());
-	cout << "Player " << player << " created a pawn " << unit << " on tile ";
+	getPlayer()->decreaseResources(getResources());
+	cout << "Player " << getPlayer() << " created a pawn " << unit << " on tile ";
 	cout << tile << tile->getPosition() << endl;
 	return true;
 }

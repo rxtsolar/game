@@ -2,14 +2,19 @@
 
 namespace gs {
 
-Card::Card(void)
+Card::Card(Player* player)
 {
-
+	this->player = player;
 }
 
 Card::~Card(void)
 {
 
+}
+
+Player* Card::getPlayer(void)
+{
+	return this->player;
 }
 
 int Card::getDefaultResources(void)
@@ -20,6 +25,11 @@ int Card::getDefaultResources(void)
 int Card::getResources(void)
 {
 	return this->resources;
+}
+
+void Card::setPlayer(Player* player)
+{
+	this->player = player;
 }
 
 void Card::setDefaultResources(int defaultResources)
@@ -33,7 +43,7 @@ void Card::setResources(int resources)
 }
 
 
-UnitCard::UnitCard(void)
+UnitCard::UnitCard(Player* player) : Card(player)
 {
 
 }

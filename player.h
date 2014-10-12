@@ -24,13 +24,17 @@ public:
 	virtual void removeUnit(Unit*);
 	virtual void addTile(Tile*);
 	virtual void removeTile(Tile*);
+	virtual void addCard(Card*);
+	virtual void removeCard(Card*);
 
 	virtual Game* getGame(void);
 	virtual std::unordered_set<Unit*> getUnits(void);
 	virtual std::unordered_set<Tile*> getTiles(void);
+	virtual std::vector<Card*> getCards(void);
 	virtual Hero* getHero(void);
 	virtual Unit* getSelectedUnit(void);
 	virtual Tile* getSelectedTile(void);
+	virtual Card* getSelectedCard(void);
 	virtual int getResources(void);
 	virtual int getMaxResources(void);
 
@@ -61,6 +65,7 @@ private:
 	Game* game;
 	std::unordered_set<Unit*> units;
 	std::unordered_set<Tile*> tiles;
+	std::vector<Card*> cards;
 	Hero* hero;
 	Unit* selectedUnit;
 	Tile* selectedTile;

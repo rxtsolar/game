@@ -11,25 +11,28 @@ class Tile;
 
 class Card {
 public:
-	Card(void);
+	Card(Player* player);
 	virtual ~Card(void);
 
+	virtual Player* getPlayer(void);
 	virtual int getDefaultResources(void);
 	virtual int getResources(void);
 
+	virtual void setPlayer(Player*);
 	virtual void setDefaultResources(int);
 	virtual void setResources(int);
 
-	virtual bool canPlay(Player*, Tile*) = 0;
-	virtual bool play(Player*, Tile*) = 0;
+	virtual bool canPlay(Tile*) = 0;
+	virtual bool play(Tile*) = 0;
 private:
+	Player* player;
 	int defaultResources;
 	int resources;
 };
 
 class UnitCard : public Card {
 public:
-	UnitCard(void);
+	UnitCard(Player* player);
 	virtual ~UnitCard(void);
 
 	virtual int getLife(void);
@@ -42,8 +45,8 @@ public:
 	virtual void setMoveRange(int);
 	virtual void setAttackRange(int);
 
-	virtual bool canPlay(Player*, Tile*) = 0;
-	virtual bool play(Player*, Tile*) = 0;
+	virtual bool canPlay(Tile*) = 0;
+	virtual bool play(Tile*) = 0;
 private:
 	int life;
 	int damage;

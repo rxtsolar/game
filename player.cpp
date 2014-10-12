@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "player.h"
+#include "card-pawn.h"
 
 using namespace std;
 
@@ -8,8 +9,10 @@ namespace gs {
 
 Player::Player(Game* game)
 {
+	Card* card = new CardPawn(this);
 	this->game = game;
 	this->maxResources = START_MAX_RESOURCES;
+	addCard(card);
 }
 
 Player::~Player(void)
@@ -17,6 +20,8 @@ Player::~Player(void)
 	unordered_set<Unit*>::iterator it;
 	for (it = this->units.begin(); it != this->units.end(); it++)
 		delete *it;
+	for (unsigned int i = 0; i < this->cards.size(); i++)
+		delete this->cards[i];
 }
 
 void Player::addUnit(Unit* unit)
@@ -39,6 +44,21 @@ void Player::removeTile(Tile* tile)
 	this->tiles.erase(tile);
 }
 
+void Player::addCard(Card* card)
+{
+	if (this->cards.size() < MAX_HAND_CARD)
+		this->cards.push_back(card);
+}
+
+void Player::removeCard(Card* card)
+{
+	vector<Card*> newCards;
+	for (unsigned int i = 0; i < this->cards.size(); i++)
+		if (this->cards[i] != card)
+			newCards.push_back(this->cards[i]);
+	this->cards = newCards;
+}
+
 Game* Player::getGame(void)
 {
 	return this->game;
@@ -54,6 +74,11 @@ unordered_set<Tile*> Player::getTiles(void)
 	return this->tiles;
 }
 
+vector<Card*> Player::getCards(void)
+{
+	return this->cards;
+}
+
 Hero* Player::getHero(void)
 {
 	return this->hero;
@@ -67,6 +92,11 @@ Unit* Player::getSelectedUnit(void)
 Tile* Player::getSelectedTile(void)
 {
 	return this->selectedTile;
+}
+
+Card* Player::getSelectedCard(void)
+{
+	return this->selectedCard;
 }
 
 int Player::getResources(void)
@@ -107,6 +137,10 @@ bool Player::canSelectCard(Card* card)
 {
 	if (this->game->getTurn() != this)
 		return false;
+	if (!card)
+		return true;
+	if (card->getPlayer() != this)
+		return false;
 	return true;
 }
 
@@ -114,7 +148,7 @@ bool Player::canPlayCard(Tile* tile)
 {
 	if (!this->selectedCard)
 		return false;
-	return this->selectedCard->canPlay(this, tile);
+	return this->selectedCard->canPlay(tile);
 }
 
 bool Player::canAttack(Tile* tile)
@@ -174,7 +208,7 @@ bool Player::playCard(Tile* tile)
 		return false;
 	if (!this->selectedCard)
 		return false;
-	return this->selectedCard->play(this, tile);
+	return this->selectedCard->play(tile);
 }
 
 bool Player::attack(Tile* tile)

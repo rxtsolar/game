@@ -8,11 +8,11 @@ namespace gs {
 
 class CardPawn : public UnitCard {
 public:
-	CardPawn(void);
+	CardPawn(Player* player);
 	virtual ~CardPawn(void);
 
-	virtual bool canPlay(Player*, Tile*);
-	virtual bool play(Player*, Tile*);
+	virtual bool canPlay(Tile*);
+	virtual bool play(Tile*);
 };
 
 class UnitPawn : public Unit {
