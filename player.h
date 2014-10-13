@@ -54,10 +54,10 @@ public:
 	virtual bool attack(Tile*);
 	virtual bool moveTo(Tile*);
 	virtual bool drawCard(void);
-	virtual void increaseResources(int);
-	virtual void decreaseResources(int);
-	virtual void increaseMaxResources(int);
-	virtual void decreaseMaxResources(int);
+	virtual void increaseResources(unsigned int);
+	virtual void decreaseResources(unsigned int);
+	virtual void increaseMaxResources(unsigned int);
+	virtual void decreaseMaxResources(unsigned int);
 	virtual void fillResources(void);
 	virtual void startTurn(void);
 	virtual void endTurn(void);
@@ -72,8 +72,8 @@ private:
 	Unit* selectedUnit;
 	Tile* selectedTile;
 	Card* selectedCard;
-	int resources;
-	int maxResources;
+	unsigned int resources;
+	unsigned int maxResources;
 };
 
 } // namespace gs

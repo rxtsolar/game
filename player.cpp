@@ -267,32 +267,34 @@ bool Player::drawCard(void)
 	return true;
 }
 
-void Player::increaseResources(int resources)
+void Player::increaseResources(unsigned int resources)
 {
 	this->resources += resources;
 	if (this->resources > MAX_RESOURCES)
 		this->resources = MAX_RESOURCES;
 }
 
-void Player::decreaseResources(int resources)
+void Player::decreaseResources(unsigned int resources)
 {
-	this->resources -= resources;
-	if (this->resources < 0)
+	if (this->resources < resources)
 		this->resources = 0;
+	else
+		this->resources -= resources;
 }
 
-void Player::increaseMaxResources(int resources)
+void Player::increaseMaxResources(unsigned int resources)
 {
 	this->maxResources += resources;
 	if (this->maxResources > MAX_RESOURCES)
 		this->maxResources = MAX_RESOURCES;
 }
 
-void Player::decreaseMaxResources(int resources)
+void Player::decreaseMaxResources(unsigned int resources)
 {
-	this->maxResources -= resources;
-	if (this->maxResources < 0)
+	if (this->maxResources < resources)
 		this->maxResources = 0;
+	else
+		this->maxResources -= resources;
 }
 
 void Player::fillResources(void)
