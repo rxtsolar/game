@@ -68,8 +68,10 @@ void MainActivity::handle(void)
 {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
-		if (event.type == SDL_QUIT)
+		if (event.type == SDL_QUIT) {
+			getEngine()->setCurrent(0);
 			stop();
+		}
 		if (this->startButton->handle(&event))
 			continue;
 		if (this->exitButton->handle(&event))

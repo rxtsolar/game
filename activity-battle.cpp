@@ -432,8 +432,10 @@ void BattleActivity::handle(void)
 	while (SDL_PollEvent(&event)) {
 		bool handled = false;
 
-		if (event.type == SDL_QUIT)
+		if (event.type == SDL_QUIT) {
+			getEngine()->setCurrent(0);
 			stop();
+		}
 
 		if (event.type == SDL_MOUSEBUTTONDOWN) {
 			if (event.button.button == SDL_BUTTON_LEFT) {

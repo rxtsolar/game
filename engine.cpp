@@ -20,7 +20,7 @@ Engine::Engine(void)
 
 	this->screen = 0;
 	this->screen = SDL_SetVideoMode(DEF_WIDTH, DEF_HEIGHT,
-									DEF_BPP, SDL_SWSURFACE);
+									DEF_BPP, SDL_HWSURFACE | SDL_FULLSCREEN);
 	if (!this->screen)
 		exit(1);
 
