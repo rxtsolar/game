@@ -14,10 +14,9 @@ class Unit;
 
 class Tile {
 public:
-	Tile(unsigned int x, unsigned int y, unsigned int limit);
+	Tile(unsigned int x, unsigned int y);
 	virtual ~Tile(void);
 
-	virtual unsigned int getSize(void);
 	virtual Position getPosition(void);
 	virtual int getDistance(Tile*);
 	virtual std::vector<Unit*> getUnits(void);
@@ -32,7 +31,6 @@ public:
 	virtual void attackedBy(Unit*);
 
 private:
-	unsigned int size;
 	Position position;
 	std::vector<Unit*> units;
 	Player* player;

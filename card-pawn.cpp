@@ -27,7 +27,7 @@ bool CardPawn::canPlay(Tile* tile)
 		return false;
 	if (tile->getPlayer() != 0 && tile->getPlayer() != getPlayer())
 		return false;
-	if (tile->getSize() >= tile->getUnits().size())
+	if (tile->getUnits().size() >= MAX_TILE_UNITS)
 		return false;
 	return true;
 }

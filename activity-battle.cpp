@@ -263,7 +263,7 @@ void TileButton::render(SDL_Surface* screen)
 {
 	Game* game = getActivity()->getEngine()->getGame();
 	Tile* tile = game->getBoard()->getTile(Position(this->row, this->column));
-	string n = to_string(tile->getSize());
+	string n = to_string(tile->getUnits().size());
 	SDL_Color fontColor = { 0x0f, 0x0f, 0x0f };
 	SDL_Surface* message = TTF_RenderText_Blended(this->font, n.c_str(), fontColor);
 	Uint32 color;
@@ -338,7 +338,7 @@ bool UnitButton::leftClick(void)
 		Game* game = getActivity()->getEngine()->getGame();
 		Tile* tile = game->getTurn()->getSelectedTile();
 
-		if (this->index < tile->getSize()) {
+		if (this->index < tile->getUnits().size()) {
 			Unit* unit = tile->getUnit(this->index);
 
 			if (!unit->isAttacked() && unit->getDamage() > 0) {
@@ -364,7 +364,7 @@ void UnitButton::render(SDL_Surface* screen)
 		Game* game = getActivity()->getEngine()->getGame();
 		Tile* tile = game->getTurn()->getSelectedTile();
 
-		if (this->index < tile->getSize()) {
+		if (this->index < tile->getUnits().size()) {
 			Unit* unit = tile->getUnit(this->index);
 			string damage = to_string(unit->getDamage());
 			string life = to_string(unit->getLife());

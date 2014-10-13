@@ -106,7 +106,7 @@ bool Unit::canMoveTo(Tile* tile)
 		return false;
 	if (this->tile->getDistance(tile) > this->moveRange)
 		return false;
-	if (tile->getSize() >= MAX_TILE_UNITS)
+	if (tile->getUnits().size() >= MAX_TILE_UNITS)
 		return false;
 	if (tile->getPlayer() == 0)
 		return true;

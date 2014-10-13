@@ -11,7 +11,7 @@ Board::Board(unsigned int width, unsigned int height, unsigned int num)
 	this->tiles = vector<vector<Tile*> >(width, vector<Tile*>(height));
 	for (unsigned int i = 0; i < width; i++)
 		for (unsigned int j = 0; j < height; j++)
-			this->tiles[i][j] = new Tile(i, j, num);
+			this->tiles[i][j] = new Tile(i, j);
 }
 
 Board::~Board(void)

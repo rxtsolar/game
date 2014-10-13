@@ -11,23 +11,16 @@ static inline int diff(unsigned int a, unsigned int b)
 	return a > b ? a - b : b - a;
 }
 
-Tile::Tile(unsigned int x, unsigned int y, unsigned int limit)
+Tile::Tile(unsigned int x, unsigned int y)
 {
-	this->size = 0;
 	this->position.x = x;
 	this->position.y = y;
-	this->units = vector<Unit*>(limit);
 	this->player = 0;
 }
 
 Tile::~Tile(void)
 {
 
-}
-
-unsigned int Tile::getSize(void)
-{
-	return this->size;
 }
 
 Position Tile::getPosition(void)
@@ -51,7 +44,7 @@ vector<Unit*> Tile::getUnits(void)
 
 Unit* Tile::getUnit(unsigned int i)
 {
-	if (i >= this->size) {
+	if (i >= this->units.size()) {
 		return 0;
 	}
 	return this->units[i];
@@ -69,31 +62,21 @@ void Tile::setPosition(const Position& position)
 
 void Tile::addUnit(Unit* unit)
 {
-	if (this->size >= this->units.size()) {
-		return;
+	if (this->units.size() < MAX_TILE_UNITS) {
+		this->player = unit->getPlayer();
+		this->units.push_back(unit);
 	}
-	this->player = unit->getPlayer();
-	this->units[this->size] = unit;
-	this->size++;
 }
 
 void Tile::removeUnit(Unit* unit)
 {
-	unsigned int i = 0;
-	for (unsigned int j = 0; j < this->units.size(); j++) {
-		if (this->units[j] != unit) {
-			this->units[i] = this->units[j];
-			i++;
-		} else {
-			this->size--;
-		}
-	}
-	while (i < this->units.size()) {
-		this->units[i] = 0;
-		i++;
-	}
+	vector<Unit*> newUnits;
+	for (unsigned int i = 0; i < this->units.size(); i++)
+		if (this->units[i] != unit)
+			newUnits.push_back(this->units[i]);
+	this->units = newUnits;
 
-	if (this->size == 0) {
+	if (this->units.size() == 0) {
 		this->player->removeTile(this);
 		this->player = 0;
 	}
@@ -106,9 +89,9 @@ void Tile::setPlayer(Player* player)
 
 void Tile::attackedBy(Unit* unit)
 {
-	unsigned int oldSize = this->size;
-	unsigned int i = 0;
-	while (i < this->size) {
+	vector<Unit*> newUnits;
+
+	for (unsigned int i = 0; i < this->units.size(); i++) {
 		Unit* u = this->units[i];
 		unit->attack(u);
 		if (u->canAttack(unit->getTile()))
@@ -121,25 +104,12 @@ void Tile::attackedBy(Unit* unit)
 				u->getPlayer()->lose();
 			delete u;
 			this->units[i] = 0;
-		}
-		i++;
-	}
-
-	i = 0;
-	for (unsigned int j = 0; j < oldSize; j++) {
-		if (this->units[j] != 0) {
-			this->units[i] = this->units[j];
-			i++;
 		} else {
-			this->size--;
+			newUnits.push_back(u);
 		}
 	}
-	while (i < this->units.size()) {
-		this->units[i] = 0;
-		i++;
-	}
 
-	if (this->size == 0) {
+	if (this->units.size() == 0) {
 		this->player->removeTile(this);
 		this->player = 0;
 	}
