@@ -102,40 +102,32 @@ bool Unit::isAttacked(void)
 
 bool Unit::canMoveTo(Tile* tile)
 {
-	if (this->moved) {
+	if (this->moved)
 		return false;
-	}
-
-	if (this->tile->getDistance(tile) > this->moveRange) {
+	if (this->tile->getDistance(tile) > this->moveRange)
 		return false;
-	}
-
-	if (tile->getPlayer() == 0) {
+	if (tile->getSize() >= TILE_LIMIT)
+		return false;
+	if (tile->getPlayer() == 0)
 		return true;
-	} else if (tile->getPlayer() == this->tile->getPlayer()) {
+	else if (tile->getPlayer() == this->tile->getPlayer())
 		return true;
-	} else {
+	else
 		return false;
-	}
 }
 
 bool Unit::canAttack(Tile* tile)
 {
-	if (this->attacked) {
+	if (this->attacked)
 		return false;
-	}
-
-	if (this->tile->getDistance(tile) > this->attackRange) {
+	if (this->tile->getDistance(tile) > this->attackRange)
 		return false;
-	}
-
-	if (tile->getPlayer() == 0) {
+	if (tile->getPlayer() == 0)
 		return false;
-	} else if (tile->getPlayer() == this->tile->getPlayer()) {
+	else if (tile->getPlayer() == this->tile->getPlayer())
 		return false;
-	} else {
+	else
 		return true;
-	}
 }
 
 void Unit::refresh(void)
