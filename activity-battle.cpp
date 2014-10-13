@@ -400,11 +400,11 @@ BattleActivity::BattleActivity(Engine* engine, SDL_Surface* screen) :
 	this->endTurnButton = new EndTurnButton(this);
 	this->concedeButton = new ConcedeButton(this);
 	this->resourceButton = new ResourceButton(this);
-	this->cardButtons.resize(MAX_HAND_CARD);
-	this->unitButtons.resize(TILE_LIMIT);
-	for (unsigned int i = 0; i < MAX_HAND_CARD; i++)
+	this->cardButtons.resize(MAX_HAND_CARDS);
+	this->unitButtons.resize(MAX_TILE_UNITS);
+	for (unsigned int i = 0; i < MAX_HAND_CARDS; i++)
 		this->cardButtons[i] = new CardButton(this, i);
-	for (unsigned int i = 0; i < TILE_LIMIT; i++)
+	for (unsigned int i = 0; i < MAX_TILE_UNITS; i++)
 		this->unitButtons[i] = new UnitButton(this, i);
 	this->tileButtons.resize(BOARD_WIDTH, vector<Button*>(BOARD_HEIGHT));
 	for (unsigned int i = 0; i < BOARD_WIDTH; i++)
@@ -417,9 +417,9 @@ BattleActivity::~BattleActivity(void)
 	delete this->endTurnButton;
 	delete this->concedeButton;
 	delete this->resourceButton;
-	for (unsigned int i = 0; i < MAX_HAND_CARD; i++)
+	for (unsigned int i = 0; i < MAX_HAND_CARDS; i++)
 		delete this->cardButtons[i];
-	for (unsigned int i = 0; i < TILE_LIMIT; i++)
+	for (unsigned int i = 0; i < MAX_TILE_UNITS; i++)
 		delete this->unitButtons[i];
 	for (unsigned int i = 0; i < BOARD_WIDTH; i++)
 		for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
@@ -449,7 +449,7 @@ void BattleActivity::handle(void)
 			continue;
 		if (this->concedeButton->handle(&event))
 			continue;
-		for (unsigned int i = 0; i < MAX_HAND_CARD; i++)
+		for (unsigned int i = 0; i < MAX_HAND_CARDS; i++)
 			if (this->cardButtons[i]->handle(&event))
 				handled = true;
 		if (handled)
@@ -460,7 +460,7 @@ void BattleActivity::handle(void)
 					handled = true;
 		if (handled)
 			continue;
-		for (unsigned int i = 0; i < TILE_LIMIT; i++)
+		for (unsigned int i = 0; i < MAX_TILE_UNITS; i++)
 			if (this->unitButtons[i]->handle(&event))
 				handled = true;
 		if (handled)
@@ -492,12 +492,12 @@ void BattleActivity::render(void)
 	this->endTurnButton->render(screen);
 	this->concedeButton->render(screen);
 	this->resourceButton->render(screen);
-	for (unsigned int i = 0; i < MAX_HAND_CARD; i++)
+	for (unsigned int i = 0; i < MAX_HAND_CARDS; i++)
 		this->cardButtons[i]->render(screen);
 	for (unsigned int i = 0; i < BOARD_WIDTH; i++)
 		for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
 			this->tileButtons[i][j]->render(screen);
-	for (unsigned int i = 0; i < TILE_LIMIT; i++)
+	for (unsigned int i = 0; i < MAX_TILE_UNITS; i++)
 		this->unitButtons[i]->render(screen);
 
 	SDL_Flip(screen);
@@ -518,9 +518,9 @@ void BattleActivity::setStatus(Status status)
 	this->endTurnButton->setStatus(status);
 	this->concedeButton->setStatus(status);
 	this->resourceButton->setStatus(status);
-	for (unsigned int i = 0; i < MAX_HAND_CARD; i++)
+	for (unsigned int i = 0; i < MAX_HAND_CARDS; i++)
 		this->cardButtons[i]->setStatus(status);
-	for (unsigned int i = 0; i < TILE_LIMIT; i++)
+	for (unsigned int i = 0; i < MAX_TILE_UNITS; i++)
 		this->unitButtons[i]->setStatus(status);
 	for (unsigned int i = 0; i < BOARD_WIDTH; i++)
 		for (unsigned int j = 0; j < BOARD_HEIGHT; j++)

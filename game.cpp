@@ -8,12 +8,12 @@ Game::Game(void)
 {
 	this->player1 = new Player(this);
 	this->player2 = new Player(this);
-	this->board = new Board(BOARD_WIDTH, BOARD_HEIGHT, TILE_LIMIT);
+	this->board = new Board(BOARD_WIDTH, BOARD_HEIGHT, MAX_TILE_UNITS);
 	this->player1->createHero(this->board->getTile(Position(0, 2)));
 	this->player2->createHero(this->board->getTile(Position(4, 2)));
-	for (int i = 0; i < START_HAND_CARD; i++)
+	for (int i = 0; i < START_HAND_CARDS; i++)
 		this->player1->drawCard();
-	for (int i = 0; i < START_HAND_CARD + 1; i++)
+	for (int i = 0; i < START_HAND_CARDS + 1; i++)
 		this->player2->drawCard();
 
 	this->round = 0;

@@ -44,7 +44,7 @@ void Player::removeTile(Tile* tile)
 
 void Player::addCard(Card* card)
 {
-	if (this->cards.size() < MAX_HAND_CARD)
+	if (this->cards.size() < MAX_HAND_CARDS)
 		this->cards.push_back(card);
 }
 
@@ -261,7 +261,7 @@ bool Player::moveTo(Tile* tile)
 
 bool Player::drawCard(void)
 {
-	if (this->cards.size() >= MAX_HAND_CARD)
+	if (this->cards.size() >= MAX_HAND_CARDS)
 		return false;
 	addCard(new CardPawn(this));
 	return true;
