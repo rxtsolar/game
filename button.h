@@ -19,10 +19,8 @@ public:
 
 	virtual SDL_Rect* getBox(void);
 	virtual Activity* getActivity(void);
-	virtual Status getStatus(void);
 
 	virtual void setBox(int x, int y, int w, int h);
-	virtual void setStatus(Status status);
 
 	virtual bool handle(SDL_Event* event);
 	virtual void render(SDL_Surface* screen);
@@ -34,7 +32,6 @@ public:
 private:
 	SDL_Rect* box;
 	Activity* activity;
-	Status status;
 };
 
 class TextButton : public Button {

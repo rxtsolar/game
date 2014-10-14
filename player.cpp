@@ -11,6 +11,7 @@ Player::Player(Game* game)
 {
 	this->game = game;
 	this->maxResources = START_MAX_RESOURCES;
+	this->status = S_DEFAULT;
 }
 
 Player::~Player(void)
@@ -113,6 +114,11 @@ int Player::getResources(void)
 int Player::getMaxResources(void)
 {
 	return this->maxResources;
+}
+
+Status Player::getStatus(void)
+{
+	return this->status;
 }
 
 bool Player::canSelectUnit(Unit* unit)
@@ -300,6 +306,11 @@ void Player::decreaseMaxResources(unsigned int resources)
 void Player::fillResources(void)
 {
 	this->resources = this->maxResources;
+}
+
+void Player::setStatus(Status status)
+{
+	this->status = status;
 }
 
 void Player::startTurn(void)

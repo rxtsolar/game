@@ -27,7 +27,7 @@ bool CardButton::leftClick(void)
 	bool handled = false;
 	Game* game = getActivity()->getEngine()->getGame();
 
-	switch (getStatus()) {
+	switch (game->getTurn()->getStatus()) {
 	case S_DEFAULT:
 	{
 		Card* card = game->getTurn()->getCard(this->index);
@@ -35,7 +35,7 @@ bool CardButton::leftClick(void)
 			break;
 		if (game->getTurn()->getResources() >= card->getResources()) {
 			game->getTurn()->selectCard(card);
-			getActivity()->setStatus(S_CARD);
+			game->getTurn()->setStatus(S_CARD);
 			handled = true;
 		}
 		break;
@@ -53,7 +53,7 @@ void CardButton::render(SDL_Surface* screen)
 	Card* card = game->getTurn()->getCard(this->index);
 	Uint32 color;
 
-	switch (getStatus()) {
+	switch (game->getTurn()->getStatus()) {
 	case S_CARD:
 		if (game->getTurn()->getSelectedCard() == card)
 			color = SDL_MapRGB(screen->format, 0x6f, 0xff, 0xff);
@@ -150,12 +150,12 @@ EndTurnButton::~EndTurnButton(void)
 
 bool EndTurnButton::leftClick(void)
 {
+	Game* game = getActivity()->getEngine()->getGame();
 	bool handled = false;
 
-	switch (getStatus()) {
+	switch (game->getTurn()->getStatus()) {
 	case S_DEFAULT:
 	{
-		Game* game = getActivity()->getEngine()->getGame();
 		game->getTurn()->endTurn();
 		handled = true;
 		break;
@@ -181,13 +181,13 @@ ConcedeButton::~ConcedeButton(void)
 
 bool ConcedeButton::leftClick(void)
 {
+	Engine* engine = getActivity()->getEngine();
 	bool handled = false;
 
-	switch (getStatus()) {
+	switch (engine->getGame()->getTurn()->getStatus()) {
 	case S_DEFAULT:
 	{
 		Activity* activity = getActivity();
-		Engine* engine = activity->getEngine();
 		engine->setCurrent(engine->getMainActivity());
 		activity->stop();
 		handled = true;
@@ -222,11 +222,11 @@ bool TileButton::leftClick(void)
 	Game* game = getActivity()->getEngine()->getGame();
 	Tile* tile = game->getBoard()->getTile(Position(this->row, this->column));
 
-	switch (getStatus()) {
+	switch (game->getTurn()->getStatus()) {
 	case S_DEFAULT:
 	{
 		if (game->getTurn()->selectTile(tile)) {
-			getActivity()->setStatus(S_TILE);
+			game->getTurn()->setStatus(S_TILE);
 			handled = true;
 		}
 		break;
@@ -234,7 +234,7 @@ bool TileButton::leftClick(void)
 	case S_CARD:
 	{
 		if (game->getTurn()->playCard(tile)) {
-			getActivity()->setStatus(S_DEFAULT);
+			game->getTurn()->setStatus(S_DEFAULT);
 			handled = true;
 		}
 		break;
@@ -243,11 +243,11 @@ bool TileButton::leftClick(void)
 	{
 		if (game->getTurn()->canAttack(tile)) {
 			game->getTurn()->attack(tile);
-			getActivity()->setStatus(S_DEFAULT);
+			game->getTurn()->setStatus(S_DEFAULT);
 			handled = true;
 		} else if (game->getTurn()->canMoveTo(tile)) {
 			game->getTurn()->moveTo(tile);
-			getActivity()->setStatus(S_DEFAULT);
+			game->getTurn()->setStatus(S_DEFAULT);
 			handled = true;
 		}
 		break;
@@ -274,7 +274,7 @@ void TileButton::render(SDL_Surface* screen)
 		(Sint16)(this->y + row * this->h),
 	};
 
-	switch (getStatus()) {
+	switch (game->getTurn()->getStatus()) {
 	case S_UNIT:
 	{
 		handled = true;
@@ -330,12 +330,12 @@ UnitButton::~UnitButton(void)
 
 bool UnitButton::leftClick(void)
 {
+	Game* game = getActivity()->getEngine()->getGame();
 	bool handled = false;
 
-	switch (getStatus()) {
+	switch (game->getTurn()->getStatus()) {
 	case S_TILE:
 	{
-		Game* game = getActivity()->getEngine()->getGame();
 		Tile* tile = game->getTurn()->getSelectedTile();
 
 		if (this->index < tile->getUnits().size()) {
@@ -343,7 +343,7 @@ bool UnitButton::leftClick(void)
 
 			if (!unit->isAttacked() && unit->getDamage() > 0) {
 				game->getTurn()->selectUnit(unit);
-				getActivity()->setStatus(S_UNIT);
+				game->getTurn()->setStatus(S_UNIT);
 				handled = true;
 			}
 		}
@@ -358,10 +358,11 @@ bool UnitButton::leftClick(void)
 
 void UnitButton::render(SDL_Surface* screen)
 {
-	switch (getStatus()) {
+	Game* game = getActivity()->getEngine()->getGame();
+
+	switch (game->getTurn()->getStatus()) {
 	case S_TILE:
 	{
-		Game* game = getActivity()->getEngine()->getGame();
 		Tile* tile = game->getTurn()->getSelectedTile();
 
 		if (this->index < tile->getUnits().size()) {
@@ -473,7 +474,7 @@ void BattleActivity::handle(void)
 				Game* game = getEngine()->getGame();
 				game->getTurn()->selectTile(0);
 				game->getTurn()->selectUnit(0);
-				setStatus(S_DEFAULT);
+				game->getTurn()->setStatus(S_DEFAULT);
 			}
 		}
 	}
@@ -513,20 +514,6 @@ void BattleActivity::init(void)
 void BattleActivity::quit(void)
 {
 	getEngine()->endGame();
-}
-
-void BattleActivity::setStatus(Status status)
-{
-	this->endTurnButton->setStatus(status);
-	this->concedeButton->setStatus(status);
-	this->resourceButton->setStatus(status);
-	for (unsigned int i = 0; i < MAX_HAND_CARDS; i++)
-		this->cardButtons[i]->setStatus(status);
-	for (unsigned int i = 0; i < MAX_TILE_UNITS; i++)
-		this->unitButtons[i]->setStatus(status);
-	for (unsigned int i = 0; i < BOARD_WIDTH; i++)
-		for (unsigned int j = 0; j < BOARD_HEIGHT; j++)
-			this->tileButtons[i][j]->setStatus(status);
 }
 
 } // namespace gs

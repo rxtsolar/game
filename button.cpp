@@ -8,7 +8,6 @@ Button::Button(Activity* activity)
 {
 	this->activity = activity;
 	this->box = new SDL_Rect();
-	this->status = S_DEFAULT;
 }
 
 Button::Button(Activity* activity, int x, int y, int w, int h)
@@ -19,7 +18,6 @@ Button::Button(Activity* activity, int x, int y, int w, int h)
 	this->box->y = y;
 	this->box->w = w;
 	this->box->h = h;
-	this->status = S_DEFAULT;
 }
 
 Button::~Button(void)
@@ -37,22 +35,12 @@ Activity* Button::getActivity(void)
 	return this->activity;
 }
 
-Status Button::getStatus(void)
-{
-	return this->status;
-}
-
 void Button::setBox(int x, int y, int w, int h)
 {
 	this->box->x = x;
 	this->box->y = y;
 	this->box->w = w;
 	this->box->h = h;
-}
-
-void Button::setStatus(Status status)
-{
-	this->status = status;
 }
 
 bool Button::handle(SDL_Event* event)

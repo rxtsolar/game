@@ -38,6 +38,7 @@ public:
 	virtual Card* getSelectedCard(void);
 	virtual int getResources(void);
 	virtual int getMaxResources(void);
+	virtual Status getStatus(void);
 
 	virtual bool canSelectUnit(Unit*);
 	virtual bool canSelectTile(Tile*);
@@ -59,6 +60,8 @@ public:
 	virtual void increaseMaxResources(unsigned int);
 	virtual void decreaseMaxResources(unsigned int);
 	virtual void fillResources(void);
+	virtual void setStatus(Status);
+
 	virtual void startTurn(void);
 	virtual void endTurn(void);
 	virtual void lose(void);
@@ -74,6 +77,7 @@ private:
 	Card* selectedCard;
 	unsigned int resources;
 	unsigned int maxResources;
+	Status status;
 };
 
 } // namespace gs

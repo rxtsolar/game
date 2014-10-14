@@ -30,8 +30,6 @@ public:
 	virtual void quit(void);
 	virtual void delay(void);
 
-	virtual void setStatus(Status status);
-
 private:
 	bool running;
 	Engine* engine;

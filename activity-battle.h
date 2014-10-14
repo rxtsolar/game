@@ -120,8 +120,6 @@ public:
 	virtual void init(void);
 	virtual void quit(void);
 
-	virtual void setStatus(Status status);
-
 private:
 	Button* endTurnButton;
 	Button* concedeButton;

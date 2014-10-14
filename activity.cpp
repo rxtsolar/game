@@ -71,9 +71,4 @@ void Activity::delay(void)
 	SDL_Delay(1000 / DEF_FPS);
 }
 
-void Activity::setStatus(Status status)
-{
-
-}
-
 } // namespace gs
