@@ -51,55 +51,9 @@ void CardButton::render(SDL_Surface* screen)
 {
 	Game* game = getActivity()->getEngine()->getGame();
 	Card* card = game->getTurn()->getCard(this->index);
-	Uint32 color;
 
-	switch (game->getTurn()->getStatus()) {
-	case S_CARD:
-		if (game->getTurn()->getSelectedCard() == card)
-			color = SDL_MapRGB(screen->format, 0x6f, 0xff, 0xff);
-		else
-			color = SDL_MapRGB(screen->format, 0xaf, 0xaf, 0xaf);
-		break;
-	default:
-		color = SDL_MapRGB(screen->format, 0xaf, 0xaf, 0xaf);
-		break;
-	}
-
-	if (card) {
-		string resource = to_string(((UnitCard*)card)->getResources());
-		string description = card->getDescription();
-		string damage = to_string(((UnitCard*)card)->getDamage());
-		string life = to_string(((UnitCard*)card)->getLife());
-		SDL_Color fontColor = { 0x0f, 0x0f, 0x0f };
-		SDL_Surface* r = TTF_RenderText_Blended(this->font,
-				resource.c_str(), fontColor);
-		SDL_Surface* desc = TTF_RenderText_Blended(this->font,
-				description.c_str(), fontColor);
-		SDL_Surface* d = TTF_RenderText_Blended(this->font,
-				damage.c_str(), fontColor);
-		SDL_Surface* l = TTF_RenderText_Blended(this->font,
-				life.c_str(), fontColor);
-		SDL_Rect offset;
-		SDL_Rect cardOffset;
-
-		SDL_FillRect(screen, this->getBox(), color);
-		cardOffset.x = (Sint16)(this->x + (index % 5) * (this->w + 10));
-		cardOffset.y = (Sint16)(this->y + (index / 5) * (this->h + 10));
-		SDL_BlitSurface(r, 0, screen, &cardOffset);
-		offset.x = cardOffset.x + (Sint16)(this->w - desc->w) / 2;
-		offset.y = cardOffset.y + (Sint16)(this->h - desc->h) / 2;
-		SDL_BlitSurface(desc, 0, screen, &offset);
-		offset.y = cardOffset.y + (Sint16)(this->h * 5 / 6);
-		offset.x = cardOffset.x;
-		SDL_BlitSurface(d, 0, screen, &offset);
-		offset.x = cardOffset.x + (Sint16)(this->w * 3 / 4);
-		SDL_BlitSurface(l, 0, screen, &offset);
-
-		SDL_FreeSurface(r);
-		SDL_FreeSurface(desc);
-		SDL_FreeSurface(d);
-		SDL_FreeSurface(l);
-	}
+	if (card)
+		card->render(screen, getBox());
 }
 
 

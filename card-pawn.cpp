@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include <SDL/SDL_ttf.h>
+
 #include "card-pawn.h"
 
 using namespace std;
@@ -64,6 +66,10 @@ UnitPawn::UnitPawn(Player* player, Tile* tile) : Unit(player, tile)
 UnitPawn::~UnitPawn(void)
 {
 
+}
+
+void UnitPawn::render(SDL_Surface* screen, SDL_Rect* box)
+{
 }
 
 } // namespace gs

@@ -1,6 +1,8 @@
 #ifndef _CARD_H_
 #define _CARD_H_
 
+#include <SDL/SDL.h>
+
 #include "player.h"
 #include "tile.h"
 
@@ -25,6 +27,7 @@ public:
 	virtual bool canPlay(Tile*) = 0;
 	virtual bool play(Tile*) = 0;
 	virtual std::string getDescription(void) = 0;
+	virtual void render(SDL_Surface*, SDL_Rect*) = 0;
 private:
 	Player* player;
 	int defaultResources;
@@ -46,8 +49,7 @@ public:
 	virtual void setMoveRange(int);
 	virtual void setAttackRange(int);
 
-	virtual bool canPlay(Tile*) = 0;
-	virtual bool play(Tile*) = 0;
+	virtual void render(SDL_Surface*, SDL_Rect*);
 private:
 	int life;
 	int damage;
