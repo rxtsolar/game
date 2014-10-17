@@ -22,12 +22,12 @@ Player* Card::getPlayer(void)
 	return this->player;
 }
 
-int Card::getDefaultResources(void)
+unsigned int Card::getDefaultResources(void)
 {
 	return this->defaultResources;
 }
 
-int Card::getResources(void)
+unsigned int Card::getResources(void)
 {
 	return this->resources;
 }
@@ -37,12 +37,12 @@ void Card::setPlayer(Player* player)
 	this->player = player;
 }
 
-void Card::setDefaultResources(int defaultResources)
+void Card::setDefaultResources(unsigned int defaultResources)
 {
 	this->defaultResources = defaultResources;
 }
 
-void Card::setResources(int resources)
+void Card::setResources(unsigned int resources)
 {
 	this->resources = resources;
 }
@@ -133,6 +133,15 @@ void UnitCard::render(SDL_Surface* screen, SDL_Rect* box)
 			life.c_str(), fontColor);
 	SDL_Rect offset;
 
+	if (getPlayer()->canSelectCard(this)) {
+		SDL_Rect frame;
+		Uint32 frameColor = SDL_MapRGB(screen->format, 0x6f, 0xff, 0xff);
+		frame.x = box->x - 3;
+		frame.y = box->y - 3;
+		frame.w = box->w + 6;
+		frame.h = box->h + 6;
+		SDL_FillRect(screen, &frame, frameColor);
+	}
 	SDL_FillRect(screen, box, color);
 	offset.x = box->x;
 	offset.y = box->y;

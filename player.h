@@ -36,8 +36,8 @@ public:
 	virtual Unit* getSelectedUnit(void);
 	virtual Tile* getSelectedTile(void);
 	virtual Card* getSelectedCard(void);
-	virtual int getResources(void);
-	virtual int getMaxResources(void);
+	virtual unsigned int getResources(void);
+	virtual unsigned int getMaxResources(void);
 	virtual Status getStatus(void);
 
 	virtual bool canSelectUnit(Unit*);

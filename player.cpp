@@ -109,12 +109,12 @@ Card* Player::getSelectedCard(void)
 	return this->selectedCard;
 }
 
-int Player::getResources(void)
+unsigned int Player::getResources(void)
 {
 	return this->resources;
 }
 
-int Player::getMaxResources(void)
+unsigned int Player::getMaxResources(void)
 {
 	return this->maxResources;
 }
@@ -155,6 +155,8 @@ bool Player::canSelectCard(Card* card)
 	if (!card)
 		return true;
 	if (card->getPlayer() != this)
+		return false;
+	if (card->getResources() > this->resources)
 		return false;
 	return true;
 }

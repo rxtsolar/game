@@ -17,12 +17,12 @@ public:
 	virtual ~Card(void);
 
 	virtual Player* getPlayer(void);
-	virtual int getDefaultResources(void);
-	virtual int getResources(void);
+	virtual unsigned int getDefaultResources(void);
+	virtual unsigned int getResources(void);
 
 	virtual void setPlayer(Player*);
-	virtual void setDefaultResources(int);
-	virtual void setResources(int);
+	virtual void setDefaultResources(unsigned int);
+	virtual void setResources(unsigned int);
 
 	virtual bool canPlay(Tile*) = 0;
 	virtual bool play(Tile*) = 0;
@@ -30,8 +30,8 @@ public:
 	virtual void render(SDL_Surface*, SDL_Rect*) = 0;
 private:
 	Player* player;
-	int defaultResources;
-	int resources;
+	unsigned int defaultResources;
+	unsigned int resources;
 };
 
 class UnitCard : public Card {
