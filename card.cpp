@@ -47,6 +47,19 @@ void Card::setResources(unsigned int resources)
 	this->resources = resources;
 }
 
+void Card::render(SDL_Surface* screen, SDL_Rect* box)
+{
+	if (getPlayer()->canSelectCard(this)) {
+		SDL_Rect frame;
+		Uint32 frameColor = SDL_MapRGB(screen->format, 0x6f, 0xff, 0xff);
+		frame.x = box->x - 3;
+		frame.y = box->y - 3;
+		frame.w = box->w + 6;
+		frame.h = box->h + 6;
+		SDL_FillRect(screen, &frame, frameColor);
+	}
+}
+
 
 UnitCard::UnitCard(Player* player) : Card(player)
 {
@@ -101,20 +114,6 @@ void UnitCard::setAttackRange(int attackRange)
 void UnitCard::render(SDL_Surface* screen, SDL_Rect* box)
 {
 	TTF_Font* font = TTF_OpenFont(font_path, box->h / 6 * font_rate);
-	Uint32 color;
-
-	switch (getPlayer()->getStatus()) {
-	case S_CARD:
-		if (getPlayer()->getSelectedCard() == this)
-			color = SDL_MapRGB(screen->format, 0x6f, 0xff, 0xff);
-		else
-			color = SDL_MapRGB(screen->format, 0xaf, 0xaf, 0xaf);
-		break;
-	default:
-		color = SDL_MapRGB(screen->format, 0xaf, 0xaf, 0xaf);
-		break;
-	}
-
 	string resource = to_string(getResources());
 	string moveRange = to_string(getMoveRange());
 	string description = getDescription();
@@ -132,16 +131,22 @@ void UnitCard::render(SDL_Surface* screen, SDL_Rect* box)
 	SDL_Surface* l = TTF_RenderText_Blended(font,
 			life.c_str(), fontColor);
 	SDL_Rect offset;
+	Uint32 color;
 
-	if (getPlayer()->canSelectCard(this)) {
-		SDL_Rect frame;
-		Uint32 frameColor = SDL_MapRGB(screen->format, 0x6f, 0xff, 0xff);
-		frame.x = box->x - 3;
-		frame.y = box->y - 3;
-		frame.w = box->w + 6;
-		frame.h = box->h + 6;
-		SDL_FillRect(screen, &frame, frameColor);
+	Card::render(screen, box);
+
+	switch (getPlayer()->getStatus()) {
+	case S_CARD:
+		if (getPlayer()->getSelectedCard() == this)
+			color = SDL_MapRGB(screen->format, 0x6f, 0xff, 0xff);
+		else
+			color = SDL_MapRGB(screen->format, 0xaf, 0xaf, 0xaf);
+		break;
+	default:
+		color = SDL_MapRGB(screen->format, 0xaf, 0xaf, 0xaf);
+		break;
 	}
+
 	SDL_FillRect(screen, box, color);
 	offset.x = box->x;
 	offset.y = box->y;

@@ -202,6 +202,16 @@ void Unit::render(SDL_Surface* screen, SDL_Rect* box)
 		Uint32 color = SDL_MapRGB(screen->format, 0x3f, 0x3f, 0x3f);
 		SDL_Rect offset;
 
+		if (getPlayer()->canSelectUnit(this)) {
+			SDL_Rect frame;
+			Uint32 frameColor = SDL_MapRGB(screen->format, 0x6f, 0xff, 0xff);
+			frame.x = box->x - 3;
+			frame.y = box->y - 3;
+			frame.w = box->w + 6;
+			frame.h = box->h + 6;
+			SDL_FillRect(screen, &frame, frameColor);
+		}   
+
 		SDL_FillRect(screen, box, color);
 		offset.x = box->x;
 		offset.y = box->y;
