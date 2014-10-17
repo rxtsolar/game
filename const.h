@@ -4,8 +4,8 @@
 namespace gs {
 
 const int DEF_FPS = 25;
-const int DEF_WIDTH = 1600;
-const int DEF_HEIGHT = 900;
+const int DEF_WIDTH = 1280;
+const int DEF_HEIGHT = 720;
 const int DEF_BPP = 32;
 
 const unsigned int BOARD_WIDTH = 5;
