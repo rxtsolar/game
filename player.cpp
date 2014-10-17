@@ -12,6 +12,9 @@ Player::Player(Game* game)
 	this->game = game;
 	this->maxResources = START_MAX_RESOURCES;
 	this->status = S_DEFAULT;
+	this->selectedUnit = 0;
+	this->selectedTile = 0;
+	this->selectedCard = 0;
 }
 
 Player::~Player(void)

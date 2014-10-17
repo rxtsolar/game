@@ -116,12 +116,15 @@ void UnitCard::render(SDL_Surface* screen, SDL_Rect* box)
 	}
 
 	string resource = to_string(getResources());
+	string moveRange = to_string(getMoveRange());
 	string description = getDescription();
 	string damage = to_string(getDamage());
 	string life = to_string(getLife());
 	SDL_Color fontColor = { 0x0f, 0x0f, 0x0f };
 	SDL_Surface* r = TTF_RenderText_Blended(font,
 			resource.c_str(), fontColor);
+	SDL_Surface* m = TTF_RenderText_Blended(font,
+			moveRange.c_str(), fontColor);
 	SDL_Surface* desc = TTF_RenderText_Blended(font,
 			description.c_str(), fontColor);
 	SDL_Surface* d = TTF_RenderText_Blended(font,
@@ -134,6 +137,8 @@ void UnitCard::render(SDL_Surface* screen, SDL_Rect* box)
 	offset.x = box->x;
 	offset.y = box->y;
 	SDL_BlitSurface(r, 0, screen, &offset);
+	offset.x = box->x + (Sint16)(box->w * 3 / 4);
+	SDL_BlitSurface(m, 0, screen, &offset);
 	offset.x = box->x + (Sint16)(box->w - desc->w) / 2;
 	offset.y = box->y + (Sint16)(box->h - desc->h) / 2;
 	SDL_BlitSurface(desc, 0, screen, &offset);
@@ -144,6 +149,7 @@ void UnitCard::render(SDL_Surface* screen, SDL_Rect* box)
 	SDL_BlitSurface(l, 0, screen, &offset);
 
 	SDL_FreeSurface(r);
+	SDL_FreeSurface(m);
 	SDL_FreeSurface(desc);
 	SDL_FreeSurface(d);
 	SDL_FreeSurface(l);

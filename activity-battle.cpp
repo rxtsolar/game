@@ -313,38 +313,12 @@ bool UnitButton::leftClick(void)
 void UnitButton::render(SDL_Surface* screen)
 {
 	Game* game = getActivity()->getEngine()->getGame();
+	Tile* tile = game->getTurn()->getSelectedTile();
 
-	switch (game->getTurn()->getStatus()) {
-	case S_TILE:
-	{
-		Tile* tile = game->getTurn()->getSelectedTile();
-
-		if (this->index < tile->getUnits().size()) {
-			Unit* unit = tile->getUnit(this->index);
-			string damage = to_string(unit->getDamage());
-			string life = to_string(unit->getLife());
-			SDL_Color fontColor = { 0xff, 0xff, 0xff };
-			SDL_Surface* d = TTF_RenderText_Blended(this->font,
-					damage.c_str(), fontColor);
-			SDL_Surface* l = TTF_RenderText_Blended(this->font,
-					life.c_str(), fontColor);
-			Uint32 color = SDL_MapRGB(screen->format, 0x3f, 0x3f, 0x3f);
-			SDL_Rect offset;
-
-			SDL_FillRect(screen, this->getBox(), color);
-			offset.y = (Sint16)(this->y + this->h * 5 / 6);
-			offset.x = (Sint16)this->x + index * (this->w + 10);
-			SDL_BlitSurface(d, 0, screen, &offset);
-			offset.x = (Sint16)this->x + this->w * 3 / 4 + index * (this->w + 10);
-			SDL_BlitSurface(l, 0, screen, &offset);
-
-			SDL_FreeSurface(d);
-			SDL_FreeSurface(l);
-		}
-		break;
-	}
-	default:
-		break;
+	if (tile) {
+		Unit* unit = tile->getUnit(this->index);
+		if (unit)
+			unit->render(screen, getBox());
 	}
 }
 

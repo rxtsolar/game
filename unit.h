@@ -42,6 +42,9 @@ public:
 	virtual void attack(Tile*);
 	virtual void attack(Unit*);
 
+	virtual std::string getDescription(void) = 0;
+	virtual void render(SDL_Surface*, SDL_Rect*);
+
 private:
 	bool moved;
 	bool attacked;
@@ -61,6 +64,8 @@ class Hero : public Unit {
 public:
 	Hero(Player*, Tile*);
 	virtual ~Hero(void);
+
+	virtual std::string getDescription(void);
 };
 
 } // namespace gs

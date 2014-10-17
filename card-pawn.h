@@ -20,7 +20,7 @@ class UnitPawn : public Unit {
 public:
 	UnitPawn(Player*, Tile*);
 	virtual ~UnitPawn(void);
-	virtual void render(SDL_Surface*, SDL_Rect*);
+	virtual std::string getDescription(void);
 };
 
 } // namespace gs

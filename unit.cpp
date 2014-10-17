@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include <SDL/SDL_ttf.h>
+
 #include "unit.h"
 
 using namespace std;
@@ -174,6 +176,61 @@ void Unit::attack(Unit* unit)
 	unit->setLife(unit->getLife() - this->damage);
 }
 
+void Unit::render(SDL_Surface* screen, SDL_Rect* box)
+{
+	switch (getPlayer()->getStatus()) {
+	case S_TILE:
+	{
+		TTF_Font* font = TTF_OpenFont(font_path, box->h / 6 * font_rate);
+		string resource = to_string(getResources());
+	    string moveRange = to_string(getMoveRange());
+		string description = getDescription();
+		string damage = to_string(getDamage());
+		string life = to_string(getLife());
+		SDL_Color fontColor = { 0xff, 0xff, 0xff };
+
+		SDL_Surface* r = TTF_RenderText_Blended(font,
+				resource.c_str(), fontColor);
+		SDL_Surface* m = TTF_RenderText_Blended(font,
+				moveRange.c_str(), fontColor);
+		SDL_Surface* desc = TTF_RenderText_Blended(font,
+				description.c_str(), fontColor);
+		SDL_Surface* d = TTF_RenderText_Blended(font,
+				damage.c_str(), fontColor);
+		SDL_Surface* l = TTF_RenderText_Blended(font,
+				life.c_str(), fontColor);
+		Uint32 color = SDL_MapRGB(screen->format, 0x3f, 0x3f, 0x3f);
+		SDL_Rect offset;
+
+		SDL_FillRect(screen, box, color);
+		offset.x = box->x;
+		offset.y = box->y;
+		SDL_BlitSurface(r, 0, screen, &offset);
+		offset.x = box->x + (Sint16)(box->w * 3 / 4);
+		SDL_BlitSurface(m, 0, screen, &offset);
+		offset.x = box->x + (Sint16)(box->w - desc->w) / 2;
+		offset.y = box->y + (Sint16)(box->h - desc->h) / 2;
+		SDL_BlitSurface(desc, 0, screen, &offset);
+		offset.y = box->y + (Sint16)(box->h * 5 / 6);
+		offset.x = box->x;
+		SDL_BlitSurface(d, 0, screen, &offset);
+		offset.x = box->x + (Sint16)(box->w * 3 / 4);
+		SDL_BlitSurface(l, 0, screen, &offset);
+
+		SDL_FreeSurface(r);
+		SDL_FreeSurface(m);
+		SDL_FreeSurface(desc);
+		SDL_FreeSurface(d);
+		SDL_FreeSurface(l);
+
+		TTF_CloseFont(font);
+		break;
+	}
+	default:
+		break;
+	}
+}
+
 
 Hero::Hero(Player* player, Tile* tile) : Unit(player, tile)
 {
@@ -187,6 +244,11 @@ Hero::Hero(Player* player, Tile* tile) : Unit(player, tile)
 Hero::~Hero(void)
 {
 
+}
+
+string Hero::getDescription(void)
+{
+	return "Hero";
 }
 
 } // namespace gs

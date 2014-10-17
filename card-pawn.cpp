@@ -68,8 +68,9 @@ UnitPawn::~UnitPawn(void)
 
 }
 
-void UnitPawn::render(SDL_Surface* screen, SDL_Rect* box)
+string UnitPawn::getDescription(void)
 {
+	return "Pawn";
 }
 
 } // namespace gs
