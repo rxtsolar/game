@@ -178,8 +178,9 @@ void Unit::attack(Unit* unit)
 
 void Unit::render(SDL_Surface* screen, SDL_Rect* box)
 {
-	switch (getPlayer()->getStatus()) {
+	switch (getPlayer()->getGame()->getTurn()->getStatus()) {
 	case S_TILE:
+	case S_ON_TILE:
 	{
 		TTF_Font* font = TTF_OpenFont(font_path, box->h / 6 * font_rate);
 		string resource = to_string(getResources());
@@ -202,7 +203,7 @@ void Unit::render(SDL_Surface* screen, SDL_Rect* box)
 		Uint32 color = SDL_MapRGB(screen->format, 0x3f, 0x3f, 0x3f);
 		SDL_Rect offset;
 
-		if (getPlayer()->canSelectUnit(this)) {
+		if (getPlayer()->getGame()->getTurn()->canSelectUnit(this)) {
 			SDL_Rect frame;
 			Uint32 frameColor = SDL_MapRGB(screen->format, 0x6f, 0xff, 0xff);
 			frame.x = box->x - 3;

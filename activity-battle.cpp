@@ -33,7 +33,7 @@ bool CardButton::leftClick(void)
 		Card* card = game->getTurn()->getCard(this->index);
 		if (!card)
 			break;
-		if (game->getTurn()->getResources() >= card->getResources()) {
+		if (game->getTurn()->canSelectCard(card)) {
 			game->getTurn()->selectCard(card);
 			game->getTurn()->setStatus(S_CARD);
 			handled = true;
@@ -170,6 +170,22 @@ TileButton::~TileButton(void)
 		TTF_CloseFont(this->font);
 }
 
+bool TileButton::inside(void)
+{
+	Game* game = getActivity()->getEngine()->getGame();
+	Tile* tile = game->getBoard()->getTile(Position(this->row, this->column));
+
+	switch (game->getTurn()->getStatus()) {
+	case S_DEFAULT:
+	case S_ON_TILE:
+		game->getTurn()->selectTile(tile);
+		game->getTurn()->setStatus(S_ON_TILE);
+		return true;
+	default:
+		return false;
+	}
+}
+
 bool TileButton::leftClick(void)
 {
 	bool handled = false;
@@ -178,8 +194,10 @@ bool TileButton::leftClick(void)
 
 	switch (game->getTurn()->getStatus()) {
 	case S_DEFAULT:
+	case S_ON_TILE:
 	{
-		if (game->getTurn()->selectTile(tile)) {
+		game->getTurn()->selectTile(tile);
+		if (game->getTurn()->canSelectTile(tile)) {
 			game->getTurn()->setStatus(S_TILE);
 			handled = true;
 		}
@@ -242,6 +260,7 @@ void TileButton::render(SDL_Surface* screen)
 			handled = false;
 	}
 	case S_TILE:
+	case S_ON_TILE:
 	case S_CARD:
 	case S_DEFAULT:
 	{
@@ -295,7 +314,7 @@ bool UnitButton::leftClick(void)
 		if (this->index < tile->getUnits().size()) {
 			Unit* unit = tile->getUnit(this->index);
 
-			if (!unit->isAttacked() && unit->getDamage() > 0) {
+			if (game->getTurn()->canSelectUnit(unit)) {
 				game->getTurn()->selectUnit(unit);
 				game->getTurn()->setStatus(S_UNIT);
 				handled = true;
@@ -403,6 +422,17 @@ void BattleActivity::handle(void)
 				game->getTurn()->selectTile(0);
 				game->getTurn()->selectUnit(0);
 				game->getTurn()->setStatus(S_DEFAULT);
+			}
+		}
+		if (event.type == SDL_MOUSEMOTION) {
+			Game* game = getEngine()->getGame();
+			switch (game->getTurn()->getStatus()) {
+			case S_ON_TILE:
+				game->getTurn()->selectTile(0);
+				game->getTurn()->setStatus(S_DEFAULT);
+				break;
+			default:
+				break;
 			}
 		}
 	}

@@ -28,6 +28,7 @@ enum Status {
 	S_DEFAULT,
 	S_CARD,
 	S_TILE,
+	S_ON_TILE,
 	S_UNIT,
 };
 

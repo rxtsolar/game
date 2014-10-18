@@ -192,31 +192,19 @@ bool Player::createHero(Tile* tile)
 	return true;
 }
 
-bool Player::selectUnit(Unit* unit)
+void Player::selectUnit(Unit* unit)
 {
-	if (!canSelectUnit(unit))
-		return false;
 	this->selectedUnit = unit;
-	cout << "Player " << this << " selected a unit " << unit << endl;
-	return true;
 }
 
-bool Player::selectTile(Tile* tile)
+void Player::selectTile(Tile* tile)
 {
-	if (!canSelectTile(tile))
-		return false;
 	this->selectedTile = tile;
-	cout << "Player " << this << " selected a tile " << tile << endl;
-	return true;
 }
 
-bool Player::selectCard(Card* card)
+void Player::selectCard(Card* card)
 {
-	if (!canSelectCard(card))
-		return false;
 	this->selectedCard = card;
-	cout << "Player " << this << " selected a card " << card << endl;
-	return true;
 }
 
 bool Player::playCard(Tile* tile)

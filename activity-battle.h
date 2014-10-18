@@ -78,6 +78,7 @@ public:
 	TileButton(Activity* activity, int row, int column);
 	virtual ~TileButton(void);
 
+	virtual bool inside(void);
 	virtual bool leftClick(void);
 
 	virtual void render(SDL_Surface* screen);

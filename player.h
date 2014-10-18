@@ -48,9 +48,9 @@ public:
 	virtual bool canMoveTo(Tile*);
 
 	virtual bool createHero(Tile*);
-	virtual bool selectUnit(Unit*);
-	virtual bool selectTile(Tile*);
-	virtual bool selectCard(Card*);
+	virtual void selectUnit(Unit*);
+	virtual void selectTile(Tile*);
+	virtual void selectCard(Card*);
 	virtual bool playCard(Tile*);
 	virtual bool attack(Tile*);
 	virtual bool moveTo(Tile*);
