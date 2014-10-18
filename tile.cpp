@@ -103,11 +103,11 @@ void Tile::attackedBy(Unit* unit)
 			if (u == u->getPlayer()->getHero())
 				u->getPlayer()->lose();
 			delete u;
-			this->units[i] = 0;
 		} else {
 			newUnits.push_back(u);
 		}
 	}
+	this->units = newUnits;
 
 	if (this->units.size() == 0) {
 		this->player->removeTile(this);
